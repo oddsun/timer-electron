@@ -1,33 +1,39 @@
 <template>
-  <v-app>
-    <v-toolbar app>
+  <v-app style="background: rgba(255,255,255,0.4)">
+    <v-toolbar app class="draggable">
       <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
+        <span>Timer</span>
+        <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
       </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
+      <!-- <v-spacer></v-spacer> -->
+      <!-- <v-btn
         flat
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
         target="_blank"
       >
         <span class="mr-2">Latest Release</span>
-      </v-btn>
+      </v-btn> -->
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+      <!-- <HelloWorld/> -->
+      <Timer/>
+      <Timer/>
+      <Timer/>
+      <Timer/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+// import HelloWorld from './components/HelloWorld'
+import Timer from './components/Timer'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    // HelloWorld,
+    Timer
   },
   data () {
     return {
@@ -36,3 +42,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  .draggable {
+      -webkit-app-region: drag;
+  }
+</style>
