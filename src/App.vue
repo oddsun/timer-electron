@@ -1,6 +1,6 @@
 <template>
-  <v-app style="background: rgba(255,255,255,0.4)">
-    <v-toolbar app class="draggable">
+  <v-app style="background: rgba(255,255,255,0)">
+    <v-toolbar app class="draggable" style='background: rgba(255,255,255,0.8)'>
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span>
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->

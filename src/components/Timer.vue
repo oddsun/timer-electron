@@ -74,16 +74,58 @@ export default {
   --neon-text-color: #ff026b;
   --neon-border-color: #ff026b;
   --row-background: rgba(204, 246, 255, 0.8);
+  --neon-color-primary: 20;
+  --neon-color-complement: calc(var(--neon-color-primary) + 90);
+  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 90);
+  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 90);
+
+  --neon-text-shadow:
+  0 0 0.02em hsl(var(--neon-color-primary), 100%, 50%),
+  0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0.02em 0.02em 0.02em hsl(var(--neon-color-primary),100%,50%);
+  --neon-text-highlight: hsl(var(--neon-color-primary), 100%,75%);
+  --neon-text-shadow-reverse:
+  0 0 0.02em hsl(var(--neon-color-complement), 100%, 50%),
+  0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0.02em 0.02em 0.02em hsl(var(--neon-color-complement),100%,50%);
+  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%,75%);
+
+  --neon-box-shadow:
+  0 0 1px hsl(var(--neon-color-complement), 100%, 50%),
+  inset 0 0 1px hsl(var(--neon-color-complement), 100%, 50%),
+  0 0 2px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  inset 0 0 2px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 50%);
+  --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
+  --neon-box-shadow-reverse:
+  0 0 1px hsl(var(--neon-color-primary), 100%, 50%),
+  inset 0 0 1px hsl(var(--neon-color-primary), 100%, 50%),
+  0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  inset 0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%);
+  --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
 }
 
 button {
-  background: rgba(2, 209, 255, 0.4);
+  /* background: rgba(2, 209, 255, 1); */
   /* background: #02D1FF; */
-  /* background: transparent; */
-  color: white;
+  background: transparent;
+  /* color: white; */
   width: 90px;
   height: 40px;
-  border-radius: 10%;
+  border-radius: 10px;
   /* margin-top: 15px; */
   outline: 0;
   border-style: none;
@@ -92,13 +134,20 @@ button {
   border-width: 0;
   font-size: 1.5em;
   /* border: 1px solid transparent; */
-  box-shadow: 0 0 1px transparent;
-  -webkit-backface-visibility: hidden;
-  -webkit-transition: all 0.5s ease-out 0s;
+  box-shadow: none;
+  /* box-shadow: 0 0 1px transparent; */
+  /* -webkit-backface-visibility: hidden; */
+  -webkit-transition: all 0.2s linear 0s;
+    /* border-radius 0.3s linear 0s,
+    transform 0.3s linear 0s,
+    box-shadow 0.3s linear 0s,
+    border 0.3s linear 0s; */
 }
 
 button:after{
   content: 'Start';
+  text-shadow: none;
+  text-decoration: none;
   /* font-size: 20px; */
 }
 
@@ -116,24 +165,30 @@ button:hover{
 }
 
 button.active {
-  background: var(--neon-text-color);
+  /* background: var(--neon-text-color); */
+  background: transparent;
   border-radius: 0%;
   width: 40px;
   /* margin-left: 25px;
   margin-right: 25px; */
-  color: var(--neon-text-color);
+  /* color: var(--neon-text-color); */
+  color: transparent;
+  text-shadow: none;
+  box-shadow: var(--neon-box-shadow-reverse);
+   border: 1px solid var(--neon-box-shadow-highlight-reverse);
   transform: scale(0.4);
   /* -webkit-transition: all 0.3s ease-out 0s, width 0s; */
 }
 
 button.active:hover {
-  background: var(--neon-text-color);
+  /* background: var(--neon-text-color); */
   border-radius: 100%;
   /* margin-left: 25px;
   margin-right: 25px; */
   width: 40px;
   /* color: #ccf6ff; */
-  color: var(--row-background);
+  /* color: var(--row-background); */
+  /* color: var(--neon-text-color); */
   transform: scale(1);
 }
 
@@ -141,20 +196,24 @@ div#timer-cell{
   padding: 10px;
   padding-top: 20px;
   text-align: center;
-  transition: background 0.5s ease-out 0s, border 0.5s ease-out 0s;
+  margin: 10px;
+  -webkit-transition: all 0.2s linear 0s;
+  /* -webkit-transition: background 0.5s ease-out 0s, border 0.5s linear 0s, box-shadow 0.5s linear 0s; */
   background: transparent;
+  color: var(--neon-text-color);
   border: 1px solid transparent;
 }
 
 div#timer-cell:hover, div#timer-cell.active {
   /* background: #ccf6ff; */
-  background: var(--row-background);
+  /* background: var(--row-background); */
   color: var(--neon-text-color);
   /* border: 1px solid transparent; */
 }
 
 div#timer-cell:hover {
-  border: 1px solid var(--neon-border-color);
+  box-shadow: var(--neon-box-shadow-reverse);
+  border: 1px solid var(--neon-box-shadow-highlight-reverse);
 }
 
 #triangle-right {
@@ -183,6 +242,14 @@ span#timer-text{
 }
 
 span#timer-text.active{
+  text-shadow: var(--neon-text-shadow);
+  color: var(--neon-text-highlight);
+  box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight);
+   border-radius: 0;
+}
+
+span#timer-text.active_old {
   color: white;
   text-shadow:
   -0.5px -0.5px 0.5px #fff,
@@ -207,15 +274,25 @@ span#timer-text.active{
   border-radius: 15px;
 }
 
-button:hover:after {
-  content: '\25B6';
+button:hover:after{
+  content: '\25B7';
+    text-shadow: var(--neon-text-shadow);
+    color: var(--neon-text-highlight);
   /* font-size: 1.5em; */
 }
 
 button.active:after{
   content: '\2668';
+    text-shadow: none;
+    color: transparent;
   /* display: block; */
   /* padding-bottom: 4px; */
   /* font-size: 2em; */
+}
+
+button.active:hover:after {
+    content: '\2668';
+    text-shadow: var(--neon-text-shadow-reverse);
+    color: var(--neon-text-highlight-reverse);
 }
 </style>
