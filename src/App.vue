@@ -1,11 +1,12 @@
 <template>
-  <v-app style="background: rgba(255,255,255,0)">
-    <v-toolbar app class="draggable" style='background: rgba(255,255,255,0.8)'>
+  <v-app :dark="dark_theme" style="background: rgba(255,255,255,0)">
+    <v-toolbar app class="draggable">
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span>
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
       </v-toolbar-title>
       <!-- <v-spacer></v-spacer> -->
+      <!-- <v-btn flat @click='toggle_theme'><span class="mr-2">Change Theme</span></v-btn> -->
       <!-- <v-btn
         flat
         href="https://github.com/vuetifyjs/vuetify/releases/latest"
@@ -37,7 +38,12 @@ export default {
   },
   data () {
     return {
-      //
+      dark_theme: false,
+    }
+  },
+  methods: {
+    toggle_theme: function () {
+      this.dark_theme = !this.dark_theme;
     }
   }
 }

@@ -1,9 +1,12 @@
 <template>
 <div id="timer-cell" :class="{active: button_active}">
+          <v-text-field
+            label="Problem Number"
+          ></v-text-field>
   <span id='timer-text' :class="{active: button_active}">{{ time }}</span>
   <!--<p>{{ start_time }}</p>-->
   <!--<button @click="start">{{button_text}}</button>-->
-  <button @click="start" :class="{active: button_active}"></button>
+  <button id='timer-button' @click="start" :class="{active: button_active}"></button>
 </div>
 </template>
 
@@ -65,7 +68,7 @@ export default {
 
 </script>
 
-<style scope>
+<style>
 :root{
   /* --neon-text-color: #fd5f00;
   --neon-border-color: #fd5f00; */
@@ -118,7 +121,7 @@ export default {
   --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
 }
 
-button {
+button#timer-button {
   /* background: rgba(2, 209, 255, 1); */
   /* background: #02D1FF; */
   background: transparent;
@@ -144,7 +147,7 @@ button {
     border 0.3s linear 0s; */
 }
 
-button:after{
+button#timer-button:after{
   content: 'Start';
   text-shadow: none;
   text-decoration: none;
@@ -152,7 +155,7 @@ button:after{
 }
 
 
-button:hover{
+button#timer-button:hover{
   color: var(--neon-text-color);
   border-radius: 50%;
   width: 40px;
@@ -164,7 +167,7 @@ button:hover{
   /* -webkit-transition: all 0.3s ease-out 0s, width 0s; */
 }
 
-button.active {
+button#timer-button.active {
   /* background: var(--neon-text-color); */
   background: transparent;
   border-radius: 0%;
@@ -180,7 +183,7 @@ button.active {
   /* -webkit-transition: all 0.3s ease-out 0s, width 0s; */
 }
 
-button.active:hover {
+button#timer-button.active:hover {
   /* background: var(--neon-text-color); */
   border-radius: 100%;
   /* margin-left: 25px;
@@ -274,14 +277,14 @@ span#timer-text.active_old {
   border-radius: 15px;
 }
 
-button:hover:after{
+button#timer-button:hover:after{
   content: '\25B7';
     text-shadow: var(--neon-text-shadow);
     color: var(--neon-text-highlight);
   /* font-size: 1.5em; */
 }
 
-button.active:after{
+button#timer-button.active:after{
   content: '\2668';
     text-shadow: none;
     color: transparent;
@@ -290,7 +293,7 @@ button.active:after{
   /* font-size: 2em; */
 }
 
-button.active:hover:after {
+button#timer-button.active:hover:after {
     content: '\2668';
     text-shadow: var(--neon-text-shadow-reverse);
     color: var(--neon-text-highlight-reverse);
