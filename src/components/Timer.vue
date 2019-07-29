@@ -119,6 +119,16 @@ export default {
   0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%),
   inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%);
   --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
+  --neon-box-shadow-flipped:
+  0 0 1px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  inset 0 0 1px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+  0 0 2px hsl(var(--neon-color-primary), 100%, 50%),
+  inset 0 0 2px hsl(var(--neon-color-primary), 100%, 50%),
+  0 0 6px hsl(var(--neon-color-primary), 100%, 50%),
+  inset 0 0 6px hsl(var(--neon-color-primary), 100%, 50%),
+  0 0 10px hsl(var(--neon-color-primary), 100%, 50%),
+  inset 0 0 10px hsl(var(--neon-color-primary), 100%, 50%);
+  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-primary-shadow), 100%, 75%);
 }
 
 button.timer-button {

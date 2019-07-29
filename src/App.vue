@@ -1,6 +1,6 @@
 <template>
-  <v-app :dark="dark_theme" style="background: rgba(0,0,0,0)">
-    <v-toolbar app class="draggable" style="background: rgba(255,255,255,0.7)">
+  <v-app :dark="dark_theme" style="background: transparent">
+    <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.7)">
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span>
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
@@ -52,5 +52,10 @@ export default {
 <style>
   .draggable {
       -webkit-app-region: drag;
+  }
+
+  span {
+    color: var(--neon-text-highlight);
+    text-shadow: var(--neon-text-shadow);
   }
 </style>
