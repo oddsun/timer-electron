@@ -125,40 +125,38 @@ button.timer-button {
   /* background: rgba(2, 209, 255, 1); */
   /* background: #02D1FF; */
   background: transparent;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  border-radius: 50%;
   /* color: white; */
-  width: 90px;
-  height: 40px;
-  border-radius: 10px;
+  width: 1.5em;
+  height: 1.5em;
+  /* border-radius: 10px; */
   /* margin-top: 15px; */
   outline: 0;
   border-style: none;
   border-color: none;
   border-image: none;
   border-width: 0;
-  font-size: 1.5em;
+  font-size: 3em;
   /* border: 1px solid transparent; */
   box-shadow: none;
   /* box-shadow: 0 0 1px transparent; */
   /* -webkit-backface-visibility: hidden; */
-  -webkit-transition: all 0.2s linear 0s;
-    /* border-radius 0.3s linear 0s,
-    transform 0.3s linear 0s,
-    box-shadow 0.3s linear 0s,
-    border 0.3s linear 0s; */
+  -webkit-transition:
+  /* all 1s; */
+    border-radius 0.2s ease-in-out 0s,
+    transform 0.2s ease-in-out 0s,
+    box-shadow 0.3s ease-in-out 0s,
+    border 0.3s ease-in-out 0s;
 }
 
-button.timer-button:after{
-  content: 'Start';
-  text-shadow: none;
-  text-decoration: none;
-  /* font-size: 20px; */
-}
 
 
 button.timer-button:hover{
   color: var(--neon-text-color);
   border-radius: 50%;
-  width: 40px;
+  width: 1.5em;
   /* margin-left: 25px;
   margin-right: 25px; */
   background: transparent;
@@ -171,7 +169,7 @@ button.timer-button.active {
   /* background: var(--neon-text-color); */
   background: transparent;
   border-radius: 0%;
-  width: 40px;
+  width: 1.5em;
   /* margin-left: 25px;
   margin-right: 25px; */
   /* color: var(--neon-text-color); */
@@ -179,28 +177,28 @@ button.timer-button.active {
   text-shadow: none;
   box-shadow: var(--neon-box-shadow-reverse);
    border: 1px solid var(--neon-box-shadow-highlight-reverse);
-  transform: scale(0.4);
-  /* -webkit-transition: all 0.3s ease-out 0s, width 0s; */
+  -webkit-transform: scale(0.5);
+  /* -webkit-transition: all 0.3s linear 0s; */
 }
 
 button.timer-button.active:hover {
   /* background: var(--neon-text-color); */
-  border-radius: 100%;
+  border-radius: 50%;
   /* margin-left: 25px;
   margin-right: 25px; */
-  width: 40px;
+  width: 1.5em;
   /* color: #ccf6ff; */
   /* color: var(--row-background); */
   /* color: var(--neon-text-color); */
-  transform: scale(1);
+  -webkit-transform: scale(1);
 }
 
 div#timer-cell{
-  padding: 10px;
-  padding-top: 20px;
+  padding: 1em;
+  padding-top: 2em;
   text-align: center;
-  margin: 10px;
-  -webkit-transition: all 0.2s linear 0s;
+  margin: 1em;
+  /* -webkit-transition: all 0.3s ease-in-out 0s; */
   /* -webkit-transition: background 0.5s ease-out 0s, border 0.5s linear 0s, box-shadow 0.5s linear 0s; */
   background: transparent;
   color: var(--neon-text-color);
@@ -210,13 +208,14 @@ div#timer-cell{
 div#timer-cell:hover, div#timer-cell.active {
   /* background: #ccf6ff; */
   /* background: var(--row-background); */
-  color: var(--neon-text-color);
+  /* color: var(--neon-text-color); */
   /* border: 1px solid transparent; */
 }
 
 div#timer-cell:hover {
-  box-shadow: var(--neon-box-shadow-reverse);
-  border: 1px solid var(--neon-box-shadow-highlight-reverse);
+  /* box-shadow: var(--neon-box-shadow-reverse);
+  border: 1px solid var(--neon-box-shadow-highlight-reverse); */
+  /* -webkit-transition: border 0.1s linear 0s, box-shadow 0.1s linear 0s; */
 }
 
 #triangle-right {
@@ -231,17 +230,22 @@ span#timer-text{
   display: block;
   font-family: "Iceland", cursive;
   /* font-weight: bold; */
-  font-size: 3em;
-  height: 60px;
-  line-height: 60px;
-  width: 200px;
+  font-size: 8em;
+  height: 2em;
+  line-height: 2em;
+  width: 6em;
   margin: auto;
   margin-bottom: 15px;
   vertical-align: middle;
   border: 1px solid transparent;
   box-shadow: none;
   text-shadow: none;
-  -webkit-transition: all 0.3s linear 0s;
+  -webkit-transition:
+  /* text-shadow 1s,
+  color 1s,
+  border 1s,
+  box-shadow 1s; */
+  all 0.3s ease-in-out 0s;
 }
 
 span#timer-text.active{
@@ -250,6 +254,7 @@ span#timer-text.active{
   box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight);
    border-radius: 0;
+   /* -webkit-transition: all 0.5s linear 0s; */
 }
 
 span#timer-text.active_old {
@@ -275,6 +280,14 @@ span#timer-text.active_old {
   /* border: 2px solid var(--neon-border-color); */
   border: 2px solid white;
   border-radius: 15px;
+}
+
+button.timer-button:after{
+  content: '\25B7';
+  color: var(--neon-text-color);
+  text-shadow: none;
+  text-decoration: none;
+  /* font-size: 20px; */
 }
 
 button.timer-button:hover:after{

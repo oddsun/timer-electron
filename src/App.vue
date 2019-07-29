@@ -1,6 +1,6 @@
 <template>
-  <v-app :dark="dark_theme" style="background: rgba(0,0,0,0.8)">
-    <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.5)">
+  <v-app :dark="dark_theme" style="background: rgba(0,0,0,0)">
+    <v-toolbar app class="draggable" style="background: rgba(255,255,255,0.7)">
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span>
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
@@ -19,9 +19,9 @@
     <v-content>
       <!-- <HelloWorld/> -->
       <Timer/>
+      <!-- <Timer/>
       <Timer/>
-      <Timer/>
-      <Timer/>
+      <Timer/> -->
     </v-content>
   </v-app>
 </template>
@@ -38,7 +38,7 @@ export default {
   },
   data () {
     return {
-      dark_theme: true,
+      dark_theme: false,
     }
   },
   methods: {
