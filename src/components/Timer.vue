@@ -1,7 +1,12 @@
 <template>
 <div id="timer-cell" :class="{active: button_active}">
           <v-text-field
+            id="label-input"
+            v-model="prob_num"
             label="Problem Number"
+            outlined
+            clearable
+            autofocus
           ></v-text-field>
   <span id='timer-text' :class="{active: button_active}">{{ time }}</span>
   <!--<p>{{ start_time }}</p>-->
@@ -22,6 +27,7 @@ export default {
       button_text:'Start',
       stop_time: '',
       button_active: false,
+      prob_num: '',
     }
   },
   methods: {
@@ -42,6 +48,7 @@ export default {
         this.stop_time = new Date();
         this.button_active = false;
       }
+      console.log(this.prob_num);
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
@@ -74,8 +81,9 @@ export default {
   --neon-border-color: #fd5f00; */
   /* --neon-text-color: #ff8000;
   --neon-border-color: #ff8000; */
+  /* --neon-text-color: #ff026b; */
+  /* --neon-border-color: #ff026b; */
   --neon-text-color: #ff026b;
-  --neon-border-color: #ff026b;
   --row-background: rgba(204, 246, 255, 0.8);
   --neon-color-primary: 20;
   --neon-color-complement: calc(var(--neon-color-primary) + 90);
@@ -120,23 +128,23 @@ export default {
   inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%);
   --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
   --neon-box-shadow-flipped:
-  0 0 1px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  inset 0 0 1px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 2px hsl(var(--neon-color-primary), 100%, 50%),
-  inset 0 0 2px hsl(var(--neon-color-primary), 100%, 50%),
-  0 0 6px hsl(var(--neon-color-primary), 100%, 50%),
-  inset 0 0 6px hsl(var(--neon-color-primary), 100%, 50%),
-  0 0 10px hsl(var(--neon-color-primary), 100%, 50%),
-  inset 0 0 10px hsl(var(--neon-color-primary), 100%, 50%);
-  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-primary-shadow), 100%, 75%);
+  0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+  inset 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+  0 0 6px hsl(var(--neon-color-complement), 100%, 50%),
+  inset 0 0 6px hsl(var(--neon-color-complement), 100%, 50%),
+  0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
+  inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%);
+  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-complement-shadow), 100%, 75%);
 }
 
 button.timer-button {
   /* background: rgba(2, 209, 255, 1); */
   /* background: #02D1FF; */
   background: transparent;
-  margin-top: 0.5em;
-  margin-bottom: 0.5em;
+  margin-top: 0.3em;
+  /* margin-bottom: 0.5em; */
   border-radius: 50%;
   /* color: white; */
   width: 1.5em;
@@ -204,15 +212,18 @@ button.timer-button.active:hover {
 }
 
 div#timer-cell{
-  padding: 1em;
-  padding-top: 2em;
+  padding: 1.5em;
+  /* padding-top: 2em; */
   text-align: center;
-  margin: 1em;
+  height: 90vh;
+  margin: 5vh;
   /* -webkit-transition: all 0.3s ease-in-out 0s; */
   /* -webkit-transition: background 0.5s ease-out 0s, border 0.5s linear 0s, box-shadow 0.5s linear 0s; */
   background: transparent;
   color: var(--neon-text-color);
-  border: 1px solid transparent;
+  /* border: 1px solid transparent;
+    box-shadow: var(--neon-box-shadow-reverse); */
+    /* border: 1px solid var(--neon-box-shadow-highlight-reverse); */
 }
 
 div#timer-cell:hover, div#timer-cell.active {
@@ -240,12 +251,14 @@ span#timer-text{
   display: block;
   font-family: "Iceland", cursive;
   /* font-weight: bold; */
+  color: var(--neon-text-color);
   font-size: 8em;
   height: 2em;
   line-height: 2em;
-  width: 6em;
+  min-width: 4em;
   margin: auto;
-  margin-bottom: 15px;
+  margin-top: 0.3em;
+  margin-bottom: 0.3em;
   vertical-align: middle;
   border: 1px solid transparent;
   box-shadow: none;
@@ -321,4 +334,19 @@ button.timer-button.active:hover:after {
     text-shadow: var(--neon-text-shadow-reverse);
     color: var(--neon-text-highlight-reverse);
 }
+
+#label-input, .v-input .v-label{
+  color: var(--neon-text-highlight);
+  /* border: var(--neon-text-shadow-highlight); */
+}
+
+.theme--light.v-text-field--outlined fieldset,
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {
+  border-color: var(--neon-box-shadow-highlight);
+}
+
+.theme--light.v-icon {
+  color: var(--neon-text-highlight);
+}
+
 </style>

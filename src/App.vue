@@ -1,10 +1,10 @@
 <template>
-  <v-app :dark="dark_theme" style="background: transparent">
-    <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.7)">
+  <v-app class="draggable" :dark="dark_theme" style="background: rgba(0,0,0,0.7)">
+    <!-- <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.7)">
       <v-toolbar-title class="headline text-uppercase">
-        <span>Timer</span>
+        <span>Timer</span> -->
         <!-- <span class="font-weight-light">MATERIAL DESIGN</span> -->
-      </v-toolbar-title>
+      <!-- </v-toolbar-title> -->
       <!-- <v-spacer></v-spacer> -->
       <!-- <v-btn flat @click='toggle_theme'><span class="mr-2">Change Theme</span></v-btn> -->
       <!-- <v-btn
@@ -14,7 +14,7 @@
       >
         <span class="mr-2">Latest Release</span>
       </v-btn> -->
-    </v-toolbar>
+    <!-- </v-toolbar> -->
 
     <v-content>
       <!-- <HelloWorld/> -->
@@ -38,7 +38,7 @@ export default {
   },
   data () {
     return {
-      dark_theme: false,
+      dark_theme: true,
     }
   },
   methods: {
