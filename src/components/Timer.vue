@@ -1,39 +1,49 @@
 <template>
-<div id="timer-cell" :class="{active: button_active}">
-          <v-text-field
-            id="label-input"
-            v-model="prob_num"
-            label="Problem Number"
-            outlined
-            clearable
-            autofocus
-          ></v-text-field>
-  <span id='timer-text' :class="{active: button_active}">{{ time }}</span>
-  <!--<p>{{ start_time }}</p>-->
-  <!--<button @click="start">{{button_text}}</button>-->
-  <button class='timer-button' @click="start" :class="{active: button_active}"></button>
-</div>
+<!-- <div id="timer-cell" :class="{active: button_active}"> -->
+<v-container text-center fill-height pa-10>
+  <v-layout column justify-space-around>
+    <v-flex shrink>
+      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details outlined clearable autofocus></v-text-field>
+    </v-flex>
+    <v-flex shrink>
+      <v-hover @click.native="start">
+        <template v-slot:default="{ hover }">
+          <div id="timer-text-container" :class="{active: button_active}">
+            <span id='timer-text' :class="{active: button_active}">{{ time }}</span>
+            <!--<p>{{ start_time }}</p>-->
+            <!--<button @click="start">{{button_text}}</button>-->
+            <v-fade-transition>
+              <v-overlay v-if="hover" absolute color="#036358">
+                <!-- <v-btn>See more info</v-btn> -->
+                <button class='timer-button' :class="{active: button_active}"></button>
+              </v-overlay>
+            </v-fade-transition>
+          </div>
+</template>
+</v-hover>
+</v-flex>
+</v-layout>
+  <!-- </div> -->
+</v-container>
 </template>
 
 <script>
-
 export default {
   name: 'test',
-  data () {
+  data() {
     return {
-      time: '',
+      time: '00:00:00',
       start_time: '',
       job: '',
-      button_text:'Start',
+      button_text: 'Start',
       stop_time: '',
       button_active: false,
       prob_num: '',
     }
   },
   methods: {
-    start: function () {
-      if(!this.job)
-      {
+    start: function() {
+      if (!this.job) {
         this.start_time = new Date();
         this.job = setInterval(() => {
           this.time = this.msToTime(Math.abs(new Date() - this.start_time));
@@ -55,28 +65,27 @@ export default {
     //   console.log(this.time);
     // },
     msToTime: function(s) {
-        // Pad to 2 or 3 digits, default is 2
-        function pad(n, z) {
-          z = z || 2;
-          return ('00' + n).slice(-z);
-        }
-
-        var ms = s % 1000;
-        s = (s - ms) / 1000;
-        var secs = s % 60;
-        s = (s - secs) / 60;
-        var mins = s % 60;
-        var hrs = (s - mins) / 60;
-
-        return pad(hrs) + ':' + pad(mins) + ':' + pad(secs); // + '.' + pad(ms, 3);
+      // Pad to 2 or 3 digits, default is 2
+      function pad(n, z) {
+        z = z || 2;
+        return ('00' + n).slice(-z);
       }
-    }
-}
 
+      var ms = s % 1000;
+      s = (s - ms) / 1000;
+      var secs = s % 60;
+      s = (s - secs) / 60;
+      var mins = s % 60;
+      var hrs = (s - mins) / 60;
+
+      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs); // + '.' + pad(ms, 3);
+    }
+  }
+}
 </script>
 
 <style>
-:root{
+:root {
   /* --neon-text-color: #fd5f00;
   --neon-border-color: #fd5f00; */
   /* --neon-text-color: #ff8000;
@@ -91,51 +100,68 @@ export default {
   --neon-color-complement-shadow: calc(var(--neon-color-complement) + 90);
 
   --neon-text-shadow:
-  0 0 0.02em hsl(var(--neon-color-primary), 100%, 50%),
-  0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0.02em 0.02em 0.02em hsl(var(--neon-color-primary),100%,50%);
-  --neon-text-highlight: hsl(var(--neon-color-primary), 100%,75%);
+    0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
+    0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    0 0 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 35%),
+    0 0 0.4em hsl(var(--neon-color-primary-shadow), 100%, 25%),
+    0.02em 0.02em 0.02em hsl(var(--neon-color-primary), 100%, 25%);
+  /* 0.06em -0.06em 0.05em hsl(var(--neon-color-primary), 100%, 50%),
+    0.06em -0.06em 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%), */
+  /* 0.05em -0.07em 0em hsl(var(--neon-color-primary), 100%, 50%),
+    0.05em -0.07em 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    0.1em -0.14em 0em hsl(var(--neon-color-primary), 100%, 45%),
+    0.1em -0.14em 0.1em hsl(var(--neon-color-primary-shadow), 100%, 45%),
+    0.14em -0.19em 0em hsl(var(--neon-color-primary), 100%, 40%),
+    0.14em -0.19em 0.1em hsl(var(--neon-color-primary-shadow), 100%, 40%); */
+  /* -0.5em 0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
+    0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
+    -0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%); */
+  --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 75%);
   --neon-text-shadow-reverse:
-  0 0 0.02em hsl(var(--neon-color-complement), 100%, 50%),
-  0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0.02em 0.02em 0.02em hsl(var(--neon-color-complement),100%,50%);
-  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%,75%);
+    0 0 0.02em hsl(var(--neon-color-complement), 100%, 25%),
+    0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+    0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
+    0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    0 0 0.4em hsl(var(--neon-color-complement-shadow), 100%, 25%),
+    0.02em 0.02em 0.02em hsl(var(--neon-color-complement), 100%, 25%);
+  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 75%);
 
   --neon-box-shadow:
-  0 0 1px hsl(var(--neon-color-complement), 100%, 50%),
-  inset 0 0 1px hsl(var(--neon-color-complement), 100%, 50%),
-  0 0 2px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  inset 0 0 2px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 50%);
+    0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+    inset 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+    /* 10px -14px 2px transparent,
+    inset 10px -14px 2px transparent,
+    11px -15px 2px hsl(var(--neon-color-complement), 100%, 50%),
+    inset 11px -15px 2px hsl(var(--neon-color-complement), 100%, 50%),
+    20px -28px 2px hsl(var(--neon-color-complement), 100%, 50%),
+    inset 20px 28px 2px hsl(var(--neon-color-complement), 100%, 50%), */
+    0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    inset 0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%);
   --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
   --neon-box-shadow-reverse:
-  0 0 1px hsl(var(--neon-color-primary), 100%, 50%),
-  inset 0 0 1px hsl(var(--neon-color-primary), 100%, 50%),
-  0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  inset 0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%),
-  inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 50%);
+    0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
+    inset 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
+    0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    inset 0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
+    0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%),
+    inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%);
   --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
   --neon-box-shadow-flipped:
-  0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
-  0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
-  inset 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
-  0 0 6px hsl(var(--neon-color-complement), 100%, 50%),
-  inset 0 0 6px hsl(var(--neon-color-complement), 100%, 50%),
-  0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
-  inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%);
+    0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+    inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+    0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
+    inset 0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
+    0 0 4px hsl(var(--neon-color-complement), 80%, 50%),
+    inset 0 0 4px hsl(var(--neon-color-complement), 80%, 50%);
+  /* 0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
+  inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%); */
   --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-complement-shadow), 100%, 75%);
 }
 
@@ -162,7 +188,7 @@ button.timer-button {
   /* box-shadow: 0 0 1px transparent; */
   /* -webkit-backface-visibility: hidden; */
   -webkit-transition:
-  /* all 1s; */
+    /* all 1s; */
     border-radius 0.2s ease-in-out 0s,
     transform 0.2s ease-in-out 0s,
     box-shadow 0.3s ease-in-out 0s,
@@ -171,7 +197,7 @@ button.timer-button {
 
 
 
-button.timer-button:hover{
+button.timer-button:hover {
   color: var(--neon-text-color);
   border-radius: 50%;
   width: 1.5em;
@@ -193,8 +219,8 @@ button.timer-button.active {
   /* color: var(--neon-text-color); */
   color: transparent;
   text-shadow: none;
-  box-shadow: var(--neon-box-shadow-reverse);
-   border: 1px solid var(--neon-box-shadow-highlight-reverse);
+  box-shadow: var(--neon-box-shadow);
+  border: 1px solid var(--neon-box-shadow-highlight);
   -webkit-transform: scale(0.5);
   /* -webkit-transition: all 0.3s linear 0s; */
 }
@@ -211,7 +237,7 @@ button.timer-button.active:hover {
   -webkit-transform: scale(1);
 }
 
-div#timer-cell{
+div#timer-cell {
   padding: 1.5em;
   /* padding-top: 2em; */
   text-align: center;
@@ -223,10 +249,11 @@ div#timer-cell{
   color: var(--neon-text-color);
   /* border: 1px solid transparent;
     box-shadow: var(--neon-box-shadow-reverse); */
-    /* border: 1px solid var(--neon-box-shadow-highlight-reverse); */
+  /* border: 1px solid var(--neon-box-shadow-highlight-reverse); */
 }
 
-div#timer-cell:hover, div#timer-cell.active {
+div#timer-cell:hover,
+div#timer-cell.active {
   /* background: #ccf6ff; */
   /* background: var(--row-background); */
   /* color: var(--neon-text-color); */
@@ -247,95 +274,108 @@ div#timer-cell:hover {
   border-bottom: 15px solid transparent;
 }
 
-span#timer-text{
+div#timer-text-container {
+  position: relative;
+  border: 1px solid transparent;
+  -webkit-transition:
+    all 0.3s ease-in-out 0s;
+  border-radius: 5px;
+}
+
+div#timer-text-container.active {
+  box-shadow: var(--neon-box-shadow);
+  border: 1px solid var(--neon-box-shadow-highlight);
+}
+
+span#timer-text {
   display: block;
   font-family: "Iceland", cursive;
   /* font-weight: bold; */
   color: var(--neon-text-color);
   font-size: 8em;
-  height: 2em;
+  min-height: 2em;
   line-height: 2em;
   min-width: 4em;
   margin: auto;
-  margin-top: 0.3em;
-  margin-bottom: 0.3em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
   vertical-align: middle;
   border: 1px solid transparent;
   box-shadow: none;
   text-shadow: none;
   -webkit-transition:
-  /* text-shadow 1s,
+    /* text-shadow 1s,
   color 1s,
   border 1s,
   box-shadow 1s; */
-  all 0.3s ease-in-out 0s;
+    all 0.3s ease-in-out 0s;
 }
 
-span#timer-text.active{
+span#timer-text.active {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
-  box-shadow: var(--neon-box-shadow);
-   border: 1px solid var(--neon-box-shadow-highlight);
-   border-radius: 0;
-   /* -webkit-transition: all 0.5s linear 0s; */
+  /* box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight); */
+  /* border-radius: 0; */
+  /* -webkit-transition: all 0.5s linear 0s; */
 }
 
 span#timer-text.active_old {
   color: white;
   text-shadow:
-  -0.5px -0.5px 0.5px #fff,
-  0.5px 0.5px 0.5px #fff,
-  -0.5px 0.5px 0.5px #fff,
-  0.5px -0.5px 0.5px #fff,
-  0 0 2px var(--neon-text-color),
-  0 0 4px var(--neon-text-color),
-  0 0 8px var(--neon-text-color),
-  0 0 12px var(--neon-text-color);
+    -0.5px -0.5px 0.5px #fff,
+    0.5px 0.5px 0.5px #fff,
+    -0.5px 0.5px 0.5px #fff,
+    0.5px -0.5px 0.5px #fff,
+    0 0 2px var(--neon-text-color),
+    0 0 4px var(--neon-text-color),
+    0 0 8px var(--neon-text-color),
+    0 0 12px var(--neon-text-color);
   /* 0 0 5px var(--neon-text-color); */
 
   box-shadow:
-  0 0 2px #fff,
-  inset 0 0 2px #fff,
-  0 0 4px var(--neon-border-color),
-  inset 0 0 4px var(--neon-border-color),
-  0 0 6px var(--neon-border-color),
-  inset 0 0 6px var(--neon-border-color);
+    0 0 2px #fff,
+    inset 0 0 2px #fff,
+    0 0 4px var(--neon-border-color),
+    inset 0 0 4px var(--neon-border-color),
+    0 0 6px var(--neon-border-color),
+    inset 0 0 6px var(--neon-border-color);
   /* border: 2px solid var(--neon-border-color); */
   border: 2px solid white;
   border-radius: 15px;
 }
 
-button.timer-button:after{
+/* button.timer-button:after{
   content: '\25B7';
-  color: var(--neon-text-color);
+  color: var(--neon-text-highlight-reverse);
   text-shadow: none;
   text-decoration: none;
-  /* font-size: 20px; */
-}
+} */
 
-button.timer-button:hover:after{
+button.timer-button:after {
   content: '\25B7';
-    text-shadow: var(--neon-text-shadow);
-    color: var(--neon-text-highlight);
+  text-shadow: var(--neon-text-shadow-reverse);
+  color: var(--neon-text-highlight-reverse);
   /* font-size: 1.5em; */
 }
 
-button.timer-button.active:after{
+button.timer-button.active:after {
   content: '\2668';
-    text-shadow: none;
-    color: transparent;
+  text-shadow: none;
+  color: transparent;
   /* display: block; */
   /* padding-bottom: 4px; */
   /* font-size: 2em; */
 }
 
 button.timer-button.active:hover:after {
-    content: '\2668';
-    text-shadow: var(--neon-text-shadow-reverse);
-    color: var(--neon-text-highlight-reverse);
+  content: '\2668';
+  text-shadow: var(--neon-text-shadow-reverse);
+  color: var(--neon-text-highlight-reverse);
 }
 
-#label-input, .v-input .v-label{
+#label-input,
+.v-input .v-label {
   color: var(--neon-text-highlight);
   /* border: var(--neon-text-shadow-highlight); */
 }
@@ -348,5 +388,4 @@ button.timer-button.active:hover:after {
 .theme--light.v-icon {
   color: var(--neon-text-highlight);
 }
-
 </style>
