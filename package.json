@@ -15,6 +15,7 @@
   "main": "background.js",
   "dependencies": {
     "core-js": "^2.6.5",
+    "nedb": "^1.8.0",
     "typeface-graduate": "0.0.72",
     "typeface-iceberg": "0.0.71",
     "typeface-iceland": "0.0.72",

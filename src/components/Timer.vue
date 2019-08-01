@@ -57,8 +57,17 @@ export default {
         this.job = '';
         this.stop_time = new Date();
         this.button_active = false;
+        this.$db.insert({
+          name: this.prob_num,
+          start: this.start_time,
+          end: this.stop_time
+        }, function(err, newrec) { // Callback is optional
+          // newrec is the newly inserted document, including its _id
+          // newrec has no key called notToBeSaved since its value was undefined
+          console.log(newrec)
+        });
       }
-      console.log(this.prob_num);
+      // console.log(this.prob_num);
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
@@ -125,7 +134,7 @@ export default {
     0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 0.4em hsl(var(--neon-color-complement-shadow), 100%, 25%),
     0.02em 0.02em 0.02em hsl(var(--neon-color-complement), 100%, 25%);
-  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 75%);
+  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 85%);
 
   --neon-box-shadow:
     0 0 2px hsl(var(--neon-color-complement), 100%, 50%),

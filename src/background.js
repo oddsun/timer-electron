@@ -1,27 +1,57 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import {
+  app,
+  protocol,
+  BrowserWindow
+} from 'electron'
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
+// import path from 'path'
+// import fs from 'fs'
+// import Datastore from 'nedb'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+
+
+// const timerDb = new Datastore({
+//   filename: path.join(app.getPath("userData"), "timer.db"),
+//   autoload: true,
+//   timerstampData: true,
+// })
+// const globalAny: any = global;
+// globalAny.db = timerDb;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win
 
+// using cpu is better, without artifacts/burn-ins and is faster
 app.disableHardwareAcceleration()
 
 // Scheme must be registered before the app is ready
-protocol.registerSchemesAsPrivileged([{scheme: 'app', privileges: { secure: true, standard: true } }])
+protocol.registerSchemesAsPrivileged([{
+  scheme: 'app',
+  privileges: {
+    secure: true,
+    standard: true
+  }
+}])
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600, webPreferences: {
-    nodeIntegration: true
-  }, transparent: true, frame: false, acceptFirstMouse: true,
-  hasShadow: false })
+  win = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true
+    },
+    transparent: true,
+    frame: false,
+    acceptFirstMouse: true,
+    hasShadow: false
+  })
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
@@ -68,7 +98,9 @@ app.on('ready', async () => {
     }
   }
   // createWindow()
-  setTimeout(function(){createWindow();}, 10);
+  setTimeout(function() {
+    createWindow();
+  }, 10);
 })
 
 // Exit cleanly on request from parent process in development mode.
