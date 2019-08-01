@@ -3,7 +3,7 @@
 <v-container text-center fill-height pa-10>
   <v-layout column justify-space-around>
     <v-flex shrink>
-      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details outlined clearable autofocus></v-text-field>
+      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details outlined clearable autofocus @keydown.enter="start"></v-text-field>
     </v-flex>
     <v-flex shrink>
       <v-hover @click.native="start">
@@ -64,7 +64,16 @@ export default {
         }, function(err, newrec) { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
-          console.log(newrec)
+          // console.log(newrec)
+        });
+        this.$db.find({
+          name: {
+            $regex: /test/
+          }
+        }, function(err, docs) {
+          // docs is an array containing documents that have name as bigbounty
+          // If no document is found, docs is equal to []
+          // console.log(docs)
         });
       }
       // console.log(this.prob_num);

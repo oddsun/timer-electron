@@ -10,7 +10,7 @@ import db from './datastore'
 
 // const Datastore = require('nedb')
 // const db = new Datastore({
-//   filename: `${isDevelopment ? '.' : app.getAppPath('userData')}/data/timer.db`,
+//   filename: `${process.env.NODE_ENV !== 'production' ? '.' : app.getAppPath('userData')}/data/timer.db`,
 //   timestampData: true,
 //   autoload: true
 // })
