@@ -4,6 +4,7 @@ import App from './App.vue'
 
 // import 'typeface-graduate/index.css'
 import 'typeface-iceland/index.css'
+import 'typeface-iceberg/index.css'
 
 import vuetify from './plugins/vuetify'
 import db from './datastore'

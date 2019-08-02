@@ -1,28 +1,43 @@
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container text-center fill-height pa-10>
-  <v-layout column justify-space-around>
+<v-container fluid text-center fill-height pa-10 ma-0 row justify-space-between style="border: 1px solid white">
+  <v-layout column>
     <v-flex shrink>
       <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details outlined clearable autofocus @keydown.enter="start"></v-text-field>
     </v-flex>
-    <v-flex shrink>
-      <v-hover @click.native="start">
-        <template v-slot:default="{ hover }">
-          <div id="timer-text-container" :class="{active: button_active}">
-            <span id='timer-text' :class="{active: button_active}">{{ time }}</span>
-            <!--<p>{{ start_time }}</p>-->
-            <!--<button @click="start">{{button_text}}</button>-->
-            <v-fade-transition>
-              <v-overlay v-if="hover" absolute color="#036358">
-                <!-- <v-btn>See more info</v-btn> -->
-                <button class='timer-button' :class="{active: button_active}"></button>
-              </v-overlay>
-            </v-fade-transition>
-          </div>
-</template>
-</v-hover>
-</v-flex>
-</v-layout>
+    <v-flex>
+      <v-layout justify-center column fill-height>
+        <v-hover @click.native="start">
+          <template v-slot:default="{ hover }">
+            <div id="timer-text-container" :class="{active: button_active}">
+              <span class='timer-text' :class="{active: button_active}">{{ time }}</span>
+              <!--<p>{{ start_time }}</p>-->
+              <!--<button @click="start">{{button_text}}</button>-->
+              <v-fade-transition>
+                <v-overlay v-if="hover" absolute color="#036358">
+                  <!-- <v-btn>See more info</v-btn> -->
+                  <button class='timer-button' :class="{active: button_active}"></button>
+                </v-overlay>
+              </v-fade-transition>
+            </div>
+          </template>
+        </v-hover>
+      </v-layout>
+    </v-flex>
+  </v-layout>
+  <v-layout shrink column justify-start fill-height ml-10 style="border: 1px solid white">
+    <v-list two-line disabled dark color="transparent" min-width="20vw">
+      <v-subheader class="timer-side-text active">HISTORY</v-subheader>
+      <v-list-item-group v-model="item">
+        <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item-content>
+            <v-list-item-title class="timer-side-text active" v-text="item.time"></v-list-item-title>
+            <v-list-item-subtitle class="timer-side-text active" v-text="item.name"></v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-layout>
   <!-- </div> -->
 </v-container>
 </template>
@@ -39,6 +54,7 @@ export default {
       stop_time: '',
       button_active: false,
       prob_num: '',
+      items: [],
     }
   },
   methods: {
@@ -54,6 +70,10 @@ export default {
       } else {
         this.button_text = 'Start';
         clearInterval(this.job);
+        this.items.unshift({
+          time: this.time,
+          name: this.prob_num
+        });
         this.job = '';
         this.stop_time = new Date();
         this.button_active = false;
@@ -305,7 +325,7 @@ div#timer-text-container.active {
   border: 1px solid var(--neon-box-shadow-highlight);
 }
 
-span#timer-text {
+span.timer-text {
   display: block;
   font-family: "Iceland", cursive;
   /* font-weight: bold; */
@@ -329,16 +349,28 @@ span#timer-text {
     all 0.3s ease-in-out 0s;
 }
 
-span#timer-text.active {
+.timer-text.active {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
+  background: transparent;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
   /* -webkit-transition: all 0.5s linear 0s; */
 }
 
-span#timer-text.active_old {
+.timer-side-text.active {
+  /* text-shadow: var(--neon-text-shadow); */
+  color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 2em;
+  /* box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight); */
+  /* border-radius: 0; */
+  /* -webkit-transition: all 0.5s linear 0s; */
+}
+
+span.timer-text.active_old {
   color: white;
   text-shadow:
     -0.5px -0.5px 0.5px #fff,
@@ -395,6 +427,8 @@ button.timer-button.active:hover:after {
 #label-input,
 .v-input .v-label {
   color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 1.5em;
   /* border: var(--neon-text-shadow-highlight); */
 }
 
@@ -405,5 +439,9 @@ button.timer-button.active:hover:after {
 
 .theme--light.v-icon {
   color: var(--neon-text-highlight);
+}
+
+.no-bg.active {
+  background: transparent;
 }
 </style>
