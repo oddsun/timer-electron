@@ -1,7 +1,7 @@
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container fluid fill-height pa-10 ma-0 row justify-space-between>
-  <v-layout column text-center mr-5>
+<v-container fluid fill-height pa-5 ma-0 row justify-space-between>
+  <v-layout column text-center mr-5 pa-5>
     <v-flex shrink>
       <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details clearable autofocus @keydown.enter="start"></v-text-field>
     </v-flex>
@@ -14,7 +14,8 @@
               <!--<p>{{ start_time }}</p>-->
               <!--<button @click="start">{{button_text}}</button>-->
               <v-fade-transition>
-                <v-overlay v-if="hover" absolute color="#036358">
+                <v-overlay v-if="hover" absolute>
+                  <!-- color="#036358" -->
                   <!-- <v-btn>See more info</v-btn> -->
                   <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
@@ -26,24 +27,26 @@
     </v-flex>
   </v-layout>
   <v-divider vertical class="border"></v-divider>
-  <v-layout shrink column justify-start fill-height ml-5 pa-0>
-    <v-flex>
-      <v-subheader class="timer-side-text active glow">HISTORY</v-subheader>
+  <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0>
+    <v-flex shrink>
+      <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
     </v-flex>
-    <v-flex style="overflow-y: auto; height: 75vh;">
-      <v-list two-line disabled dark color="transparent" width="15vw">
+    <v-flex style="overflow-y: auto; height: 0;">
+      <v-list two-line disabled dark color="transparent" width="10em">
         <v-list-item-group v-model="item">
           <v-list-item v-for="(item, i) in items" :key="i">
             <v-list-item-content>
-              <v-list-item-title class="timer-side-text active" v-text="item.name"></v-list-item-title>
+              <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
               <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-flex>
-  </v-layout>
-  <!-- </div> -->
+    <v-flex text-center shrink>
+      <button class="glow-button" @click="clear_history">clear</button>
+    </v-flex>
+  </v-layout> <!-- </div> -->
 </v-container>
 </template>
 
@@ -103,6 +106,9 @@ export default {
       }
       // console.log(this.prob_num);
     },
+    clear_history: function() {
+      this.items = [];
+    },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
@@ -128,6 +134,11 @@ export default {
 </script>
 
 <style>
+::-webkit-scrollbar {
+  display: none;
+  /* background: var(--neon-box-shadow-highlight); */
+}
+
 :root {
   /* --neon-text-color: #fd5f00;
   --neon-border-color: #fd5f00; */
@@ -135,7 +146,7 @@ export default {
   --neon-border-color: #ff8000; */
   /* --neon-text-color: #ff026b; */
   /* --neon-border-color: #ff026b; */
-  --neon-text-color: #ff026b;
+  --neon-text-color: hsl(var(--neon-color-primary), 100%, 50%);
   --row-background: rgba(204, 246, 255, 0.8);
   --neon-color-primary: 20;
   --neon-color-complement: calc(var(--neon-color-primary) + 90);
@@ -168,7 +179,7 @@ export default {
     0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 0.4em hsl(var(--neon-color-complement-shadow), 100%, 25%),
     0.02em 0.02em 0.02em hsl(var(--neon-color-complement), 100%, 25%);
-  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 85%);
+  --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 75%);
 
   --neon-box-shadow:
     0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
@@ -280,6 +291,18 @@ button.timer-button.active:hover {
   -webkit-transform: scale(1);
 }
 
+button.glow-button {
+  background: transparent;
+  box-shadow: var(--neon-box-shadow-reverse);
+  border: 1px solid var(--neon-box-shadow-highlight-reverse);
+  color: var(--neon-text-highlight-reverse);
+  text-shadow: var(--neon-text-shadow-reverse);
+  outline: 0;
+  border-radius: 5%;
+  padding: 0.2em;
+  margin: 0.5em;
+}
+
 div#timer-cell {
   padding: 1.5em;
   /* padding-top: 2em; */
@@ -325,10 +348,10 @@ div#timer-text-container {
   border-radius: 5px;
 }
 
-div#timer-text-container.active {
+/* div#timer-text-container.active {
   box-shadow: var(--neon-box-shadow);
   border: 1px solid var(--neon-box-shadow-highlight);
-}
+} */
 
 span.timer-text {
   display: block;
@@ -336,8 +359,8 @@ span.timer-text {
   /* font-weight: bold; */
   color: var(--neon-text-color);
   font-size: 8em;
-  min-height: 2em;
-  line-height: 2em;
+  min-height: 2.5em;
+  line-height: 2.5em;
   min-width: 4em;
   margin: auto;
   padding-top: 0.3em;
@@ -375,9 +398,31 @@ span.timer-text {
   /* -webkit-transition: all 0.5s linear 0s; */
 }
 
+.timer-side-text.active.opposite {
+  /* text-shadow: var(--neon-text-shadow); */
+  color: var(--neon-box-shadow-highlight-flipped);
+  font-family: "Iceland", cursive;
+  font-size: 1em;
+  /* box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight); */
+  /* border-radius: 0; */
+  /* -webkit-transition: all 0.5s linear 0s; */
+}
+
 .timer-side-text.active.glow {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 1.5em;
+  /* box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight); */
+  /* border-radius: 0; */
+  /* -webkit-transition: all 0.5s linear 0s; */
+}
+
+.timer-side-text.active.glow.opposite {
+  text-shadow: var(--neon-text-shadow-reverse);
+  color: var(--neon-text-highlight-reverse);
   font-family: "Iceland", cursive;
   font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
@@ -448,6 +493,10 @@ button.timer-button.active:hover:after {
   /* border: var(--neon-text-shadow-highlight); */
 }
 
+.v-input .v-label {
+  color: var(--neon-box-shadow-highlight-flipped);
+}
+
 .theme--light.v-text-field--outlined fieldset,
 .theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {
   border-color: var(--neon-box-shadow-highlight);
@@ -455,12 +504,12 @@ button.timer-button.active:hover:after {
 
 .v-input__slot:before,
 .v-input__slot:hover:before,
-.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:hover:before {
-  border-color: var(--neon-box-shadow-highlight) !important;
+.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:before {
+  border-color: var(--neon-box-shadow-highlight-flipped) !important;
 }
 
 .theme--light.v-icon {
-  color: var(--neon-text-highlight);
+  color: var(--neon-box-shadow-highlight-flipped);
 }
 
 .no-bg.active {
@@ -469,5 +518,6 @@ button.timer-button.active:hover:after {
 
 .border {
   border: 1px solid var(--neon-box-shadow-highlight) !important;
+  /* box-shadow: var(--neon-box-shadow); */
 }
 </style>
