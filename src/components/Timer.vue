@@ -1,9 +1,9 @@
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container fluid text-center fill-height pa-10 ma-0 row justify-space-between style="border: 1px solid white">
-  <v-layout column>
+<v-container fluid fill-height pa-10 ma-0 row justify-space-between>
+  <v-layout column text-center mr-5>
     <v-flex shrink>
-      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details outlined clearable autofocus @keydown.enter="start"></v-text-field>
+      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details clearable autofocus @keydown.enter="start"></v-text-field>
     </v-flex>
     <v-flex>
       <v-layout justify-center column fill-height>
@@ -25,18 +25,23 @@
       </v-layout>
     </v-flex>
   </v-layout>
-  <v-layout shrink column justify-start fill-height ml-10 style="border: 1px solid white">
-    <v-list two-line disabled dark color="transparent" min-width="20vw">
-      <v-subheader class="timer-side-text active">HISTORY</v-subheader>
-      <v-list-item-group v-model="item">
-        <v-list-item v-for="(item, i) in items" :key="i">
-          <v-list-item-content>
-            <v-list-item-title class="timer-side-text active" v-text="item.time"></v-list-item-title>
-            <v-list-item-subtitle class="timer-side-text active" v-text="item.name"></v-list-item-subtitle>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list-item-group>
-    </v-list>
+  <v-divider vertical class="border"></v-divider>
+  <v-layout shrink column justify-start fill-height ml-5 pa-0>
+    <v-flex>
+      <v-subheader class="timer-side-text active glow">HISTORY</v-subheader>
+    </v-flex>
+    <v-flex style="overflow-y: auto; height: 75vh;">
+      <v-list two-line disabled dark color="transparent" width="15vw">
+        <v-list-item-group v-model="item">
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-content>
+              <v-list-item-title class="timer-side-text active" v-text="item.name"></v-list-item-title>
+              <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-flex>
   </v-layout>
   <!-- </div> -->
 </v-container>
@@ -363,7 +368,18 @@ span.timer-text {
   /* text-shadow: var(--neon-text-shadow); */
   color: var(--neon-text-highlight);
   font-family: "Iceland", cursive;
-  font-size: 2em;
+  font-size: 1em;
+  /* box-shadow: var(--neon-box-shadow);
+   border: 1px solid var(--neon-box-shadow-highlight); */
+  /* border-radius: 0; */
+  /* -webkit-transition: all 0.5s linear 0s; */
+}
+
+.timer-side-text.active.glow {
+  text-shadow: var(--neon-text-shadow);
+  color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
@@ -437,11 +453,21 @@ button.timer-button.active:hover:after {
   border-color: var(--neon-box-shadow-highlight);
 }
 
+.v-input__slot:before,
+.v-input__slot:hover:before,
+.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:hover:before {
+  border-color: var(--neon-box-shadow-highlight) !important;
+}
+
 .theme--light.v-icon {
   color: var(--neon-text-highlight);
 }
 
 .no-bg.active {
   background: transparent;
+}
+
+.border {
+  border: 1px solid var(--neon-box-shadow-highlight) !important;
 }
 </style>
