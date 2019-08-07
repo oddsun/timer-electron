@@ -1,30 +1,53 @@
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
 <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
-  <v-layout column text-center mr-5 pa-5>
-    <v-flex shrink>
-      <v-text-field id="label-input" v-model="prob_num" label="Problem Number" hide-details clearable autofocus @keydown.enter="start"></v-text-field>
+  <v-layout column text-center mr-5 justify-space-between>
+    <v-flex shrink mb-1>
+      <!-- <div class="input-wrapper"> -->
+      <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
+      <!-- <div class="divider"></div> -->
+      <!-- <v-divider class="border"></v-divider> -->
+      <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
+      <!-- <v-divider class="border"></v-divider> -->
+      <!-- </div> -->
+      <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
     </v-flex>
-    <v-flex>
+    <v-divider class="border"></v-divider>
+    <!-- <v-flex shrink pl-2>
+      <div class="divider"></div>
+    </v-flex> -->
+    <v-flex shrink mt-1>
+      <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start"></v-text-field>
+    </v-flex>
+    <v-flex class="draggable">
       <v-layout justify-center column fill-height>
-        <v-hover @click.native="start">
-          <template v-slot:default="{ hover }">
-            <div id="timer-text-container" :class="{active: button_active}">
-              <span class='timer-text' :class="{active: button_active}">{{ time }}</span>
-              <!--<p>{{ start_time }}</p>-->
-              <!--<button @click="start">{{button_text}}</button>-->
-              <v-fade-transition>
-                <v-overlay v-if="hover" absolute>
-                  <!-- color="#036358" -->
-                  <!-- <v-btn>See more info</v-btn> -->
-                  <button class='timer-button' :class="{active: button_active}"></button>
+        <!-- <v-hover @click.native="start">
+          <template v-slot:default="{ hover }"> -->
+        <div id="timer-text-container" :class="{active: button_active}">
+          <span class='timer-text' :class="{active: button_active}">{{ time }}</span>
+          <!--<p>{{ start_time }}</p>-->
+          <!--<button @click="start">{{button_text}}</button>-->
+          <!-- <v-fade-transition>
+                <v-overlay v-if="hover" absolute> -->
+          <!-- color="#036358" -->
+          <!-- <v-btn>See more info</v-btn> -->
+          <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
-              </v-fade-transition>
-            </div>
-          </template>
-        </v-hover>
+              </v-fade-transition> -->
+        </div>
+        <!-- </template>
+        </v-hover> -->
       </v-layout>
     </v-flex>
+    <v-flex shrink>
+      <v-slider v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
+    </v-flex>
+    <v-flex shrink mt-1>
+      <v-slider v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
+    </v-flex>
+    <!-- <v-flex shrink>
+      <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
+    </v-flex> -->
   </v-layout>
   <v-divider vertical class="border"></v-divider>
   <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0>
@@ -33,7 +56,8 @@
     </v-flex>
     <v-flex style="overflow-y: auto; height: 0;">
       <v-list two-line disabled dark color="transparent" width="10em">
-        <v-list-item-group v-model="item">
+        <v-list-item-group>
+          <!-- use v-model="item" to highlight item-->
           <v-list-item v-for="(item, i) in items" :key="i">
             <v-list-item-content>
               <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
@@ -63,6 +87,28 @@ export default {
       button_active: false,
       prob_num: '',
       items: [],
+      comment: '',
+      color_main: 75, //130, 90, 90, 75, 130
+      color_diff: 60, //-235, -100, -45, +-60, 60
+    }
+  },
+  computed: {
+    slider_color: function() {
+      // if (Math.abs(this.color_diff) < 90) {
+      //   this.temp_color = this.color_main + this.color_diff + 180;
+      // } else {
+      //   this.temp_color = this.color_diff + this.color_diff;
+      // }
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+    },
+    track_color: function() {
+      return "hsl(" + this.color_main + ", 100%, 75%)";
+    },
+    slider_color_diff: function() {
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+    },
+    track_color_diff: function() {
+      return "hsl(" + (this.color_main + 180 + 2 * this.color_diff) + ", 100%, 75%)";
     }
   },
   methods: {
@@ -88,7 +134,8 @@ export default {
         this.$db.insert({
           name: this.prob_num,
           start: this.start_time,
-          end: this.stop_time
+          end: this.stop_time,
+          comment: this.comment,
         }, function(err, newrec) { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
@@ -103,6 +150,7 @@ export default {
           // If no document is found, docs is equal to []
           // console.log(docs)
         });
+        this.$refs.name.focus();
       }
       // console.log(this.prob_num);
     },
@@ -128,6 +176,15 @@ export default {
       var hrs = (s - mins) / 60;
 
       return pad(hrs) + ':' + pad(mins) + ':' + pad(secs); // + '.' + pad(ms, 3);
+    },
+    focus_comment: function() {
+      this.$refs.comment.focus();
+    },
+    change_main_color: function() {
+      document.documentElement.style.setProperty('--neon-color-primary', this.color_main);
+    },
+    change_contrast: function() {
+      document.documentElement.style.setProperty('--neon-degree', this.color_diff);
     }
   }
 }
@@ -148,10 +205,12 @@ export default {
   /* --neon-border-color: #ff026b; */
   --neon-text-color: hsl(var(--neon-color-primary), 100%, 50%);
   --row-background: rgba(204, 246, 255, 0.8);
-  --neon-color-primary: 20;
-  --neon-color-complement: calc(var(--neon-color-primary) + 90);
-  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 90);
-  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 90);
+  --neon-color-primary: 70;
+  --neon-degree: 60;
+  --neon-degree-opposite: 180;
+  --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2*var(--neon-degree));
+  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 2*var(--neon-degree));
+  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 2*var(--neon-degree));
 
   --neon-text-shadow:
     0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
@@ -357,10 +416,10 @@ span.timer-text {
   display: block;
   font-family: "Iceland", cursive;
   /* font-weight: bold; */
-  color: var(--neon-text-color);
+  color: var(--neon-text-highlight);
   font-size: 8em;
-  min-height: 2.5em;
-  line-height: 2.5em;
+  min-height: 1.5em;
+  line-height: 1.5em;
   min-width: 4em;
   margin: auto;
   padding-top: 0.3em;
@@ -400,9 +459,9 @@ span.timer-text {
 
 .timer-side-text.active.opposite {
   /* text-shadow: var(--neon-text-shadow); */
-  color: var(--neon-box-shadow-highlight-flipped);
+  color: var(--neon-text-highlight);
   font-family: "Iceland", cursive;
-  font-size: 1em;
+  font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
@@ -424,7 +483,7 @@ span.timer-text {
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
   font-family: "Iceland", cursive;
-  font-size: 1.5em;
+  font-size: 2em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
@@ -485,7 +544,9 @@ button.timer-button.active:hover:after {
   color: var(--neon-text-highlight-reverse);
 }
 
-#label-input,
+#label-input-name,
+#label-input-comment,
+.v-textarea.v-text-field--enclosed .v-text-field__slot textarea,
 .v-input .v-label {
   color: var(--neon-text-highlight);
   font-family: "Iceland", cursive;
@@ -493,8 +554,26 @@ button.timer-button.active:hover:after {
   /* border: var(--neon-text-shadow-highlight); */
 }
 
+.large-font {
+  font-size: 2em;
+}
+
 .v-input .v-label {
+  height: 1em;
+  line-height: 1em;
   color: var(--neon-box-shadow-highlight-flipped);
+}
+
+.v-text-field.v-text-field--solo .v-label {
+  top: calc(50% - 0.5em);
+}
+
+.v-text-field.v-text-field--solo .v-input__control {
+  min-height: 1em;
+}
+
+.v-input__control {
+  height: 1em;
 }
 
 .theme--light.v-text-field--outlined fieldset,
@@ -519,5 +598,50 @@ button.timer-button.active:hover:after {
 .border {
   border: 1px solid var(--neon-box-shadow-highlight) !important;
   /* box-shadow: var(--neon-box-shadow); */
+}
+
+input {
+  width: 100%;
+  outline: 0;
+  caret-color: var(--neon-text-highlight);
+  color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 2em;
+  margin-bottom: -1em;
+  margin-top: -1em;
+  /* padding: 0; */
+  /* border: 1px solid white; */
+}
+
+.small {
+  font-size: 1.5em;
+}
+
+::placeholder {
+  /* color: hsl(var(--neon-color-complement-shadow), 50%, 75%); */
+  color: var(--neon-box-shadow-highlight-flipped);
+}
+
+.input-wrapper {
+  text-align: left;
+}
+
+.divider {
+  /* height: 1px; */
+  border: 0.5px solid var(--neon-box-shadow-highlight);
+}
+
+.v-input__slot {
+  margin: 0;
+}
+
+.v-application .primary.lighten-3 {
+  background-color: var(--neon-box-shadow-highlight) !important;
+  border-color: var(--neon-box-shadow-highlight) !important;
+}
+
+.v-text-field.v-text-field--enclosed .v-text-field__details,
+.v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
+  padding: 0;
 }
 </style>
