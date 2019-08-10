@@ -63,7 +63,9 @@ export default {
         return "hsl(" + (this.tab_color_hue + 180 - 2 * this.tab_color_diff) + ", 100%, 75%)";
       },
       set: function(new_value) {
-        var colors = new_value.split(' ')
+        console.log(new_value);
+        var colors = new_value.split(' ');
+        console.log(colors);
         this.tab_color_hue = parseInt(colors[0], 10);
         this.tab_color_diff = parseInt(colors[colors.length - 1], 10);
       }
@@ -74,7 +76,9 @@ export default {
       this.dark_theme = !this.dark_theme;
     },
     update_color: function() {
-      this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + document.documentElement.style.getPropertyValue('--neon-degree');
+      // console.log(document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'));
+      this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + getComputedStyle(document.documentElement).getPropertyValue('--neon-degree');
+      // this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + document.documentElement.style.getPropertyValue('--neon-degree'); //this doesn't work when property isn't set by js.
       // this.tab_color_hue = parseInt(document.documentElement.style.getPropertyValue('--neon-color-primary'), 10);
       // this.tab_color_diff = parseInt(document.documentElement.style.getPropertyValue('--neon-degree'), 10);
     }
