@@ -41,14 +41,25 @@
       </v-layout>
     </v-flex>
     <v-flex shrink>
-      <v-slider v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
-    </v-flex>
-    <v-flex shrink mt-1>
-      <v-slider v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
-    </v-flex>
-    <!-- <v-flex shrink>
+      <v-layout row align-center>
+        <v-flex>
+          <v-layout fill-height column justify-end>
+            <v-flex shrink>
+              <v-slider v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
+            </v-flex>
+            <v-flex shrink mt-2>
+              <v-slider v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex shrink mt-4>
+          <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
+        </v-flex>
+        <!-- <v-flex shrink>
       <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
     </v-flex> -->
+      </v-layout>
+    </v-flex>
   </v-layout>
   <v-divider vertical class="border"></v-divider>
   <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0>
@@ -83,6 +94,7 @@ export default {
       time: '00:00:00',
       start_time: '',
       job: '',
+      job_cycle: '',
       button_text: 'Start',
       stop_time: '',
       button_active: false,
@@ -91,6 +103,8 @@ export default {
       comment: '',
       color_main: 120, //130, 90, 90, 75, 130, 50, 120
       color_diff: 60, //-235, -100, -45, +-60, 60, -60, 60
+      cycle_button_off: true,
+      cycle_delta: 15,
     }
   },
   computed: {
@@ -103,13 +117,18 @@ export default {
       return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color: function() {
-      return "hsl(" + this.color_main + ", 100%, 75%)";
+      return "hsl(" + this.color_main + ", 100%, 85%)";
     },
     slider_color_diff: function() {
       return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color_diff: function() {
       return "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)";
+    }
+  },
+  watch: {
+    color_main: function() {
+      this.change_main_color();
     }
   },
   methods: {
@@ -155,6 +174,21 @@ export default {
       }
       // console.log(this.prob_num);
     },
+    cycle_color: function() {
+      if (!this.job_cycle) {
+        this.cycle_button_off = false;
+        this.job_cycle = setInterval(() => {
+          this.cycle_delta = (this.color_main > 359 || this.color_main <= 0) ? -this.cycle_delta : this.cycle_delta;
+          this.color_main = this.color_main + this.cycle_delta;
+          // console.log(this.time);
+          // console.log(this.color_main);
+        }, 5000);
+      } else {
+        clearInterval(this.job_cycle);
+        this.job_cycle = '';
+        this.cycle_button_off = true;
+      }
+    },
     clear_history: function() {
       this.items = [];
     },
@@ -187,6 +221,7 @@ export default {
     },
     change_contrast: function() {
       document.documentElement.style.setProperty('--neon-degree', this.color_diff);
+      this.$emit("update_color");
     }
   }
 }
@@ -232,7 +267,7 @@ export default {
   /* -0.5em 0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
     0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
     -0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%); */
-  --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 75%);
+  --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 85%);
   --neon-text-shadow-reverse:
     0 0 0.02em hsl(var(--neon-color-complement), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
@@ -362,6 +397,15 @@ button.glow-button {
   border-radius: 5%;
   padding: 0.2em;
   margin: 0.5em;
+}
+
+button.glow-button.inactive {
+  background: transparent;
+  /* box-shadow: var(--neon-box-shadow-reverse); */
+  box-shadow: none;
+  border: 1px solid var(--neon-box-shadow-highlight-reverse);
+  color: var(--neon-text-highlight-reverse);
+  text-shadow: none;
 }
 
 div#timer-cell {
@@ -637,10 +681,10 @@ input {
   margin: 0;
 }
 
-.v-application .primary.lighten-3 {
+/* .v-application .primary.lighten-3 {
   background-color: var(--neon-box-shadow-highlight) !important;
   border-color: var(--neon-box-shadow-highlight) !important;
-}
+} */
 
 .v-text-field.v-text-field--enclosed .v-text-field__details,
 .v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {

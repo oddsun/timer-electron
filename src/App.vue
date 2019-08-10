@@ -48,18 +48,24 @@ export default {
   data() {
     return {
       dark_theme: true,
-      tab_color_hue: document.documentElement.style.getPropertyValue('--neon-color-primary'),
+      tab_color_hue: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'), 10),
+      tab_color_diff: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'), 10),
     }
   },
   computed: {
     tab_color: {
       get: function() {
         // console.log(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'))
-        console.log(document.documentElement.style.getPropertyValue('--neon-color-primary'));
-        return "hsl(" + this.tab_color_hue + ", 100%, 75%)";
+        // console.log(document.documentElement.style.getPropertyValue('--neon-color-primary'));
+        // console.log(typeof(this.tab_color_hue));
+        // console.log(this.tab_color_diff);
+        // console.log(this.tab_color_hue + 180 - 2 * this.tab_color_diff)
+        return "hsl(" + (this.tab_color_hue + 180 - 2 * this.tab_color_diff) + ", 100%, 75%)";
       },
       set: function(new_value) {
-        this.tab_color_hue = new_value;
+        var colors = new_value.split(' ')
+        this.tab_color_hue = parseInt(colors[0], 10);
+        this.tab_color_diff = parseInt(colors[colors.length - 1], 10);
       }
     }
   },
@@ -68,7 +74,9 @@ export default {
       this.dark_theme = !this.dark_theme;
     },
     update_color: function() {
-      this.tab_color_hue = document.documentElement.style.getPropertyValue('--neon-color-primary');
+      this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + document.documentElement.style.getPropertyValue('--neon-degree');
+      // this.tab_color_hue = parseInt(document.documentElement.style.getPropertyValue('--neon-color-primary'), 10);
+      // this.tab_color_diff = parseInt(document.documentElement.style.getPropertyValue('--neon-degree'), 10);
     }
   }
 }
