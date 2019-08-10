@@ -1,3 +1,4 @@
+<!-- button for auto color switching, change color for main tab -->
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
 <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
@@ -88,8 +89,8 @@ export default {
       prob_num: '',
       items: [],
       comment: '',
-      color_main: 75, //130, 90, 90, 75, 130
-      color_diff: 60, //-235, -100, -45, +-60, 60
+      color_main: 120, //130, 90, 90, 75, 130, 50, 120
+      color_diff: 60, //-235, -100, -45, +-60, 60, -60, 60
     }
   },
   computed: {
@@ -108,7 +109,7 @@ export default {
       return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color_diff: function() {
-      return "hsl(" + (this.color_main + 180 + 2 * this.color_diff) + ", 100%, 75%)";
+      return "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)";
     }
   },
   methods: {
@@ -182,6 +183,7 @@ export default {
     },
     change_main_color: function() {
       document.documentElement.style.setProperty('--neon-color-primary', this.color_main);
+      this.$emit("update_color");
     },
     change_contrast: function() {
       document.documentElement.style.setProperty('--neon-degree', this.color_diff);
@@ -205,7 +207,7 @@ export default {
   /* --neon-border-color: #ff026b; */
   --neon-text-color: hsl(var(--neon-color-primary), 100%, 50%);
   --row-background: rgba(204, 246, 255, 0.8);
-  --neon-color-primary: 70;
+  --neon-color-primary: 120;
   --neon-degree: 60;
   --neon-degree-opposite: 180;
   --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2*var(--neon-degree));
