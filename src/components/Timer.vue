@@ -1,4 +1,4 @@
-<!-- button for auto color switching, change color for main tab -->
+<!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
 <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
@@ -87,6 +87,8 @@
 </template>
 
 <script>
+import shared from '../shared.js'
+
 export default {
   name: 'test',
   data() {
@@ -101,7 +103,7 @@ export default {
       prob_num: '',
       items: [],
       comment: '',
-      color_main: 120, //130, 90, 90, 75, 130, 50, 120
+      color_main: 75, //130, 90, 90, 75, 130, 50, 120
       color_diff: 60, //-235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
       cycle_delta: 15,
@@ -153,13 +155,17 @@ export default {
         this.button_active = false;
         this.$db.insert({
           name: this.prob_num,
-          start: this.start_time,
-          end: this.stop_time,
-          comment: this.comment,
-        }, function(err, newrec) { // Callback is optional
+          start: shared.formatDate(this.start_time),
+          end: shared.formatDate(this.stop_time),
+          details: this.comment,
+          color: 'hsl(' + this.color_main + ',100%,75%)',
+        }, (err, newrec) => { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
+          this.$root.$emit('send_newrec', newrec);
+          console.log(newrec);
+          // console.log(this);
         });
         this.$db.find({
           name: {
@@ -242,7 +248,7 @@ export default {
   /* --neon-border-color: #ff026b; */
   --neon-text-color: hsl(var(--neon-color-primary), 100%, 50%);
   --row-background: rgba(204, 246, 255, 0.8);
-  --neon-color-primary: 120;
+  --neon-color-primary: 75;
   --neon-degree: 60;
   --neon-degree-opposite: 180;
   --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2*var(--neon-degree));

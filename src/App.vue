@@ -25,7 +25,7 @@
       <Timer @update_color="update_color" />
     </v-tab-item>
     <v-tab-item>
-      <Timer />
+      <Calendar />
     </v-tab-item>
     <!-- <Timer/>
       <Timer/>
@@ -38,12 +38,14 @@
 <script>
 // import HelloWorld from './components/HelloWorld'
 import Timer from './components/Timer'
+import Calendar from './components/Calendar'
 
 export default {
   name: 'App',
   components: {
     // HelloWorld,
-    Timer
+    Timer,
+    Calendar,
   },
   data() {
     return {
@@ -63,9 +65,9 @@ export default {
         return "hsl(" + (this.tab_color_hue + 180 - 2 * this.tab_color_diff) + ", 100%, 75%)";
       },
       set: function(new_value) {
-        console.log(new_value);
+        // console.log(new_value);
         var colors = new_value.split(' ');
-        console.log(colors);
+        // console.log(colors);
         this.tab_color_hue = parseInt(colors[0], 10);
         this.tab_color_diff = parseInt(colors[colors.length - 1], 10);
       }
