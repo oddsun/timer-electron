@@ -88,6 +88,9 @@
 
 <script>
 import shared from '../shared.js'
+import {
+  EventBus
+} from '../event-bus.js'
 
 export default {
   name: 'test',
@@ -163,7 +166,7 @@ export default {
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
-          this.$root.$emit('send_newrec', newrec);
+          EventBus.$emit('send_newrec', newrec);
           console.log(newrec);
           // console.log(this);
         });

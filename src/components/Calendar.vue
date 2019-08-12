@@ -1,8 +1,8 @@
 <template>
 <v-layout fill-height>
   <v-flex>
-    <v-sheet height="64">
-      <v-toolbar flat color="white">
+    <v-sheet height="64" dark>
+      <v-toolbar flat color="black" dark>
         <v-btn outlined class="mr-4" @click="setToday">
           Today
         </v-btn>
@@ -39,7 +39,8 @@
       </v-toolbar>
     </v-sheet>
     <v-sheet height="600">
-      <v-calendar ref="calendar" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay" @click:date="viewDay" @change="updateRange"></v-calendar>
+      <v-calendar dark ref="calendar" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay" @click:date="viewDay" @change="updateRange">
+      </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
         <v-card color="grey lighten-4" min-width="350px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
@@ -72,6 +73,9 @@
 
 <script>
 import shared from '../shared.js'
+import {
+  EventBus
+} from '../event-bus.js'
 
 export default {
   data: () => ({
@@ -326,12 +330,17 @@ export default {
     // console.log(this);
     this.loadEvents();
   },
-  mount() {
-    this.$root.$on('send_newrec', (newrec) => {
+  mounted() {
+    EventBus.$on('send_newrec', newrec => {
       console.log('receiving');
-
       this.updateEvents(newrec);
     });
   }
 }
 </script>
+
+<style>
+.theme--dark.v-calendar-daily .v-calendar-daily__intervals-body {
+  color: white;
+}
+</style>
