@@ -43,7 +43,7 @@
         @change="updateRange">
       </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
-        <v-card color="white" min-width="350px" flat>
+        <v-card color="white" min-width="350px" max-width="500px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
             <v-btn icon>
               <v-icon>edit</v-icon>
@@ -58,7 +58,75 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <span class="calendar-details" v-html="selectedEvent.details"></span>
+            <v-layout column fill-height pl-3 pr-3>
+              <v-layout row fill-height>
+                <v-flex shrink>
+                  <v-layout column fill-height>
+                    <v-flex shrink>
+                      <span class="calendar-details-category">Start:</span>
+                    </v-flex>
+                    <v-flex shrink>
+                      <span class="calendar-details-category">End:</span>
+                    </v-flex>
+                    <v-flex shrink>
+                      <span class="calendar-details-category">Time:</span>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+                <v-flex>
+                  <v-layout column fill-height>
+                    <v-flex>
+                      <span class="calendar-details start" v-html="selectedEvent.start"></span>
+                    </v-flex>
+                    <v-flex>
+                      <span class="calendar-details end" v-html="selectedEvent.end"></span>
+                    </v-flex>
+                    <v-flex>
+                      <span class="calendar-details end" v-html="selectedEvent.time"></span>
+                    </v-flex>
+                  </v-layout>
+                </v-flex>
+              </v-layout>
+              <v-flex>
+                <v-layout row fill-height>
+                  <v-flex shrink>
+                    <span class="calendar-details-category">Details:</span>
+                  </v-flex>
+
+                  <v-flex>
+                    <span class="calendar-details" v-html="selectedEvent.details"></span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout>
+            <!-- <v-layout row fill-height>
+              <v-flex shrink>
+                <v-layout column fill-height width="3em">
+                  <v-flex shrink>
+                    <span class="calendar-details-category">Details:</span>
+                  </v-flex>
+                  <v-flex shrink>
+                    <span class="calendar-details-category">Start:</span>
+                  </v-flex>
+                  <v-flex shrink>
+                    <span class="calendar-details-category">End:</span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex shrink>
+                <v-layout column fill-height shrink>
+                  <v-flex shrink>
+                    <span class="calendar-details" v-html="selectedEvent.details"></span>
+                  </v-flex>
+                  <v-flex>
+                    <span class="calendar-details start" v-html="selectedEvent.start"></span>
+                  </v-flex>
+                  <v-flex>
+                    <span class="calendar-details end" v-html="selectedEvent.end"></span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+            </v-layout> -->
           </v-card-text>
           <v-card-actions>
             <v-btn text color="secondary" @click="selectedOpen = false">
@@ -400,9 +468,30 @@ export default {
 
 .calendar-details {
   color: hsl(var(--neon-color-complement), 100%, 35%);
+  width: 300px;
+  /* display: inline-block; */
+  /* word-wrap: break-word; */
+  /* white-space: normal;
+  margin: 0; */
+  /* padding-right: 8em; */
+
+  /* padding-left: 1em; */
+}
+
+.calendar-details.start,
+.calendar-details.end {
+  /* padding-right: 8em; */
+  /* width: 5em; */
 }
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-past {
   color: white;
+}
+
+.calendar-details-category {
+  /* padding-left: 1em; */
+  padding-right: 0.5em;
+  color: black;
+  /* display: inline-block; */
 }
 </style>
