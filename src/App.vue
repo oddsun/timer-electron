@@ -1,5 +1,5 @@
 <template>
-<v-app :dark="dark_theme" style="background: rgba(0,0,0,0.7)">
+<v-app :dark="dark_theme" style="background: rgba(0,0,0,0.5)">
   <!-- <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.7)">
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span> -->

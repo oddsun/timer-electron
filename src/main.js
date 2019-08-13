@@ -7,7 +7,7 @@ import 'typeface-iceland/index.css'
 import 'typeface-iceberg/index.css'
 import 'typeface-roboto/index.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-import '@mdi/font/css/materialdesignicons.css'
+// import '@mdi/font/css/materialdesignicons.css'
 
 import vuetify from './plugins/vuetify'
 import db from './datastore'
