@@ -17,14 +17,14 @@
   <!-- </v-toolbar> -->
 
   <!-- <v-content> -->
-  <v-tabs background-color="transparent" dark :color="tab_color" left>
+  <v-tabs background-color="transparent" dark :color="tab_color" class="draggable" left>
     <v-tab>Timer</v-tab>
     <v-tab>Calendar</v-tab>
     <!-- <HelloWorld/> -->
-    <v-tab-item>
+    <v-tab-item class="non-draggable">
       <Timer @update_color="update_color" />
     </v-tab-item>
-    <v-tab-item>
+    <v-tab-item class="non-draggable">
       <Calendar />
     </v-tab-item>
     <!-- <Timer/>
@@ -91,6 +91,10 @@ export default {
 <style>
 .draggable {
   -webkit-app-region: drag;
+}
+
+.non-draggable {
+  -webkit-app-region: no-drag;
 }
 
 span {

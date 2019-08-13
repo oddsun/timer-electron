@@ -161,7 +161,7 @@ export default {
           start: shared.formatDate(this.start_time),
           end: shared.formatDate(this.stop_time),
           details: this.comment,
-          color: 'hsl(' + this.color_main + ',100%,75%)',
+          color: 'hsl(' + this.color_main + ',100%,35%)',
         }, (err, newrec) => { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined

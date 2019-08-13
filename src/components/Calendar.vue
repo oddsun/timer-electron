@@ -1,8 +1,8 @@
 <template>
 <v-layout fill-height>
   <v-flex>
-    <v-sheet height="64" dark>
-      <v-toolbar flat color="black" dark>
+    <v-sheet height="64" dark color='transparent'>
+      <v-toolbar flat color="transparent" dark>
         <v-btn outlined class="mr-4" @click="setToday">
           Today
         </v-btn>
@@ -38,11 +38,12 @@
         </v-menu>
       </v-toolbar>
     </v-sheet>
-    <v-sheet height="600">
-      <v-calendar dark ref="calendar" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay" @click:date="viewDay" @change="updateRange">
+    <v-sheet class="fill-height-cal-sheet" color="transparent" height="688">
+      <v-calendar backgroundcolor="transparent" dark ref="calendar" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay" @click:date="viewDay"
+        @change="updateRange">
       </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
-        <v-card color="grey lighten-4" min-width="350px" flat>
+        <v-card color="white" min-width="350px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
             <v-btn icon>
               <v-icon>edit</v-icon>
@@ -342,5 +343,28 @@ export default {
 <style>
 .theme--dark.v-calendar-daily .v-calendar-daily__intervals-body {
   color: white;
+}
+
+.fill-height-cal-sheet {
+  /* height: calc(100% - 64px); */
+}
+
+.theme--dark.v-calendar-daily,
+.theme--dark.v-calendar-weekly {
+  background: transparent;
+}
+
+.theme--dark.v-calendar-weekly .v-calendar-weekly__day.v-outside,
+.theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-outside {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.theme--dark.v-btn:not(.v-btn--flat):not(.v-btn--text):not(.v-btn--outlined) {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.theme--dark.v-calendar-weekly .v-calendar-weekly__day {
+  border-right: #9e9e9e 1px solid;
+  border-bottom: #9e9e9e 1px solid;
 }
 </style>
