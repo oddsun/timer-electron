@@ -58,7 +58,7 @@
             </v-btn>
           </v-toolbar>
           <v-card-text>
-            <span v-html="selectedEvent.details"></span>
+            <span class="calendar-details" v-html="selectedEvent.details"></span>
           </v-card-text>
           <v-card-actions>
             <v-btn text color="secondary" @click="selectedOpen = false">
@@ -366,5 +366,9 @@ export default {
 .theme--dark.v-calendar-weekly .v-calendar-weekly__day {
   border-right: #9e9e9e 1px solid;
   border-bottom: #9e9e9e 1px solid;
+}
+
+.calendar-details {
+  color: black;
 }
 </style>
