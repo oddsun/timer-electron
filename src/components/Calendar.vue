@@ -49,7 +49,7 @@
               <v-icon>edit</v-icon>
             </v-btn> -->
             <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
-            <v-text-field hide-details solo flat background-color='transparent' v-model="selectedEvent.name" value="selectedEvent.name"></v-text-field>
+            <v-text-field hide-details solo flat background-color='transparent' v-model="selectedEvent.name"></v-text-field>
             <!-- </v-toolbar-title> -->
             <v-spacer></v-spacer>
             <v-btn icon>
@@ -64,6 +64,34 @@
               <v-flex>
                 <v-layout row fill-height>
                   <v-flex shrink>
+                    <span class="calendar-details-category">Start:</span>
+                  </v-flex>
+                  <v-flex>
+                    <span class="calendar-details start" v-html="selectedEvent.start"></span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex>
+                <v-layout row fill-height>
+                  <v-flex shrink>
+                    <span class="calendar-details-category">End:</span>
+                  </v-flex>
+                  <v-flex>
+                    <span class="calendar-details end" v-html="selectedEvent.end"></span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <v-flex>
+                <v-layout row fill-height>
+                  <v-flex shrink>
+                    <span class="calendar-details-category">Time:</span>
+                  </v-flex>
+                  <v-flex>
+                    <span class="calendar-details end" v-html="selectedEvent.time"></span>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
+              <!-- <v-flex shrink>
                     <v-layout column fill-height>
                       <v-flex shrink>
                         <span class="calendar-details-category">Start:</span>
@@ -90,14 +118,14 @@
                     </v-layout>
                   </v-flex>
                 </v-layout>
-              </v-flex>
+              </v-flex> -->
               <v-flex>
                 <v-layout row fill-height>
                   <v-flex shrink>
                     <span class="calendar-details-category">Details:</span>
                   </v-flex>
                   <v-flex>
-                    <v-textarea rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details"></v-textarea>
+                    <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -167,6 +195,7 @@ export default {
     selectedOpen: false,
     events: [],
     cal_event_edit_disabled: true,
+    auto_grow_hack: true,
     // events: [{
     //     name: 'Vacation',
     //     details: 'Going to the beach!',
@@ -336,6 +365,9 @@ export default {
     },
   },
   methods: {
+    force_refresh() {
+      this.auto_grow_hack = !this.auto_grow_hack;
+    },
     edit_cal_event() {
       console.log(this.events)
       this.cal_event_edit_disabled = !this.cal_event_edit_disabled;
@@ -379,6 +411,7 @@ export default {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
         setTimeout(() => this.selectedOpen = true, 10)
+        this.force_refresh()
       }
 
       if (this.selectedOpen) {
@@ -513,6 +546,8 @@ export default {
   padding-right: 0.5em;
   font-family: "iceland", cursive;
   font-size: 1.5em;
+  width: 3.5em;
+  display: block;
   /* color: black; */
   /* display: inline-block; */
 }
