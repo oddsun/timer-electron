@@ -43,12 +43,14 @@
         @change="updateRange">
       </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
-        <v-card color="white" min-width="350px" max-width="500px" flat>
+        <v-card color="rgba(0,0,0,0.8)" min-width="350px" max-width="500px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
-            <v-btn icon>
+            <!-- <v-btn icon @click="edit_cal_event">
               <v-icon>edit</v-icon>
-            </v-btn>
-            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+            </v-btn> -->
+            <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
+            <v-text-field hide-details solo flat background-color='transparent' v-model="selectedEvent.name" value="selectedEvent.name"></v-text-field>
+            <!-- </v-toolbar-title> -->
             <v-spacer></v-spacer>
             <v-btn icon>
               <v-icon>favorite</v-icon>
@@ -92,9 +94,8 @@
                   <v-flex shrink>
                     <span class="calendar-details-category">Details:</span>
                   </v-flex>
-
                   <v-flex>
-                    <span class="calendar-details" v-html="selectedEvent.details"></span>
+                    <v-textarea auto-grow row-height="1.5em" hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" value="selectedEvent.details"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -129,7 +130,7 @@
             </v-layout> -->
           </v-card-text>
           <v-card-actions>
-            <v-btn text color="secondary" @click="selectedOpen = false">
+            <v-btn text color="white" @click="selectedOpen = false">
               Cancel
             </v-btn>
           </v-card-actions>
@@ -163,6 +164,7 @@ export default {
     selectedElement: null,
     selectedOpen: false,
     events: [],
+    cal_event_edit_disabled: true,
     // events: [{
     //     name: 'Vacation',
     //     details: 'Going to the beach!',
@@ -332,6 +334,10 @@ export default {
     },
   },
   methods: {
+    edit_cal_event() {
+      console.log(this.events)
+      this.cal_event_edit_disabled = !this.cal_event_edit_disabled;
+    },
     loadEvents() {
       this.$db.find({
         start: {
@@ -456,6 +462,10 @@ export default {
   border-left: none;
 }
 
+.theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday:last-child {
+  border-right: none;
+}
+
 
 .theme--dark.v-calendar-daily .v-calendar-daily__day-interval {
   border-top: 1px solid var(--neon-box-shadow-highlight);
@@ -466,16 +476,24 @@ export default {
   border-right: 1px solid var(--neon-box-shadow-highlight);
 }
 
-.calendar-details {
-  color: hsl(var(--neon-color-complement), 100%, 35%);
-  width: 300px;
+.calendar-details,
+#calendar-details {
+  color: hsl(var(--neon-color-complement-shadow), 100%, 75%);
+  /* width: 300px; */
   /* display: inline-block; */
-  /* word-wrap: break-word; */
+  font-family: "iceland", cursive;
+  word-wrap: break-word;
+  font-size: 1.5em;
   /* white-space: normal;
   margin: 0; */
   /* padding-right: 8em; */
 
   /* padding-left: 1em; */
+}
+
+#calendar-details {
+  position: relative;
+  top: 0;
 }
 
 .calendar-details.start,
@@ -491,7 +509,11 @@ export default {
 .calendar-details-category {
   /* padding-left: 1em; */
   padding-right: 0.5em;
-  color: black;
+  /* color: black; */
   /* display: inline-block; */
+}
+
+.v-textarea>.v-input__control>.v-input__slot {
+  display: block;
 }
 </style>

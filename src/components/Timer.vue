@@ -146,6 +146,9 @@ export default {
         }, 1);
         this.button_text = 'Stop';
         this.button_active = true;
+        if (!this.job_cycle) {
+          this.cycle_color();
+        }
       } else {
         this.button_text = 'Start';
         clearInterval(this.job);
