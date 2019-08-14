@@ -629,11 +629,12 @@ button.timer-button.active:hover:after {
 
 .v-text-field.v-text-field--solo .v-input__control {
   min-height: 1em;
+  /* height: 1em; */
 }
 
-.v-input__control {
+/* .v-input__control {
   height: 1em;
-}
+} */
 
 .theme--light.v-text-field--outlined fieldset,
 .theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {

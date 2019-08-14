@@ -25,14 +25,14 @@
             <v-list-item @click="type = 'day'">
               <v-list-item-title>Day</v-list-item-title>
             </v-list-item>
+            <v-list-item @click="type = '4day'">
+              <v-list-item-title>4 days</v-list-item-title>
+            </v-list-item>
             <v-list-item @click="type = 'week'">
               <v-list-item-title>Week</v-list-item-title>
             </v-list-item>
             <v-list-item @click="type = 'month'">
               <v-list-item-title>Month</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = '4day'">
-              <v-list-item-title>4 days</v-list-item-title>
             </v-list-item>
           </v-list>
         </v-menu>
@@ -43,7 +43,7 @@
         @change="updateRange">
       </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
-        <v-card color="rgba(0,0,0,0.8)" min-width="350px" max-width="500px" flat>
+        <v-card color="rgba(0,0,0,0.8)" min-width="350px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
             <!-- <v-btn icon @click="edit_cal_event">
               <v-icon>edit</v-icon>
@@ -61,41 +61,43 @@
           </v-toolbar>
           <v-card-text>
             <v-layout column fill-height pl-3 pr-3>
-              <v-layout row fill-height>
-                <v-flex shrink>
-                  <v-layout column fill-height>
-                    <v-flex shrink>
-                      <span class="calendar-details-category">Start:</span>
-                    </v-flex>
-                    <v-flex shrink>
-                      <span class="calendar-details-category">End:</span>
-                    </v-flex>
-                    <v-flex shrink>
-                      <span class="calendar-details-category">Time:</span>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-                <v-flex>
-                  <v-layout column fill-height>
-                    <v-flex>
-                      <span class="calendar-details start" v-html="selectedEvent.start"></span>
-                    </v-flex>
-                    <v-flex>
-                      <span class="calendar-details end" v-html="selectedEvent.end"></span>
-                    </v-flex>
-                    <v-flex>
-                      <span class="calendar-details end" v-html="selectedEvent.time"></span>
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
-              </v-layout>
+              <v-flex>
+                <v-layout row fill-height>
+                  <v-flex shrink>
+                    <v-layout column fill-height>
+                      <v-flex shrink>
+                        <span class="calendar-details-category">Start:</span>
+                      </v-flex>
+                      <v-flex shrink>
+                        <span class="calendar-details-category">End:</span>
+                      </v-flex>
+                      <v-flex shrink>
+                        <span class="calendar-details-category">Time:</span>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                  <v-flex>
+                    <v-layout column fill-height>
+                      <v-flex>
+                        <span class="calendar-details start" v-html="selectedEvent.start"></span>
+                      </v-flex>
+                      <v-flex>
+                        <span class="calendar-details end" v-html="selectedEvent.end"></span>
+                      </v-flex>
+                      <v-flex>
+                        <span class="calendar-details end" v-html="selectedEvent.time"></span>
+                      </v-flex>
+                    </v-layout>
+                  </v-flex>
+                </v-layout>
+              </v-flex>
               <v-flex>
                 <v-layout row fill-height>
                   <v-flex shrink>
                     <span class="calendar-details-category">Details:</span>
                   </v-flex>
                   <v-flex>
-                    <v-textarea auto-grow row-height="1.5em" hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" value="selectedEvent.details"></v-textarea>
+                    <v-textarea rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -509,11 +511,18 @@ export default {
 .calendar-details-category {
   /* padding-left: 1em; */
   padding-right: 0.5em;
+  font-family: "iceland", cursive;
+  font-size: 1.5em;
   /* color: black; */
   /* display: inline-block; */
 }
 
 .v-textarea>.v-input__control>.v-input__slot {
   display: block;
+}
+
+.v-textarea.v-text-field--enclosed .v-text-field__slot textarea {
+  padding-top: 0;
+  margin-top: 0;
 }
 </style>
