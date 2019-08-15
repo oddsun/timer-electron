@@ -370,6 +370,7 @@ export default {
   },
   methods: {
     save_changes() {
+      // todo: split event
       if (this.selectedEvent.name == this.selectedEvent_backup.name && this.selectedEvent.details == this.selectedEvent_backup.details) {
         this.selectedOpen = false;
         console.log("nothing changed")
