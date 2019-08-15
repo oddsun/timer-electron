@@ -122,7 +122,7 @@
               <v-flex>
                 <v-layout row fill-height>
                   <v-flex shrink>
-                    <span class="calendar-details-category">Details:</span>
+                    <span class="calendar-details-category">Notes:</span>
                   </v-flex>
                   <v-flex>
                     <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details"></v-textarea>
@@ -163,6 +163,9 @@
             <v-btn text color="white" @click="selectedOpen = false">
               Cancel
             </v-btn>
+            <v-btn text color="white" @click="save_changes">
+              Save
+            </v-btn>
           </v-card-actions>
         </v-card>
       </v-menu>
@@ -191,6 +194,7 @@ export default {
     start: null,
     end: null,
     selectedEvent: {},
+    selectedEvent_backup: {},
     selectedElement: null,
     selectedOpen: false,
     events: [],
@@ -328,9 +332,9 @@ export default {
         start,
         end
       } = this
-      console.log(this)
-      console.log(start)
-      console.log(end)
+      // console.log(this)
+      // console.log(start)
+      // console.log(end)
       if (!start || !end) {
         return ''
       }
@@ -365,25 +369,66 @@ export default {
     },
   },
   methods: {
+    save_changes() {
+      if (this.selectedEvent.name == this.selectedEvent_backup.name && this.selectedEvent.details == this.selectedEvent_backup.details) {
+        this.selectedOpen = false;
+        console.log("nothing changed")
+        return;
+      }
+      var new_event = {};
+      delete Object.assign(new_event, this.selectedEvent, {
+        ["original_id"]: this.selectedEvent["_id"]
+      })["_id"];
+      this.$db.insert(new_event, (err, newrec) => {
+        new_event = newrec
+        // console.log(new_event)
+        this.$db.update({
+          _id: this.selectedEvent._id
+        }, {
+          $set: {
+            status: "replaced",
+            new_id: new_event._id
+          }
+        }, {}, (err, numReplaced) => {
+
+        });
+        // this.$db.find({
+        //   status: "replaced"
+        // }, function(err, docs) {
+        //   // docs is an array containing documents that have name as bigbounty
+        //   // If no document is found, docs is equal to []
+        //   console.log(docs)
+        // });
+      });
+      // console.log(new_event);
+      // console.log(this.selectedEvent);
+      this.selectedOpen = false;
+    },
     force_refresh() {
       this.auto_grow_hack = !this.auto_grow_hack;
     },
     edit_cal_event() {
-      console.log(this.events)
+      // console.log(this.events)
       this.cal_event_edit_disabled = !this.cal_event_edit_disabled;
     },
     loadEvents() {
       this.$db.find({
         start: {
-          $regex: /2019-/
+          $regex: /-/
+        },
+        $not: {
+          status: 'replaced'
         }
+        // status: {
+        //   $ne: 'replaced'
+        // }
       }, (err, docs) => {
         this.events = docs;
       })
     },
     updateEvents(new_rec) {
       this.events.push(new_rec);
-      console.log('updating');
+      // console.log('updating');
     },
     viewDay({
       date
@@ -409,9 +454,10 @@ export default {
     }) {
       const open = () => {
         this.selectedEvent = event
+        Object.assign(this.selectedEvent_backup, event)
         this.selectedElement = nativeEvent.target
         setTimeout(() => this.selectedOpen = true, 10)
-        this.force_refresh()
+        // this.force_refresh()
       }
 
       if (this.selectedOpen) {
@@ -442,7 +488,7 @@ export default {
   },
   mounted() {
     EventBus.$on('send_newrec', newrec => {
-      console.log('receiving');
+      // console.log('receiving');
       this.updateEvents(newrec);
     });
   }
@@ -546,7 +592,7 @@ export default {
   padding-right: 0.5em;
   font-family: "iceland", cursive;
   font-size: 1.5em;
-  width: 3.5em;
+  width: 3em;
   display: block;
   /* color: black; */
   /* display: inline-block; */

@@ -45,14 +45,14 @@
         <v-flex>
           <v-layout fill-height column justify-end>
             <v-flex shrink>
-              <v-slider v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
+              <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
             </v-flex>
-            <v-flex shrink mt-2>
-              <v-slider v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
+            <v-flex shrink>
+              <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
             </v-flex>
           </v-layout>
         </v-flex>
-        <v-flex shrink mt-4>
+        <v-flex shrink fill-height>
           <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
         </v-flex>
         <!-- <v-flex shrink>
@@ -171,18 +171,18 @@ export default {
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
           EventBus.$emit('send_newrec', newrec);
-          console.log(newrec);
+          // console.log(newrec);
           // console.log(this);
         });
-        this.$db.find({
-          name: {
-            $regex: /test/
-          }
-        }, function(err, docs) {
-          // docs is an array containing documents that have name as bigbounty
-          // If no document is found, docs is equal to []
-          // console.log(docs)
-        });
+        // this.$db.find({
+        //   name: {
+        //     $regex: /test/
+        //   }
+        // }, function(err, docs) {
+        //   // docs is an array containing documents that have name as bigbounty
+        //   // If no document is found, docs is equal to []
+        //   // console.log(docs)
+        // });
         this.$refs.name.focus();
       }
       // console.log(this.prob_num);
