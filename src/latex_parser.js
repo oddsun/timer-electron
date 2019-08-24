@@ -5,8 +5,13 @@ export default {
     var prev_type = '';
     var temp = '';
     while (s[i]) {
-
-      if (!prev_type or) {
+      curr_type = get_type(s[i]);
+      switch (true) {
+        case !prev_type || prev_type === curr_type:
+          temp += s[i];
+          break;
+        case
+        default:
 
       }
     }

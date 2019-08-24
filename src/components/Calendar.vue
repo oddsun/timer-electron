@@ -14,6 +14,9 @@
         </v-btn>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn outlined class="mr-4" @click="export_cal">
+          Export
+        </v-btn>
         <v-menu bottom right>
           <template v-slot:activator="{ on }">
             <v-btn outlined v-on="on">
@@ -179,6 +182,10 @@ import shared from '../shared.js'
 import {
   EventBus
 } from '../event-bus.js'
+import fs from 'fs'
+import {
+  homedir
+} from 'os'
 
 export default {
   data: () => ({
@@ -369,6 +376,12 @@ export default {
     },
   },
   methods: {
+    export_cal() {
+      fs.writeFile(homedir() + '/Downloads/calendar.json', JSON.stringify(this.events), (err) => {
+        //throws error
+        console.log(err);
+      });
+    },
     save_changes() {
       // todo: split event
       if (this.selectedEvent.name == this.selectedEvent_backup.name && this.selectedEvent.details == this.selectedEvent_backup.details) {
@@ -415,7 +428,7 @@ export default {
     loadEvents() {
       this.$db.find({
         start: {
-          $regex: /-/
+          $regex: /./
         },
         $not: {
           status: 'replaced'
