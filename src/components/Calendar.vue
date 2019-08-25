@@ -57,13 +57,13 @@
             <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
             <v-text-field hide-details solo flat background-color='transparent' v-model="selectedEvent.name"></v-text-field>
             <!-- </v-toolbar-title> -->
-            <v-spacer></v-spacer>
+            <!-- <v-spacer></v-spacer>
             <v-btn icon>
               <v-icon>favorite</v-icon>
             </v-btn>
             <v-btn icon>
               <v-icon>more_vert</v-icon>
-            </v-btn>
+            </v-btn> -->
           </v-toolbar>
           <v-card-text>
             <v-layout column fill-height pl-3 pr-3>
@@ -193,6 +193,9 @@ import {
   mdiCalendarImport,
   mdiCalendarExport
 } from '@mdi/js'
+import {
+  remote
+} from 'electron'
 
 export default {
   data: () => ({
@@ -386,7 +389,53 @@ export default {
   },
   methods: {
     import_cal() {
-
+      // console.log(remote.dialog);
+      remote.dialog.showOpenDialog({
+        properties: ['openFile']
+      }, files => {
+        if (files != undefined && files.length === 1) {
+          // console.log(files);
+          fs.readFile(files[0], (err, data) => {
+            var imported_events = JSON.parse(data);
+            var new_event = this.remove_id(imported_events[0]);
+            console.log(new_event);
+            console.log(imported_events[0]);
+            this.$db.find(new_event, (err, docs) => {
+              console.log(docs);
+            });
+            // console.log(imported_events);
+            // var mod_events = [];
+            // for (const imported_event of imported_events) {
+            //   var new_event = this.remove_id(imported_event); //changes event before callback
+            //   console.log(new_event);
+            //   this.$db.find(new_event, (err, docs) => {
+            //     // console.log(err);
+            //     console.log(docs);
+            //     if (docs === undefined || docs.length === 0) {
+            //       // console.log('no such doc');
+            //       console.log(new_event);
+            //       this.$db.insert(new_event, (err, newrec) => {
+            //         console.log(err);
+            //         console.log(newrec);
+            //         this.loadEvents();
+            //       });
+            //     }
+            //   });
+            //   // this.$db.insert(this.remove_id(imported_event), (err, newrec) => {
+            //   //   console.log(err);
+            //   //   console.log(newrec);
+            //   // });
+            // }
+          })
+        }
+      });
+    },
+    remove_id(old_event) { //this adds random original_id...
+      var new_event = {};
+      delete Object.assign(new_event, old_event, {
+        ["original_id"]: old_event["_id"]
+      })["_id"];
+      return new_event;
     },
     export_cal() {
       fs.writeFile(homedir() + '/Downloads/calendar.json', JSON.stringify(this.events), (err) => {
@@ -441,6 +490,7 @@ export default {
       this.$db.find({
         start: {
           $regex: /./
+          // $regex: /24/
         },
         $not: {
           status: 'replaced'
@@ -449,6 +499,7 @@ export default {
         //   $ne: 'replaced'
         // }
       }, (err, docs) => {
+        console.log(docs);
         this.events = docs;
       })
     },
