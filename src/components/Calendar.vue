@@ -14,8 +14,11 @@
         </v-btn>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn outlined class="mr-4" @click="export_cal">
-          Export
+        <v-btn fab text small @click="import_cal">
+          <v-icon>{{ cal_import }}</v-icon>
+        </v-btn>
+        <v-btn fab text small class="mr-4" @click="export_cal">
+          <v-icon>{{ cal_export }}</v-icon>
         </v-btn>
         <v-menu bottom right>
           <template v-slot:activator="{ on }">
@@ -186,9 +189,15 @@ import fs from 'fs'
 import {
   homedir
 } from 'os'
+import {
+  mdiCalendarImport,
+  mdiCalendarExport
+} from '@mdi/js'
 
 export default {
   data: () => ({
+    cal_import: mdiCalendarImport,
+    cal_export: mdiCalendarExport,
     today: shared.formatDate(new Date()).substring(0, 10),
     focus: shared.formatDate(new Date()).substring(0, 10),
     type: 'month',
@@ -376,6 +385,9 @@ export default {
     },
   },
   methods: {
+    import_cal() {
+
+    },
     export_cal() {
       fs.writeFile(homedir() + '/Downloads/calendar.json', JSON.stringify(this.events), (err) => {
         //throws error
