@@ -488,6 +488,7 @@ export default {
       end
     }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
+      // console.log(start)
       this.start = start
       this.end = end
     },

@@ -3,7 +3,7 @@
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
 <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
   <v-layout column text-center mr-5 justify-space-between>
-    <v-flex shrink mb-1>
+    <v-flex shrink mb-2>
       <!-- <div class="input-wrapper"> -->
       <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
       <!-- <div class="divider"></div> -->
@@ -615,6 +615,7 @@ button.timer-button.active:hover:after {
 
 .large-font {
   font-size: 2em;
+  /* line-height: 3em; */
 }
 
 .v-input .v-label {
@@ -703,5 +704,9 @@ input {
 .v-text-field.v-text-field--enclosed .v-text-field__details,
 .v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
   padding: 0;
+}
+
+.v-input input {
+  max-height: none;
 }
 </style>
