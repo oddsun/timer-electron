@@ -397,35 +397,35 @@ export default {
           // console.log(files);
           fs.readFile(files[0], (err, data) => {
             var imported_events = JSON.parse(data);
-            var new_event = this.remove_id(imported_events[0]);
-            console.log(new_event);
-            console.log(imported_events[0]);
-            this.$db.find(new_event, (err, docs) => {
-              console.log(docs);
-            });
+            // var new_event = this.remove_id(imported_events[0]);
+            // console.log(new_event);
+            // console.log(imported_events[0]);
+            // this.$db.find(new_event, (err, docs) => {
+            //   console.log(docs);
+            // });
             // console.log(imported_events);
             // var mod_events = [];
-            // for (const imported_event of imported_events) {
-            //   var new_event = this.remove_id(imported_event); //changes event before callback
-            //   console.log(new_event);
-            //   this.$db.find(new_event, (err, docs) => {
-            //     // console.log(err);
-            //     console.log(docs);
-            //     if (docs === undefined || docs.length === 0) {
-            //       // console.log('no such doc');
-            //       console.log(new_event);
-            //       this.$db.insert(new_event, (err, newrec) => {
-            //         console.log(err);
-            //         console.log(newrec);
-            //         this.loadEvents();
-            //       });
-            //     }
-            //   });
-            //   // this.$db.insert(this.remove_id(imported_event), (err, newrec) => {
-            //   //   console.log(err);
-            //   //   console.log(newrec);
-            //   // });
-            // }
+            for (const imported_event of imported_events) {
+              let new_event = this.remove_id(imported_event); //changes event before callback
+              // console.log(new_event);
+              this.$db.find(new_event, (err, docs) => {
+                // console.log(err);
+                // console.log(docs);
+                if (docs === undefined || docs.length === 0) {
+                  // console.log('no such doc');
+                  // console.log(new_event);
+                  this.$db.insert(new_event, (err, newrec) => {
+                    // console.log(err);
+                    // console.log(newrec);
+                    this.loadEvents();
+                  });
+                }
+              });
+              // this.$db.insert(this.remove_id(imported_event), (err, newrec) => {
+              //   console.log(err);
+              //   console.log(newrec);
+              // });
+            }
           })
         }
       });
@@ -440,14 +440,14 @@ export default {
     export_cal() {
       fs.writeFile(homedir() + '/Downloads/calendar.json', JSON.stringify(this.events), (err) => {
         //throws error
-        console.log(err);
+        // console.log(err);
       });
     },
     save_changes() {
       // todo: split event
       if (this.selectedEvent.name == this.selectedEvent_backup.name && this.selectedEvent.details == this.selectedEvent_backup.details) {
         this.selectedOpen = false;
-        console.log("nothing changed")
+        // console.log("nothing changed")
         return;
       }
       var new_event = {};
@@ -499,7 +499,7 @@ export default {
         //   $ne: 'replaced'
         // }
       }, (err, docs) => {
-        console.log(docs);
+        // console.log(docs);
         this.events = docs;
       })
     },
