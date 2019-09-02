@@ -430,15 +430,24 @@ export default {
         }
       });
     },
-    remove_id(old_event) { //this adds random original_id...
+    remove_id(old_event) { //this moves _id to original_id
       var new_event = {};
-      delete Object.assign(new_event, old_event, {
-        ["original_id"]: old_event["_id"]
-      })["_id"];
+      // delete Object.assign(new_event, old_event, {
+      //   ["original_id"]: old_event["_id"]
+      // })["_id"];
+      delete Object.assign(new_event, old_event)["_id"];
       return new_event;
+      // return Object.assign({}, old_event);
     },
     export_cal() {
-      fs.writeFile(homedir() + '/Downloads/calendar.json', JSON.stringify(this.events), (err) => {
+      var path = homedir() + '/Downloads/calendar.json';
+      var i = 1;
+      while (fs.existsSync(path)) {
+        i += 1;
+        path = homedir() + '/Downloads/calendar_' + i + '.json';
+      }
+      // console.log(path);
+      fs.writeFile(path, JSON.stringify(this.events), (err) => {
         //throws error
         // console.log(err);
       });
@@ -492,6 +501,7 @@ export default {
           $regex: /./
           // $regex: /24/
         },
+        // name: "test_import v3",
         $not: {
           status: 'replaced'
         }
