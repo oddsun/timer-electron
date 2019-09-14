@@ -9,7 +9,7 @@ import Vuetify, {
 
 Vue.use(Vuetify);
 
-export default new Vuetify({
+const opts = {
   icons: {
     iconfont: 'mdiSvg',
   },
@@ -22,4 +22,6 @@ export default new Vuetify({
       },
     },
   },
-});
+};
+
+export default new Vuetify(opts);
