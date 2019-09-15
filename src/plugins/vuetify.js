@@ -6,6 +6,7 @@ import Vuetify, {
 //   Ripple
 // } from 'vuetify/lib/directives';
 // import '@mdi/font/css/materialdesignicons.css'
+// bug in index.js in vue-cli-plugin-vuetify, add opts as parameter on line 7
 
 Vue.use(Vuetify);
 
