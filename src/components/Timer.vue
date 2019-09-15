@@ -20,7 +20,11 @@
     <v-flex shrink mt-1>
       <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start"></v-text-field>
     </v-flex>
-    <v-flex class="draggable">
+    <v-flex shrink>
+      <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
+    </v-flex>
+    <!-- <v-flex class="draggable"> -->
+    <v-flex @click="start">
       <v-layout justify-center column fill-height>
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
@@ -110,9 +114,14 @@ export default {
       color_diff: 60, //-235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
       cycle_delta: 15,
+      count_up: true,
+      timer_started: false,
     }
   },
   computed: {
+    switch_label: function() {
+      return this.count_up ? 'Count Up' : 'Count Down';
+    },
     slider_color: function() {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
@@ -139,6 +148,7 @@ export default {
   methods: {
     start: function() {
       if (!this.job) {
+        this.timer_started = true;
         this.start_time = new Date();
         this.job = setInterval(() => {
           this.time = this.msToTime(Math.abs(new Date() - this.start_time));
@@ -150,6 +160,7 @@ export default {
           this.cycle_color();
         }
       } else {
+        this.timer_started = false;
         this.button_text = 'Start';
         clearInterval(this.job);
         this.items.unshift({
@@ -708,5 +719,23 @@ input {
 
 .v-input input {
   max-height: none;
+}
+
+.v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before {
+  transform: none;
+  -webkit-transform: none;
+}
+
+.v-application--is-ltr .v-input--switch .v-input--selection-controls__ripple {
+  left: -7px;
+}
+
+.v-input--switch .v-input--selection-controls__ripple {
+  top: calc(50% - 17px);
+}
+
+.v-input--selection-controls__ripple {
+  height: 20px;
+  width: 20px;
 }
 </style>
