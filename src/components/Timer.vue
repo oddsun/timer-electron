@@ -721,21 +721,33 @@ input {
   max-height: none;
 }
 
-.v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before {
+/* .v-input--selection-controls .v-input--selection-controls__input:hover .v-input--selection-controls__ripple:before {
   transform: none;
   -webkit-transform: none;
-}
+} */
 
 .v-application--is-ltr .v-input--switch .v-input--selection-controls__ripple {
   left: -7px;
 }
 
 .v-input--switch .v-input--selection-controls__ripple {
-  top: calc(50% - 17px);
+  top: calc(50% - 19px);
+}
+
+.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple {
+  transform: translate(0, 0) !important;
+}
+
+.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb {
+  transform: translate(20px, 0) !important;
 }
 
 .v-input--selection-controls__ripple {
-  height: 20px;
-  width: 20px;
+  /* height: 20px;
+  width: 20px; */
+  opacity: 0;
+  border-radius: 14px;
+  height: 24px;
+  width: 40px;
 }
 </style>
