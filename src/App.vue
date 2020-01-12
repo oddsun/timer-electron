@@ -22,7 +22,7 @@
     <v-tab>Calendar</v-tab>
     <!-- <HelloWorld/> -->
     <v-tab-item class="non-draggable">
-      <Timer @update_color="update_color" />
+      <EditableTimer @update_color="update_color" />
     </v-tab-item>
     <v-tab-item class="non-draggable">
       <Calendar />
@@ -37,14 +37,14 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld'
-import Timer from './components/Timer'
+import EditableTimer from './components/EditableTimer'
 import Calendar from './components/Calendar'
 
 export default {
   name: 'App',
   components: {
     // HelloWorld,
-    Timer,
+    EditableTimer,
     Calendar,
   },
   data() {
