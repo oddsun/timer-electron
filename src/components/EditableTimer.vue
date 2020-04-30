@@ -120,7 +120,7 @@
     </v-col>
     <v-divider vertical class="border"></v-divider>
     <v-col cols='3' text-center shrink align-center justify-space-between fill-height class='ml-5 pa-0'>
-      <v-row shrink>
+      <v-row>
         <v-col>
           <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
         </v-col>
@@ -140,8 +140,8 @@
           </v-list>
         </v-col>
       </v-row>
-      <v-row align='center' justify='center'>
-        <v-col align-self='center'>
+      <v-row>
+        <v-col>
           <button class="glow-button" @click="clear_history">clear</button>
         </v-col>
       </v-row>
@@ -309,9 +309,9 @@ export default {
       var ms = s % 1000;
       s = (s - ms) / 1000;
       this.secs = s % 60;
-      s = (s - secs) / 60;
+      s = (s - this.secs) / 60;
       this.mins = s % 60;
-      this.hrs = (s - mins) / 60;
+      this.hrs = (s - this.mins) / 60;
 
       return pad(this.hrs) + ':' + pad(this.mins) + ':' + pad(this.secs); // + '.' + pad(ms, 3);
     },

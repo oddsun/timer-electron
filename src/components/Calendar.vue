@@ -14,12 +14,23 @@
         </v-btn>
         <v-toolbar-title>{{ title }}</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn fab text small @click="import_cal">
-          <v-icon>{{ cal_import }}</v-icon>
-        </v-btn>
-        <v-btn fab text small class="mr-4" @click="export_cal">
-          <v-icon>{{ cal_export }}</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn fab text small @click="import_cal" v-on="on">
+              <v-icon>{{ cal_import }}</v-icon>
+            </v-btn>
+          </template>
+          <span>Import</span>
+        </v-tooltip>
+
+        <v-tooltip top>
+          <template v-slot:activator="{ on }">
+            <v-btn fab text small class="mr-4" @click="export_cal" v-on="on">
+              <v-icon>{{ cal_export }}</v-icon>
+            </v-btn>
+          </template>
+          <span>Export</span>
+        </v-tooltip>
         <v-menu bottom right>
           <template v-slot:activator="{ on }">
             <v-btn outlined v-on="on">
@@ -613,7 +624,8 @@ export default {
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday {
   /* border-right: #9e9e9e 1px solid;
   border-bottom: #9e9e9e 1px solid; */
-  border-left: 1px solid var(--neon-box-shadow-highlight);
+  /* border-left: 1px solid var(--neon-box-shadow-highlight); */
+  border-right: 1px solid var(--neon-box-shadow-highlight);
   border-bottom: 1px solid var(--neon-box-shadow-highlight);
 }
 
@@ -624,7 +636,7 @@ export default {
 }
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__day:last-child {
-  border-right: 1px solid var(--neon-box-shadow-highlight);
+  /* border-right: 1px solid var(--neon-box-shadow-highlight); */
 }
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday:first-child {

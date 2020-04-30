@@ -37,7 +37,7 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld'
-import EditableTimer from './components/EditableTimer'
+import EditableTimer from './components/Timer'
 import Calendar from './components/Calendar'
 
 export default {
