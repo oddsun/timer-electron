@@ -104,7 +104,7 @@
                     <span class="calendar-details-category">Time:</span>
                   </v-flex>
                   <v-flex>
-                    <span class="calendar-details end" v-html="selectedEvent.time"></span>
+                    <span class="calendar-details time" v-html="selectedEvent.time"></span>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -142,7 +142,7 @@
                     <span class="calendar-details-category">Notes:</span>
                   </v-flex>
                   <v-flex>
-                    <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details"></v-textarea>
+                    <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" class="mt-0 pa-0"></v-textarea>
                   </v-flex>
                 </v-layout>
               </v-flex>
@@ -680,7 +680,7 @@ export default {
   border-right: 1px solid var(--neon-box-shadow-highlight);
 }
 
-.calendar-details,
+span.calendar-details,
 #calendar-details {
   color: hsl(var(--neon-color-complement-shadow), 100%, 75%);
   /* width: 300px; */
@@ -688,6 +688,11 @@ export default {
   font-family: "iceland", cursive;
   word-wrap: break-word;
   font-size: 1.5em;
+  margin-top: 0;
+  line-height: 32px;
+  display: block;
+  /* line-height only works with block */
+  /* vertical-align: middle; */
   /* white-space: normal;
   margin: 0; */
   /* padding-right: 8em; */
@@ -704,6 +709,7 @@ export default {
 .calendar-details.end {
   /* padding-right: 8em; */
   /* width: 5em; */
+  /* line-height: 32px; */
 }
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-past {
@@ -712,11 +718,12 @@ export default {
 
 .calendar-details-category {
   /* padding-left: 1em; */
-  padding-right: 0.5em;
+  /* padding-right: 0.5em; */
   font-family: "iceland", cursive;
   font-size: 1.5em;
   width: 3em;
   display: block;
+  line-height: 32px;
   /* color: black; */
   /* display: inline-block; */
 }
@@ -728,5 +735,10 @@ export default {
 .v-textarea.v-text-field--enclosed .v-text-field__slot textarea {
   padding-top: 0;
   margin-top: 0;
+}
+
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot,
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+  padding: 0;
 }
 </style>
