@@ -637,6 +637,7 @@ export default {
   border-bottom: #9e9e9e 1px solid; */
   border-left: 1px solid var(--neon-box-shadow-highlight);
   /* border-right: none;  */
+  border-right: 1px solid transparent;
   /* there is a 1px border-right, turning it off would have weekday and head mismatch due to flex */
   /* border-right: 1px solid var(--neon-box-shadow-highlight); */
   border-bottom: 1px solid var(--neon-box-shadow-highlight);
@@ -659,6 +660,10 @@ export default {
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday:last-child {
   border-right: none;
+}
+
+.v-calendar-weekly__day.v-present {
+  background: var(--neon-box-shadow-highlight-transparent);
 }
 
 /* .v-calendar-weekly__head-weekday {

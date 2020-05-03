@@ -317,6 +317,7 @@ export default {
     0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%);
   --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
+  --neon-box-shadow-highlight-transparent: hsla(var(--neon-color-complement), 100%, 75%, 0.8);
   --neon-box-shadow-reverse:
     0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     inset 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
