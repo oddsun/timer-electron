@@ -254,7 +254,7 @@ export default {
     },
     mouse_down: function() {
       this.is_mouse_down = true;
-      this.dragging = false;
+      // this.dragging = false; // will mess up starting timer with keydown
     },
     mouse_move: function() {
       if (this.is_mouse_down) {
@@ -263,7 +263,7 @@ export default {
     },
     mouse_up: function() {
       // this.dragging = false;
-      // setTimeout(() => this.dragging = false, 1);
+      setTimeout(() => this.dragging = false, 1);
       this.is_mouse_down = false;
     }
   }
