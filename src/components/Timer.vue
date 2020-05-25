@@ -3,7 +3,7 @@
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
 <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
   <v-layout column text-center mr-5 justify-space-between>
-    <v-flex shrink mb-2>
+    <v-flex shrink mb-2 class="d-none d-sm-flex">
       <!-- <div class="input-wrapper"> -->
       <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
       <!-- <div class="divider"></div> -->
@@ -13,14 +13,14 @@
       <!-- </div> -->
       <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
     </v-flex>
-    <v-divider class="border"></v-divider>
+    <v-divider class="border d-none d-sm-flex"></v-divider>
     <!-- <v-flex shrink pl-2>
       <div class="divider"></div>
     </v-flex> -->
-    <v-flex shrink mt-1>
+    <v-flex shrink mt-1 class="d-none d-sm-flex">
       <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start"></v-text-field>
     </v-flex>
-    <v-flex shrink>
+    <v-flex shrink class="d-none d-sm-flex">
       <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
     </v-flex>
     <!-- <v-flex class="draggable"> -->
@@ -29,7 +29,7 @@
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
         <div id="timer-text-container" :class="{active: button_active}">
-          <span class='timer-text' :class="{active: button_active}">{{ time }}</span>
+          <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->
           <!-- <v-fade-transition>
@@ -44,7 +44,7 @@
         </v-hover> -->
       </v-layout>
     </v-flex>
-    <v-flex shrink>
+    <v-flex shrink class="d-none d-sm-flex">
       <v-layout row align-center>
         <v-flex>
           <v-layout fill-height column justify-end>
@@ -65,8 +65,8 @@
       </v-layout>
     </v-flex>
   </v-layout>
-  <v-divider vertical class="border"></v-divider>
-  <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0>
+  <v-divider vertical class="border d-none d-sm-flex"></v-divider>
+  <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0 class="d-none d-sm-flex">
     <v-flex shrink>
       <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
     </v-flex>
@@ -505,6 +505,10 @@ span.timer-text {
   border 1s,
   box-shadow 1s; */
     all 0.3s ease-in-out 0s;
+}
+
+span.small-text {
+  font-size: 4em;
 }
 
 .timer-text.active {

@@ -19,10 +19,14 @@
   <!-- <v-content> -->
   <v-tabs background-color="transparent" dark :color="tab_color" class="draggable" left>
     <v-tab>Timer</v-tab>
-    <v-tab>Calendar</v-tab>
+    <v-tab class='d-none d-sm-flex'>Calendar</v-tab>
+    <v-spacer></v-spacer>
+    <v-btn fab text small class="mr-0" @click="resize_window">
+      <v-icon>{{ resize }}</v-icon>
+    </v-btn>
     <!-- <HelloWorld/> -->
     <v-tab-item class="non-draggable">
-      <EditableTimer @update_color="update_color" />
+      <Timer @update_color="update_color" />
     </v-tab-item>
     <v-tab-item class="non-draggable">
       <Calendar />
@@ -37,21 +41,29 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld'
-import EditableTimer from './components/Timer'
+import Timer from './components/Timer'
 import Calendar from './components/Calendar'
+import {
+  mdiResize
+} from '@mdi/js'
+import {
+  ipcRenderer
+} from 'electron'
 
 export default {
   name: 'App',
   components: {
     // HelloWorld,
-    EditableTimer,
+    Timer,
     Calendar,
   },
   data() {
     return {
+      resize: mdiResize,
       dark_theme: true,
       tab_color_hue: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'), 10),
       tab_color_diff: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'), 10),
+      large_win: true,
     }
   },
   computed: {
@@ -83,6 +95,10 @@ export default {
       // this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + document.documentElement.style.getPropertyValue('--neon-degree'); //this doesn't work when property isn't set by js.
       // this.tab_color_hue = parseInt(document.documentElement.style.getPropertyValue('--neon-color-primary'), 10);
       // this.tab_color_diff = parseInt(document.documentElement.style.getPropertyValue('--neon-degree'), 10);
+    },
+    resize_window: function() {
+      this.large_win = !this.large_win;
+      ipcRenderer.send('resize', this.large_win);
     }
   }
 }

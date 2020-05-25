@@ -2,6 +2,7 @@
 
 import {
   app,
+  ipcMain,
   protocol,
   BrowserWindow
 } from 'electron'
@@ -117,3 +118,18 @@ if (isDevelopment) {
     })
   }
 }
+
+// https://www.electronjs.org/docs/api/browser-window#winsetalwaysontopflag-level-relativelevel
+// https://www.electronjs.org/docs/api/ipc-main
+// const {
+//   ipcMain
+// } = require('electron')
+ipcMain.on('resize', (event, arg) => {
+  if (arg) {
+    win.setSize(1000, 800)
+    win.setAlwaysOnTop(false)
+  } else {
+    win.setSize(300, 225)
+    win.setAlwaysOnTop(true)
+  }
+})

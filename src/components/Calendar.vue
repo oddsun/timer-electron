@@ -202,7 +202,7 @@ import {
 } from 'os'
 import {
   mdiCalendarImport,
-  mdiCalendarExport
+  mdiCalendarExport,
 } from '@mdi/js'
 import {
   remote
