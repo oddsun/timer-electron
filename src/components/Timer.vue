@@ -24,11 +24,11 @@
       <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
     </v-flex>
     <!-- <v-flex class="draggable"> -->
-    <v-flex>
-      <v-layout justify-center column fill-height ref='timer' @keydown.enter="start">
+    <v-flex @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start">
+      <v-layout justify-center column fill-height ref='timer'>
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
-        <div id="timer-text-container" :class="{active: button_active}" @click="start">
+        <div id="timer-text-container" :class="{active: button_active}">
           <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->
@@ -116,6 +116,8 @@ export default {
       cycle_delta: 15,
       count_up: true,
       timer_started: false,
+      dragging: false,
+      is_mouse_down: false,
     }
   },
   computed: {
@@ -147,6 +149,9 @@ export default {
   },
   methods: {
     start: function() {
+      if (this.dragging) {
+        return;
+      }
       if (!this.job) {
         this.timer_started = true;
         this.start_time = new Date();
@@ -246,6 +251,20 @@ export default {
     change_contrast: function() {
       document.documentElement.style.setProperty('--neon-degree', this.color_diff);
       this.$emit("update_color");
+    },
+    mouse_down: function() {
+      this.is_mouse_down = true;
+      this.dragging = false;
+    },
+    mouse_move: function() {
+      if (this.is_mouse_down) {
+        this.dragging = true;
+      }
+    },
+    mouse_up: function() {
+      // this.dragging = false;
+      // setTimeout(() => this.dragging = false, 1);
+      this.is_mouse_down = false;
     }
   }
 }
