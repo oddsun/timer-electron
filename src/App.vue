@@ -17,25 +17,32 @@
   <!-- </v-toolbar> -->
 
   <!-- <v-content> -->
-  <v-tabs background-color="transparent" dark :color="tab_color" class="draggable" left>
-    <v-tab>Timer</v-tab>
+  <v-tabs background-color="transparent" dark :color="tab_color" class="draggable d-none d-sm-flex" left v-model="tab">
+    <v-tab class='d-none d-sm-flex'>Timer</v-tab>
     <v-tab class='d-none d-sm-flex'>Calendar</v-tab>
-    <v-spacer></v-spacer>
+    <!-- <v-spacer></v-spacer>
     <v-btn fab text small class="mr-0" @click="resize_window">
       <v-icon>{{ resize }}</v-icon>
-    </v-btn>
+    </v-btn> -->
     <!-- <HelloWorld/> -->
-    <v-tab-item class="non-draggable">
+  </v-tabs>
+  <v-tabs-items v-model="tab" :class="{'small-window': $vuetify.breakpoint.xsOnly, 'draggable': $vuetify.breakpoint.xsOnly, 'non-draggable': !$vuetify.breakpoint.xsOnly}">
+    <v-tab-item>
       <Timer @update_color="update_color" />
     </v-tab-item>
-    <v-tab-item class="non-draggable">
+    <v-tab-item>
       <Calendar />
     </v-tab-item>
     <!-- <Timer/>
       <Timer/>
       <Timer/> -->
     <!-- </v-content> -->
-  </v-tabs>
+  </v-tabs-items>
+  <v-layout class="window-config">
+    <v-btn fab text small :ripple="false" class="mr-0" @click="resize_window" dark>
+      <v-icon>{{ resize }}</v-icon>
+    </v-btn>
+  </v-layout>
 </v-app>
 </template>
 
@@ -60,6 +67,7 @@ export default {
   data() {
     return {
       resize: mdiResize,
+      tab: null,
       dark_theme: true,
       tab_color_hue: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'), 10),
       tab_color_diff: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'), 10),
@@ -98,6 +106,10 @@ export default {
     },
     resize_window: function() {
       this.large_win = !this.large_win;
+      if (!this.large_win) {
+        this.tab = 0;
+        // this.$refs.timer.focus();
+      }
       ipcRenderer.send('resize', this.large_win);
     }
   }
@@ -125,6 +137,22 @@ span {
 
 .v-window__container,
 .v-window-item {
+  height: 100%;
+}
+
+.window-config {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.v-btn,
+.v-btn:before,
+.v-btn:after {
+  background: none !important;
+}
+
+.theme--light.v-tabs-items.small-window {
   height: 100%;
 }
 </style>

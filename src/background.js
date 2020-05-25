@@ -129,7 +129,7 @@ ipcMain.on('resize', (event, arg) => {
     win.setSize(1000, 800)
     win.setAlwaysOnTop(false)
   } else {
-    win.setSize(300, 225)
+    win.setSize(300, 187)
     win.setAlwaysOnTop(true)
   }
 })

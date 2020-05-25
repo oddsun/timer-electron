@@ -24,11 +24,11 @@
       <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
     </v-flex>
     <!-- <v-flex class="draggable"> -->
-    <v-flex @click="start">
-      <v-layout justify-center column fill-height>
+    <v-flex>
+      <v-layout justify-center column fill-height ref='timer' @keydown.enter="start">
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
-        <div id="timer-text-container" :class="{active: button_active}">
+        <div id="timer-text-container" :class="{active: button_active}" @click="start">
           <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->

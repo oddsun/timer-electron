@@ -716,6 +716,10 @@ span.calendar-details,
   color: white;
 }
 
+.theme--dark.v-calendar-weekly {
+  border-top: none;
+}
+
 .calendar-details-category {
   /* padding-left: 1em; */
   /* padding-right: 0.5em; */
