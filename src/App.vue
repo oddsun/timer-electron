@@ -62,7 +62,7 @@ export default {
   components: {
     // HelloWorld,
     Timer,
-    Calendar,
+    Calendar
   },
   data() {
     return {
@@ -71,7 +71,7 @@ export default {
       dark_theme: true,
       tab_color_hue: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'), 10),
       tab_color_diff: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'), 10),
-      large_win: true,
+      large_win: true
     }
   },
   computed: {
@@ -82,7 +82,7 @@ export default {
         // console.log(typeof(this.tab_color_hue));
         // console.log(this.tab_color_diff);
         // console.log(this.tab_color_hue + 180 - 2 * this.tab_color_diff)
-        return "hsl(" + (this.tab_color_hue + 180 - 2 * this.tab_color_diff) + ", 100%, 75%)";
+        return 'hsl(' + (this.tab_color_hue + 180 - 2 * this.tab_color_diff) + ', 100%, 75%)'
       },
       set: function(new_value) {
         // console.log(new_value);

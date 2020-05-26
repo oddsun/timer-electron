@@ -98,7 +98,7 @@ import {
 
 export default {
   name: 'test',
-  data() {
+  data () {
     return {
       time: '00:00:00',
       start_time: '',
@@ -110,86 +110,86 @@ export default {
       prob_num: '',
       items: [],
       comment: '',
-      color_main: 75, //130, 90, 90, 75, 130, 50, 120
-      color_diff: 60, //-235, -100, -45, +-60, 60, -60, 60
+      color_main: 75, // 130, 90, 90, 75, 130, 50, 120
+      color_diff: 60, // -235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
       cycle_delta: 15,
       count_up: true,
       timer_started: false,
       dragging: false,
-      is_mouse_down: false,
+      is_mouse_down: false
     }
   },
   computed: {
-    switch_label: function() {
-      return this.count_up ? 'Count Up' : 'Count Down';
+    switch_label: function () {
+      return this.count_up ? 'Count Up' : 'Count Down'
     },
-    slider_color: function() {
+    slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
       // } else {
       //   this.temp_color = this.color_diff + this.color_diff;
       // }
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color: function() {
-      return "hsl(" + this.color_main + ", 100%, 85%)";
+    track_color: function () {
+      return 'hsl(' + this.color_main + ', 100%, 85%)'
     },
-    slider_color_diff: function() {
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+    slider_color_diff: function () {
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color_diff: function() {
-      return "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)";
+    track_color_diff: function () {
+      return 'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
     }
   },
   watch: {
-    color_main: function() {
-      this.change_main_color();
+    color_main: function () {
+      this.change_main_color()
     }
   },
   methods: {
-    start: function() {
+    start: function () {
       if (this.dragging) {
-        return;
+        return
       }
       if (!this.job) {
-        this.timer_started = true;
-        this.start_time = new Date();
+        this.timer_started = true
+        this.start_time = new Date()
         this.job = setInterval(() => {
-          this.time = this.msToTime(Math.abs(new Date() - this.start_time));
+          this.time = this.msToTime(Math.abs(new Date() - this.start_time))
           // console.log(this.time);
-        }, 1);
-        this.button_text = 'Stop';
-        this.button_active = true;
+        }, 1)
+        this.button_text = 'Stop'
+        this.button_active = true
         if (!this.job_cycle) {
-          this.cycle_color();
+          this.cycle_color()
         }
       } else {
-        this.timer_started = false;
-        this.button_text = 'Start';
-        clearInterval(this.job);
+        this.timer_started = false
+        this.button_text = 'Start'
+        clearInterval(this.job)
         this.items.unshift({
           time: this.time,
           name: this.prob_num
-        });
-        this.job = '';
-        this.stop_time = new Date();
-        this.button_active = false;
+        })
+        this.job = ''
+        this.stop_time = new Date()
+        this.button_active = false
         this.$db.insert({
           name: this.prob_num,
           start: shared.formatDate(this.start_time),
           end: shared.formatDate(this.stop_time),
           details: this.comment,
           time: this.time,
-          color: 'hsl(' + this.color_main + ',100%,35%)',
+          color: 'hsl(' + this.color_main + ',100%,35%)'
         }, (err, newrec) => { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
-          EventBus.$emit('send_newrec', newrec);
+          EventBus.$emit('send_newrec', newrec)
           // console.log(newrec);
           // console.log(this);
-        });
+        })
         // this.$db.find({
         //   name: {
         //     $regex: /test/
@@ -199,72 +199,72 @@ export default {
         //   // If no document is found, docs is equal to []
         //   // console.log(docs)
         // });
-        this.$refs.name.focus();
+        this.$refs.name.focus()
       }
       // console.log(this.prob_num);
     },
-    cycle_color: function() {
+    cycle_color: function () {
       if (!this.job_cycle) {
-        this.cycle_button_off = false;
+        this.cycle_button_off = false
         this.job_cycle = setInterval(() => {
-          this.cycle_delta = (this.color_main > 359 || this.color_main <= 0) ? -this.cycle_delta : this.cycle_delta;
-          this.color_main = this.color_main + this.cycle_delta;
+          this.cycle_delta = (this.color_main > 359 || this.color_main <= 0) ? -this.cycle_delta : this.cycle_delta
+          this.color_main = this.color_main + this.cycle_delta
           // console.log(this.time);
           // console.log(this.color_main);
-        }, 5000);
+        }, 5000)
       } else {
-        clearInterval(this.job_cycle);
-        this.job_cycle = '';
-        this.cycle_button_off = true;
+        clearInterval(this.job_cycle)
+        this.job_cycle = ''
+        this.cycle_button_off = true
       }
     },
-    clear_history: function() {
-      this.items = [];
+    clear_history: function () {
+      this.items = []
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
     // },
-    msToTime: function(s) {
+    msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad(n, z) {
-        z = z || 2;
-        return ('00' + n).slice(-z);
+      function pad (n, z) {
+        z = z || 2
+        return ('00' + n).slice(-z)
       }
 
-      var ms = s % 1000;
-      s = (s - ms) / 1000;
-      var secs = s % 60;
-      s = (s - secs) / 60;
-      var mins = s % 60;
-      var hrs = (s - mins) / 60;
+      var ms = s % 1000
+      s = (s - ms) / 1000
+      var secs = s % 60
+      s = (s - secs) / 60
+      var mins = s % 60
+      var hrs = (s - mins) / 60
 
-      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs); // + '.' + pad(ms, 3);
+      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
     },
-    focus_comment: function() {
-      this.$refs.comment.focus();
+    focus_comment: function () {
+      this.$refs.comment.focus()
     },
-    change_main_color: function() {
-      document.documentElement.style.setProperty('--neon-color-primary', this.color_main);
-      this.$emit("update_color");
+    change_main_color: function () {
+      document.documentElement.style.setProperty('--neon-color-primary', this.color_main)
+      this.$emit('update_color')
     },
-    change_contrast: function() {
-      document.documentElement.style.setProperty('--neon-degree', this.color_diff);
-      this.$emit("update_color");
+    change_contrast: function () {
+      document.documentElement.style.setProperty('--neon-degree', this.color_diff)
+      this.$emit('update_color')
     },
-    mouse_down: function() {
-      this.is_mouse_down = true;
+    mouse_down: function () {
+      this.is_mouse_down = true
       // this.dragging = false; // will mess up starting timer with keydown
     },
-    mouse_move: function() {
+    mouse_move: function () {
       if (this.is_mouse_down) {
-        this.dragging = true;
+        this.dragging = true
       }
     },
-    mouse_up: function() {
+    mouse_up: function () {
       // this.dragging = false;
-      setTimeout(() => this.dragging = false, 1);
-      this.is_mouse_down = false;
+      setTimeout(() => this.dragging = false, 1)
+      this.is_mouse_down = false
     }
   }
 }
@@ -388,8 +388,6 @@ button.timer-button {
     box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
 }
-
-
 
 button.timer-button:hover {
   color: var(--neon-text-color);

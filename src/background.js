@@ -15,7 +15,6 @@ import {
 // import Datastore from 'nedb'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
-
 // const timerDb = new Datastore({
 //   filename: path.join(app.getPath("userData"), "timer.db"),
 //   autoload: true,
@@ -40,7 +39,7 @@ protocol.registerSchemesAsPrivileged([{
   }
 }])
 
-function createWindow() {
+function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1000,
@@ -99,9 +98,9 @@ app.on('ready', async () => {
     }
   }
   // createWindow()
-  setTimeout(function() {
-    createWindow();
-  }, 10);
+  setTimeout(function () {
+    createWindow()
+  }, 10)
 })
 
 // Exit cleanly on request from parent process in development mode.
