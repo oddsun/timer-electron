@@ -96,13 +96,16 @@ import shared from '../shared.js'
 import {
   EventBus
 } from '../event-bus.js'
-const {
-  dialog,
-  shell
-} = require("electron").remote
+// const {
+//   dialog,
+//   shell
+// } = require("electron").remote
+import {
+  remote
+} from 'electron'
 
 export default {
-  name: 'test',
+  name: 'timer',
   data() {
     return {
       // time: '00:00:00',
@@ -293,8 +296,8 @@ export default {
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
         this.start()
-        shell.beep()
-        dialog.showMessageBox({
+        remote.shell.beep()
+        remote.dialog.showMessageBox({
           'message': 'Time\'s Up!',
           'buttons': ['Close']
         })
