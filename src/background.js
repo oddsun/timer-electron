@@ -39,7 +39,7 @@ protocol.registerSchemesAsPrivileged([{
   }
 }])
 
-function createWindow () {
+function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 1000,
@@ -98,7 +98,7 @@ app.on('ready', async () => {
     }
   }
   // createWindow()
-  setTimeout(function () {
+  setTimeout(function() {
     createWindow()
   }, 10)
 })

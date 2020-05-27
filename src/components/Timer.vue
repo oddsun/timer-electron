@@ -18,18 +18,19 @@
       <div class="divider"></div>
     </v-flex> -->
     <v-flex shrink mt-1 class="d-none d-sm-flex">
-      <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start"></v-text-field>
+      <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
     </v-flex>
     <v-flex shrink class="d-none d-sm-flex">
       <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
     </v-flex>
     <!-- <v-flex class="draggable"> -->
-    <v-flex @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start">
+    <v-flex @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch">
       <v-layout justify-center column fill-height ref='timer'>
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
         <div id="timer-text-container" :class="{active: button_active}">
           <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
+          <v-text-field ref='timer_input' class='timer-input' v-model='time_input' :rules='rules' hide-details @keydown.enter='enter_switch'></v-text-field>
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->
           <!-- <v-fade-transition>
@@ -95,12 +96,15 @@ import shared from '../shared.js'
 import {
   EventBus
 } from '../event-bus.js'
+const {
+  dialog
+} = require("electron").remote
 
 export default {
   name: 'test',
-  data () {
+  data() {
     return {
-      time: '00:00:00',
+      // time: '00:00:00',
       start_time: '',
       job: '',
       job_cycle: '',
@@ -117,14 +121,25 @@ export default {
       count_up: true,
       timer_started: false,
       dragging: false,
-      is_mouse_down: false
+      is_mouse_down: false,
+      time_input: '',
+      rules: [
+        value => !!value || 'Required.',
+        value => (value || '').length <= 6 || 'Max 6 characters',
+        value => {
+          const pattern = /^\d+$/
+          return pattern.test(value) || 'Numbers only'
+        },
+      ],
+      start_micro_sec: 0,
+      running_micro_sec: 0
     }
   },
   computed: {
-    switch_label: function () {
+    switch_label: function() {
       return this.count_up ? 'Count Up' : 'Count Down'
     },
-    slider_color: function () {
+    slider_color: function() {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
       // } else {
@@ -132,31 +147,83 @@ export default {
       // }
       return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color: function () {
+    track_color: function() {
       return 'hsl(' + this.color_main + ', 100%, 85%)'
     },
-    slider_color_diff: function () {
+    slider_color_diff: function() {
       return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color_diff: function () {
+    track_color_diff: function() {
       return 'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
+    },
+    micro_sec: function() {
+      // var n = time_input.length
+      // if (n == 0) {
+      //   return 0
+      // }
+      var sec = this.time_input.slice(-2)
+      var min = this.time_input.slice(-4, -2)
+      var hr = this.time_input.slice(-6, -4)
+      return (parseInt(hr) || 0) * 3600000 + (parseInt(min) || 0) * 60000 + (parseInt(sec) || 0) * 1000
+    },
+    time: function() {
+      function pad(n, z) {
+        z = z || 2
+        return ('00' + n).slice(-z)
+      }
+
+      var curr_micro_sec = this.timer_started || this.count_up ? this.running_micro_sec : this.micro_sec
+
+      var ms = curr_micro_sec % 1000
+      var s = (curr_micro_sec - ms) / 1000
+      var secs = s % 60
+      s = (s - secs) / 60
+      var mins = s % 60
+      var hrs = (s - mins) / 60
+
+      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs)
     }
   },
   watch: {
-    color_main: function () {
+    color_main: function() {
       this.change_main_color()
     }
   },
   methods: {
-    start: function () {
+    start_switch: function() {
+      if (this.count_up || this.timer_started) {
+        this.start()
+      } else {
+        this.focus_input()
+      }
+    },
+    enter_switch: function() {
+      if (!this.count_up) {
+        if (!this.timer_started && !this.micro_sec) {
+          return
+        }
+        this.start()
+      }
+    },
+    start: function() {
+      // console.log('starting_timer')
       if (this.dragging) {
         return
       }
       if (!this.job) {
         this.timer_started = true
         this.start_time = new Date()
+        if (!this.count_up) {
+          this.start_micro_sec = this.micro_sec
+          this.running_micro_sec = this.micro_sec
+        }
         this.job = setInterval(() => {
-          this.time = this.msToTime(Math.abs(new Date() - this.start_time))
+          if (this.count_up) {
+            this.running_micro_sec = Math.abs(new Date() - this.start_time)
+          } else {
+            this.count_down_timer()
+          }
+          // this.time = this.msToTime(Math.abs(new Date() - this.start_time))
           // console.log(this.time);
         }, 1)
         this.button_text = 'Stop'
@@ -166,21 +233,23 @@ export default {
         }
       } else {
         this.timer_started = false
+        var record_time = this.count_up ? this.time : this.msToTime(this.start_micro_sec - this.running_micro_sec)
         this.button_text = 'Start'
         clearInterval(this.job)
         this.items.unshift({
-          time: this.time,
+          time: record_time,
           name: this.prob_num
         })
         this.job = ''
         this.stop_time = new Date()
         this.button_active = false
+        this.running_micro_sec = 0
         this.$db.insert({
           name: this.prob_num,
           start: shared.formatDate(this.start_time),
           end: shared.formatDate(this.stop_time),
           details: this.comment,
-          time: this.time,
+          time: record_time,
           color: 'hsl(' + this.color_main + ',100%,35%)'
         }, (err, newrec) => { // Callback is optional
           // newrec is the newly inserted document, including its _id
@@ -203,7 +272,7 @@ export default {
       }
       // console.log(this.prob_num);
     },
-    cycle_color: function () {
+    cycle_color: function() {
       if (!this.job_cycle) {
         this.cycle_button_off = false
         this.job_cycle = setInterval(() => {
@@ -218,16 +287,27 @@ export default {
         this.cycle_button_off = true
       }
     },
-    clear_history: function () {
+    count_down_timer: function() {
+      this.running_micro_sec = this.start_micro_sec - (Math.abs(new Date() - this.start_time))
+      // console.log(this.start_micro_sec)
+      if (this.running_micro_sec <= 0) {
+        this.start()
+        dialog.showMessageBox({
+          'message': 'Time\'s Up!',
+          'buttons': ['Close']
+        })
+      }
+    },
+    clear_history: function() {
       this.items = []
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
     // },
-    msToTime: function (s) {
+    msToTime: function(s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad (n, z) {
+      function pad(n, z) {
         z = z || 2
         return ('00' + n).slice(-z)
       }
@@ -241,27 +321,31 @@ export default {
 
       return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
     },
-    focus_comment: function () {
+    focus_comment: function() {
       this.$refs.comment.focus()
     },
-    change_main_color: function () {
+    focus_input: function() {
+      // console.log('focusing timer_input')
+      this.$refs.timer_input.focus()
+    },
+    change_main_color: function() {
       document.documentElement.style.setProperty('--neon-color-primary', this.color_main)
       this.$emit('update_color')
     },
-    change_contrast: function () {
+    change_contrast: function() {
       document.documentElement.style.setProperty('--neon-degree', this.color_diff)
       this.$emit('update_color')
     },
-    mouse_down: function () {
+    mouse_down: function() {
       this.is_mouse_down = true
       // this.dragging = false; // will mess up starting timer with keydown
     },
-    mouse_move: function () {
+    mouse_move: function() {
       if (this.is_mouse_down) {
         this.dragging = true
       }
     },
-    mouse_up: function () {
+    mouse_up: function() {
       // this.dragging = false;
       setTimeout(() => this.dragging = false, 1)
       this.is_mouse_down = false
@@ -771,5 +855,12 @@ input {
   border-radius: 14px;
   height: 24px;
   width: 40px;
+}
+
+.timer-input {
+  height: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
 }
 </style>
