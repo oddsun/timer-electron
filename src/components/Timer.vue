@@ -97,7 +97,8 @@ import {
   EventBus
 } from '../event-bus.js'
 const {
-  dialog
+  dialog,
+  shell
 } = require("electron").remote
 
 export default {
@@ -292,6 +293,7 @@ export default {
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
         this.start()
+        shell.beep()
         dialog.showMessageBox({
           'message': 'Time\'s Up!',
           'buttons': ['Close']
