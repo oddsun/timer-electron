@@ -30,7 +30,8 @@
           <template v-slot:default="{ hover }"> -->
         <div id="timer-text-container" :class="{active: button_active}">
           <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
-          <v-text-field ref='timer_input' class='timer-input' v-model='time_input' :rules='rules' hide-details @keydown.enter='enter_switch'></v-text-field>
+          <v-text-field ref='timer_input' class='timer-input' v-model='time_input' hide-details @keypress='validate_input($event)' @keydown.enter='enter_switch'></v-text-field>
+          <!--  :rules='rules' -->
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->
           <!-- <v-fade-transition>
@@ -127,14 +128,14 @@ export default {
       dragging: false,
       is_mouse_down: false,
       time_input: '',
-      rules: [
-        value => !!value || 'Required.',
-        value => (value || '').length <= 6 || 'Max 6 characters',
-        value => {
-          const pattern = /^\d+$/
-          return pattern.test(value) || 'Numbers only'
-        },
-      ],
+      // rules: [
+      //   value => !!value || 'Required.',
+      //   value => (value || '').length <= 6 || 'Max 6 characters',
+      //   value => {
+      //     const pattern = /^\d+$/
+      //     return pattern.test(value) || 'Numbers only'
+      //   },
+      // ],
       start_micro_sec: 0,
       running_micro_sec: 0
     }
@@ -354,6 +355,17 @@ export default {
       // this.dragging = false;
       setTimeout(() => this.dragging = false, 1)
       this.is_mouse_down = false
+    },
+    validate_input: function(evt) {
+      evt = (evt) ? evt : window.event
+      var charCode = (evt.which) ? evt.which : evt.keycode
+      // console.log(charCode)
+      if (charCode > 31 && (charCode < 48 || charCode > 57 || this.time_input.length >= 6)) {
+        // console.log('stop event')
+        evt.preventDefault()
+      } else {
+        return true
+      }
     }
   }
 }
