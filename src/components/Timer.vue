@@ -303,10 +303,13 @@ export default {
     },
     show_alert: function() {
       remote.shell.beep()
-      remote.dialog.showMessageBox({
+      remote.dialog.showMessageBox(remote.getCurrentWindow(), {
         'message': 'Time\'s Up!',
         'buttons': ['Close']
+      }, (response) => {
+        // console.log(response)
       })
+      // console.log('hi')
     },
     clear_history: function() {
       this.items = []
