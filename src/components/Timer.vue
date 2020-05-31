@@ -261,6 +261,7 @@ export default {
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
           EventBus.$emit('send_newrec', newrec)
+          this.show_alert()
           // console.log(newrec);
           // console.log(this);
         })
@@ -293,16 +294,19 @@ export default {
       }
     },
     count_down_timer: function() {
-      this.running_micro_sec = this.start_micro_sec - (Math.abs(new Date() - this.start_time))
+      this.running_micro_sec = Math.max(this.start_micro_sec - (Math.abs(new Date() - this.start_time)), 0)
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
         this.start()
-        remote.shell.beep()
-        remote.dialog.showMessageBox({
-          'message': 'Time\'s Up!',
-          'buttons': ['Close']
-        })
+        // this.show_alert()
       }
+    },
+    show_alert: function() {
+      remote.shell.beep()
+      remote.dialog.showMessageBox({
+        'message': 'Time\'s Up!',
+        'buttons': ['Close']
+      })
     },
     clear_history: function() {
       this.items = []
