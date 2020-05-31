@@ -303,6 +303,9 @@ export default {
     },
     show_alert: function() {
       remote.shell.beep()
+      // Electron v9 doesn't have 3rd parameter, instead returns a Promise
+      // object, which is like an async object which will produce resutls
+      // when ready. Should fix when upgrading to v9.
       remote.dialog.showMessageBox(remote.getCurrentWindow(), {
         'message': 'Time\'s Up!',
         'buttons': ['Close']
