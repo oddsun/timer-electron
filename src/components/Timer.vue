@@ -632,10 +632,12 @@ span.timer-text {
   font-size: 8em;
   /* min-height: 1.5em;
   line-height: 1.5em; */
-  min-height: 0.6em;
-  line-height: 0.6em;
+  min-height: 0.7em;
+  line-height: 0.7em;
   min-width: 4em;
   margin: auto;
+  /* margin-left: 2em;
+  margin-right: 2em; */
   /* padding-top: 0.3em;
   padding-bottom: 0.3em; */
   vertical-align: middle;
@@ -656,11 +658,13 @@ span.small-text {
 }
 
 .timer-input.v-input--is-focused+.timer-text {
-  /* text-decoration: underline; */
+  /* text-decoration-line: underline; */
+  /* text-decoration-thickness: 0.1em; */
   border-bottom: 1px solid;
 }
 
 .timer-input.v-input--is-focused+.timer-text.active {
+  /* text-decoration: none; */
   border-bottom: 1px solid transparent;
 }
 
