@@ -202,7 +202,9 @@ import {
 } from 'os'
 import {
   mdiCalendarImport,
-  mdiCalendarExport
+  mdiCalendarExport,
+  mdiDownload,
+  mdiUpload
 } from '@mdi/js'
 import {
   remote
@@ -210,8 +212,8 @@ import {
 
 export default {
   data: () => ({
-    cal_import: mdiCalendarImport,
-    cal_export: mdiCalendarExport,
+    cal_import: mdiUpload, //mdiCalendarImport,
+    cal_export: mdiDownload, //mdiCalendarExport,
     today: shared.formatDate(new Date()).substring(0, 10),
     focus: shared.formatDate(new Date()).substring(0, 10),
     type: 'month',
@@ -357,7 +359,7 @@ export default {
     // ],
   }),
   computed: {
-    title () {
+    title() {
       const {
         start,
         end
@@ -391,7 +393,7 @@ export default {
       }
       return ''
     },
-    monthFormatter () {
+    monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: 'UTC',
         month: 'long'
@@ -399,7 +401,7 @@ export default {
     }
   },
   methods: {
-    import_cal () {
+    import_cal() {
       // console.log(remote.dialog);
       remote.dialog.showOpenDialog({
         properties: ['openFile']
@@ -441,7 +443,7 @@ export default {
         }
       })
     },
-    remove_id (old_event) { // this moves _id to original_id
+    remove_id(old_event) { // this moves _id to original_id
       var new_event = {}
       // delete Object.assign(new_event, old_event, {
       //   ["original_id"]: old_event["_id"]
@@ -450,7 +452,7 @@ export default {
       return new_event
       // return Object.assign({}, old_event);
     },
-    export_cal () {
+    export_cal() {
       var path = homedir() + '/Downloads/calendar.json'
       var i = 1
       while (fs.existsSync(path)) {
@@ -463,7 +465,7 @@ export default {
         // console.log(err);
       })
     },
-    save_changes () {
+    save_changes() {
       // todo: split event
       if (this.selectedEvent.name == this.selectedEvent_backup.name && this.selectedEvent.details == this.selectedEvent_backup.details) {
         this.selectedOpen = false
@@ -499,14 +501,14 @@ export default {
       // console.log(this.selectedEvent);
       this.selectedOpen = false
     },
-    force_refresh () {
+    force_refresh() {
       this.auto_grow_hack = !this.auto_grow_hack
     },
-    edit_cal_event () {
+    edit_cal_event() {
       // console.log(this.events)
       this.cal_event_edit_disabled = !this.cal_event_edit_disabled
     },
-    loadEvents () {
+    loadEvents() {
       this.$db.find({
         start: {
           $regex: /./
@@ -524,29 +526,29 @@ export default {
         this.events = docs
       })
     },
-    updateEvents (new_rec) {
+    updateEvents(new_rec) {
       this.events.push(new_rec)
       // console.log('updating');
     },
-    viewDay ({
+    viewDay({
       date
     }) {
       this.focus = date
       this.type = 'day'
     },
-    getEventColor (event) {
+    getEventColor(event) {
       return event.color
     },
-    setToday () {
+    setToday() {
       this.focus = this.today
     },
-    prev () {
+    prev() {
       this.$refs.calendar.prev()
     },
-    next () {
+    next() {
       this.$refs.calendar.next()
     },
-    showEvent ({
+    showEvent({
       nativeEvent,
       event
     }) {
@@ -567,7 +569,7 @@ export default {
 
       nativeEvent.stopPropagation()
     },
-    updateRange ({
+    updateRange({
       start,
       end
     }) {
@@ -576,16 +578,16 @@ export default {
       this.start = start
       this.end = end
     },
-    nth (d) {
-      return d > 3 && d < 21
-        ? 'th' : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
+    nth(d) {
+      return d > 3 && d < 21 ?
+        'th' : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     }
   },
-  beforeMount () {
+  beforeMount() {
     // console.log(this);
     this.loadEvents()
   },
-  mounted () {
+  mounted() {
     EventBus.$on('send_newrec', newrec => {
       // console.log('receiving');
       this.updateEvents(newrec)

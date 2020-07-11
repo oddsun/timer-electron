@@ -104,6 +104,13 @@ import {
 import {
   remote
 } from 'electron'
+import {
+  mdiChevronDoubleUp,
+  mdiChevronTripleUp,
+  mdiChevronDown,
+  mdiChevronDoubleDown,
+  mdiChevronTripleDown
+} from '@mdi/js'
 
 export default {
   name: 'timer',
