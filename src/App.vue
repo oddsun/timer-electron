@@ -51,7 +51,9 @@
 import Timer from './components/Timer'
 import Calendar from './components/Calendar'
 import {
-  mdiResize
+  mdiResize,
+  mdiArrowCollapse,
+  mdiArrowExpand
 } from '@mdi/js'
 import {
   ipcRenderer
@@ -66,7 +68,7 @@ export default {
   },
   data() {
     return {
-      resize: mdiResize,
+      resize: mdiArrowCollapse,
       tab: null,
       dark_theme: true,
       tab_color_hue: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--neon-color-primary'), 10),
@@ -108,7 +110,10 @@ export default {
       this.large_win = !this.large_win;
       if (!this.large_win) {
         this.tab = 0;
+        this.resize = mdiArrowExpand;
         // this.$refs.timer.focus();
+      } else {
+        this.resize = mdiArrowCollapse;
       }
       ipcRenderer.send('resize', this.large_win);
     }

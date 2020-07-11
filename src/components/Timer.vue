@@ -261,7 +261,9 @@ export default {
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
           EventBus.$emit('send_newrec', newrec)
-          this.show_alert()
+          if (!this.count_up) {
+            this.show_alert()
+          }
           // console.log(newrec);
           // console.log(this);
         })
@@ -603,6 +605,7 @@ div#timer-text-container {
   position: relative;
   border: 1px solid transparent;
   -webkit-transition:
+    /* transform 0s ease-in-out 0s; */
     all 0.3s ease-in-out 0s;
   border-radius: 5px;
 }
@@ -634,6 +637,7 @@ span.timer-text {
   border 1s,
   box-shadow 1s; */
     all 0.3s ease-in-out 0s;
+  /* transform 0s ease-in-out 0s; */
 }
 
 span.small-text {
