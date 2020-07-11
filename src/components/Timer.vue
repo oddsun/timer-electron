@@ -29,8 +29,8 @@
         <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
         <div id="timer-text-container" :class="{active: button_active}">
-          <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
           <v-text-field ref='timer_input' class='timer-input' v-model='time_input' hide-details @keypress='validate_input($event)' @keydown.enter='enter_switch'></v-text-field>
+          <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
           <!--  :rules='rules' -->
           <!--<p>{{ start_time }}</p>-->
           <!--<button @click="start">{{button_text}}</button>-->
@@ -135,6 +135,7 @@ export default {
       dragging: false,
       is_mouse_down: false,
       time_input: '',
+      remaining_micro_sec: 0,
       // rules: [
       //   value => !!value || 'Required.',
       //   value => (value || '').length <= 6 || 'Max 6 characters',
@@ -255,6 +256,7 @@ export default {
         this.job = ''
         this.stop_time = new Date()
         this.button_active = false
+        this.remaining_micro_sec = this.running_micro_sec
         this.running_micro_sec = 0
         this.$db.insert({
           name: this.prob_num,
@@ -268,7 +270,7 @@ export default {
           // newrec has no key called notToBeSaved since its value was undefined
           // console.log(newrec)
           EventBus.$emit('send_newrec', newrec)
-          if (!this.count_up) {
+          if (!this.count_up && this.remaining_micro_sec == 0) {
             this.show_alert()
           }
           // console.log(newrec);
@@ -628,12 +630,14 @@ span.timer-text {
   /* font-weight: bold; */
   color: var(--neon-text-highlight);
   font-size: 8em;
-  min-height: 1.5em;
-  line-height: 1.5em;
+  /* min-height: 1.5em;
+  line-height: 1.5em; */
+  min-height: 0.6em;
+  line-height: 0.6em;
   min-width: 4em;
   margin: auto;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
+  /* padding-top: 0.3em;
+  padding-bottom: 0.3em; */
   vertical-align: middle;
   border: 1px solid transparent;
   box-shadow: none;
@@ -651,10 +655,20 @@ span.small-text {
   font-size: 4em;
 }
 
+.timer-input.v-input--is-focused+.timer-text {
+  /* text-decoration: underline; */
+  border-bottom: 1px solid;
+}
+
+.timer-input.v-input--is-focused+.timer-text.active {
+  border-bottom: 1px solid transparent;
+}
+
 .timer-text.active {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
   background: transparent;
+  /* border: 1px transparent; */
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
