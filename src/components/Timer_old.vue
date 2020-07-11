@@ -1,115 +1,94 @@
 <!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container fluid fill-height pa-5 ma-0>
-  <v-row no-gutters class="fill-height" justify="space-between">
-    <v-col cols='9' text-center class='pa-0 ma-0 justify-space-between fill-height' align-self='center'>
-      <v-row class='fill-height pl-3' align-content='space-between'>
-        <v-col cols='12' class="pa-0">
-          <v-row class="d-none d-sm-flex">
-            <v-col class="pt-0 pb-0">
-              <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-divider class="border d-none d-sm-flex"></v-divider>
-          <v-row class="d-none d-sm-flex">
-            <v-col class="pt-1 pb-0">
-              <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- <v-flex class="draggable"> -->
-        <v-col cols='12'>
-          <v-row no-gutters justify='center' align='center' class='mt-md-auto fill-height' @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch">
-
-            <v-col cols="12">
-              <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
-            </v-col>
-            <v-col cols='12' justify='center' align='center' ref='timer'>
-              <!-- <v-hover @click.native="start">
+<v-container fluid fill-height pa-5 ma-0 row justify-space-between>
+  <v-layout column text-center mr-5 justify-space-between>
+    <v-flex shrink mb-2 class="d-none d-sm-flex">
+      <!-- <div class="input-wrapper"> -->
+      <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
+      <!-- <div class="divider"></div> -->
+      <!-- <v-divider class="border"></v-divider> -->
+      <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
+      <!-- <v-divider class="border"></v-divider> -->
+      <!-- </div> -->
+      <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
+    </v-flex>
+    <v-divider class="border d-none d-sm-flex"></v-divider>
+    <!-- <v-flex shrink pl-2>
+      <div class="divider"></div>
+    </v-flex> -->
+    <v-flex shrink mt-1 class="d-none d-sm-flex">
+      <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
+    </v-flex>
+    <v-flex shrink class="d-none d-sm-flex">
+      <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
+    </v-flex>
+    <!-- <v-flex class="draggable"> -->
+    <v-flex @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch">
+      <v-layout justify-center column fill-height ref='timer'>
+        <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
-              <div id="timer-text-container" :class="{active: button_active}">
-                <v-text-field ref='timer_input' class='timer-input' v-model='time_input' hide-details @keypress='validate_input($event)' @keydown.enter='enter_switch'></v-text-field>
-                <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
-                <!--  :rules='rules' -->
-                <!--<p>{{ start_time }}</p>-->
-                <!--<button @click="start">{{button_text}}</button>-->
-                <!-- <v-fade-transition>
+        <div id="timer-text-container" :class="{active: button_active}">
+          <v-text-field ref='timer_input' class='timer-input' v-model='time_input' hide-details @keypress='validate_input($event)' @keydown.enter='enter_switch'></v-text-field>
+          <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
+          <!--  :rules='rules' -->
+          <!--<p>{{ start_time }}</p>-->
+          <!--<button @click="start">{{button_text}}</button>-->
+          <!-- <v-fade-transition>
                 <v-overlay v-if="hover" absolute> -->
-                <!-- color="#036358" -->
-                <!-- <v-btn>See more info</v-btn> -->
-                <!-- <button class='timer-button' :class="{active: button_active}"></button>
+          <!-- color="#036358" -->
+          <!-- <v-btn>See more info</v-btn> -->
+          <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
               </v-fade-transition> -->
-              </div>
-              <!-- </template>
+        </div>
+        <!-- </template>
         </v-hover> -->
-            </v-col>
-
-          </v-row>
-          <!-- <v-row class="d-none d-sm-flex">
-            <v-col>
-              <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
-            </v-col>
-          </v-row> -->
-        </v-col>
-        <v-col cols='12' class="d-none d-sm-flex">
-          <!-- <v-container pa-0> -->
-          <v-row align="center" no-gutters justify='end'>
-            <!-- <v-flex> -->
-            <v-col cols='10' justify="end">
-              <v-row no-gutters>
-                <v-col>
-                  <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col>
-                  <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
-                </v-col>
-              </v-row>
-            </v-col>
-            <v-col fill-height>
-              <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
-            </v-col>
-            <!-- <v-flex shrink>
+      </v-layout>
+    </v-flex>
+    <v-flex shrink class="d-none d-sm-flex">
+      <v-layout row align-center>
+        <v-flex>
+          <v-layout fill-height column justify-end>
+            <v-flex shrink>
+              <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
+            </v-flex>
+            <v-flex shrink>
+              <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
+            </v-flex>
+          </v-layout>
+        </v-flex>
+        <v-flex shrink fill-height>
+          <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
+        </v-flex>
+        <!-- <v-flex shrink>
       <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
     </v-flex> -->
-          </v-row>
-          <!-- </v-container> -->
-        </v-col>
-      </v-row>
-      <!-- </v-row> -->
-    </v-col>
-    <v-divider vertical class="border d-none d-sm-flex"></v-divider>
-    <v-col cols='2' text-center shrink align-center justify-space-between fill-height class='ml-0 pa-0 d-none d-sm-flex'>
-      <v-row>
-        <v-col>
-          <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
-        </v-col>
-      </v-row>
-      <v-row style="overflow-y: auto; height: 0;">
-        <v-col>
-          <v-list two-line disabled dark color="transparent" width="10em">
-            <v-list-item-group>
-              <!-- use v-model="item" to highlight item-->
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-content>
-                  <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
-                  <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-col>
-      </v-row>
-      <v-row text-center>
-        <v-col>
-          <button class="glow-button" @click="clear_history">clear</button>
-        </v-col>
-      </v-row>
-    </v-col> <!-- </div> -->
-  </v-row>
+      </v-layout>
+    </v-flex>
+  </v-layout>
+  <v-divider vertical class="border d-none d-sm-flex"></v-divider>
+  <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0 class="d-none d-sm-flex">
+    <v-flex shrink>
+      <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
+    </v-flex>
+    <v-flex style="overflow-y: auto; height: 0;">
+      <v-list two-line disabled dark color="transparent" width="10em">
+        <v-list-item-group>
+          <!-- use v-model="item" to highlight item-->
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-content>
+              <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
+              <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-flex>
+    <v-flex text-center shrink>
+      <button class="glow-button" @click="clear_history">clear</button>
+    </v-flex>
+  </v-layout> <!-- </div> -->
 </v-container>
 </template>
 
