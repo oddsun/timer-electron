@@ -1,10 +1,10 @@
 <!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
 <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container fluid fill-height pa-5 ma-0>
+<v-container fluid fill-height pa-0 ma-0>
   <v-row no-gutters class="fill-height" justify="space-between">
-    <v-col cols='9' text-center class='pa-0 ma-0 justify-space-between fill-height' align-self='center'>
-      <v-row class='fill-height pl-3' align-content='space-between'>
+    <v-col cols='10' text-center class='pa-0 ma-0 justify-space-between fill-height' align-self='center'>
+      <v-row class='fill-height ma-0 pa-3 border-right' align-content='space-between'>
         <v-col cols='12' class="pa-0">
           <v-row class="d-none d-sm-flex">
             <v-col class="pt-0 pb-0">
@@ -19,12 +19,9 @@
           </v-row>
         </v-col>
         <!-- <v-flex class="draggable"> -->
-        <v-col cols='12'>
+        <v-col cols='12' class="pa-0">
           <v-row no-gutters justify='center' align='center' class='mt-md-auto fill-height' @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch">
 
-            <v-col cols="12">
-              <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
-            </v-col>
             <v-col cols='12' justify='center' align='center' ref='timer'>
               <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
@@ -46,6 +43,9 @@
         </v-hover> -->
             </v-col>
 
+            <v-col cols="12">
+              <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
+            </v-col>
           </v-row>
           <!-- <v-row class="d-none d-sm-flex">
             <v-col>
@@ -53,7 +53,7 @@
             </v-col>
           </v-row> -->
         </v-col>
-        <v-col cols='12' class="d-none d-sm-flex">
+        <v-col cols='12' class="d-none d-sm-flex pa-0">
           <!-- <v-container pa-0> -->
           <v-row align="center" no-gutters justify='end'>
             <!-- <v-flex> -->
@@ -69,7 +69,7 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col fill-height>
+            <v-col align='center' justify="center">
               <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
             </v-col>
             <!-- <v-flex shrink>
@@ -81,43 +81,43 @@
       </v-row>
       <!-- </v-row> -->
     </v-col>
-    <v-divider vertical class="border d-none d-sm-flex"></v-divider>
-    <v-col cols='2' text-center shrink align-center justify-space-between fill-height class='ml-0 pa-0 d-none d-sm-flex'>
-      <v-row class="fill-height" no-gutters align-content='space-between'>
-        <v-col cols="12" class="ml-n2">
-          <v-row>
-            <v-col justify="center" align="center" class="pt-0">
-              <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- </v-row> -->
-        <v-col cols="12">
-          <v-row style="overflow-y: auto; height: 0;" class="fill-height">
-            <v-col>
-              <v-list two-line disabled dark color="transparent" width="10em">
-                <v-list-item-group>
-                  <!-- use v-model="item" to highlight item-->
-                  <v-list-item v-for="(item, i) in items" :key="i">
-                    <v-list-item-content>
-                      <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
-                      <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
-                    </v-list-item-content>
-                  </v-list-item>
-                </v-list-item-group>
-              </v-list>
-            </v-col>
-          </v-row>
-        </v-col>
-        <v-col cols="12" class="ml-n3">
-          <v-row>
-            <v-col justify="center" align="center">
-              <button class="glow-button" @click="clear_history">clear</button>
-            </v-col>
-          </v-row>
+    <!-- <v-divider vertical class="border d-none d-sm-flex"></v-divider> -->
+    <v-col cols='2' align="center" justify="space-between" class='ml-0 pa-0 d-none d-sm-flex fill-height flex-column'>
+      <!-- <v-row class="fill-height flex-column" no-gutters align-content='space-between'>
+        <v-col cols="12" class="ml-0"> -->
+      <v-row class="ma-0 flex-grow-0 flex-shrink-1">
+        <v-col justify="center" align="center" class="pt-1">
+          <span class="timer-side-text active glow opposite text-h2">HISTORY</span>
         </v-col>
       </v-row>
-    </v-col> <!-- </div> -->
+      <!-- </v-col> -->
+      <!-- </v-row> -->
+      <!-- <v-col cols="12" class="flex-grow-1"> -->
+      <v-row style="overflow-y: auto; height: 0;" class="fill-height flex-grow-1"">
+            <v-col>
+              <v-list two-line disabled dark color=" transparent" width="10em">
+        <v-list-item-group>
+          <!-- use v-model="item" to highlight item-->
+          <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-content>
+              <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
+              <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        </v-list>
+    </v-col>
+  </v-row>
+  <!-- </v-col>
+    <v-col cols="12" class="ml-n3"> -->
+  <v-row class="flex-shrink-1 flex-grow-0">
+    <v-col justify="center" align="center">
+      <button class="glow-button" @click="clear_history">clear</button>
+    </v-col>
+  </v-row>
+  <!-- </v-col>
+  </v-row> -->
+  </v-col> <!-- </div> -->
   </v-row>
 </v-container>
 </template>
@@ -862,6 +862,11 @@ button.timer-button.active:hover:after {
 
 .border {
   border: 1px solid var(--neon-box-shadow-highlight) !important;
+  /* box-shadow: var(--neon-box-shadow); */
+}
+
+.border-right {
+  border-right: 2px solid var(--neon-box-shadow-highlight) !important;
   /* box-shadow: var(--neon-box-shadow); */
 }
 
