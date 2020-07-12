@@ -83,29 +83,38 @@
     </v-col>
     <v-divider vertical class="border d-none d-sm-flex"></v-divider>
     <v-col cols='2' text-center shrink align-center justify-space-between fill-height class='ml-0 pa-0 d-none d-sm-flex'>
-      <v-row>
-        <v-col>
-          <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
+      <v-row class="fill-height" no-gutters align-content='space-between'>
+        <v-col cols="12" class="ml-n2">
+          <v-row>
+            <v-col justify="center" align="center" class="pt-0">
+              <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
+            </v-col>
+          </v-row>
         </v-col>
-      </v-row>
-      <v-row style="overflow-y: auto; height: 0;">
-        <v-col>
-          <v-list two-line disabled dark color="transparent" width="10em">
-            <v-list-item-group>
-              <!-- use v-model="item" to highlight item-->
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-content>
-                  <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
-                  <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
+        <!-- </v-row> -->
+        <v-col cols="12">
+          <v-row style="overflow-y: auto; height: 0;" class="fill-height">
+            <v-col>
+              <v-list two-line disabled dark color="transparent" width="10em">
+                <v-list-item-group>
+                  <!-- use v-model="item" to highlight item-->
+                  <v-list-item v-for="(item, i) in items" :key="i">
+                    <v-list-item-content>
+                      <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
+                      <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list-item-group>
+              </v-list>
+            </v-col>
+          </v-row>
         </v-col>
-      </v-row>
-      <v-row text-center>
-        <v-col>
-          <button class="glow-button" @click="clear_history">clear</button>
+        <v-col cols="12" class="ml-n3">
+          <v-row>
+            <v-col justify="center" align="center">
+              <button class="glow-button" @click="clear_history">clear</button>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-col> <!-- </div> -->
