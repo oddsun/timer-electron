@@ -192,6 +192,7 @@
 </template>
 
 <script>
+// TODO: update grid
 import shared from '../shared.js'
 import {
   EventBus
