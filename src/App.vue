@@ -28,7 +28,7 @@
   </v-tabs>
   <v-tabs-items v-model="tab" :class="{'small-window': $vuetify.breakpoint.xsOnly, 'draggable': $vuetify.breakpoint.xsOnly, 'non-draggable': !$vuetify.breakpoint.xsOnly}">
     <v-tab-item>
-      <Timer @update_color="update_color" />
+      <Timer @update_color="update_color" :large_win="large_win" />
     </v-tab-item>
     <v-tab-item>
       <Calendar />
