@@ -106,7 +106,7 @@
         <v-col cols="12" class="ml-0"> -->
       <v-row class="ma-0 flex-grow-0 flex-shrink-1">
         <v-col justify="center" align="center" class="pt-1">
-          <span class="timer-side-text active opposite text-h2">HISTORY</span>
+          <span class="timer-side-text active opposite">HISTORY</span>
           <!-- can add "glow" to class for above -->
         </v-col>
       </v-row>
@@ -355,7 +355,7 @@ export default {
         }, (err, newrec) => { // Callback is optional
           // newrec is the newly inserted document, including its _id
           // newrec has no key called notToBeSaved since its value was undefined
-          // console.log(newrec)
+          console.log(err)
           EventBus.$emit('send_newrec', newrec)
           if (!this.count_up && this.remaining_micro_sec == 0) {
             this.show_alert()

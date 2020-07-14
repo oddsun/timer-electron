@@ -510,11 +510,24 @@ export default {
       this.cal_event_edit_disabled = !this.cal_event_edit_disabled
     },
     loadEvents() {
+      if (!this.start && !this.end) {
+
+        var today_date = new Date();
+        var temp_start = new Date(today_date.getFullYear(), today_date.getMonth(), 1);
+        var temp_end = new Date(today_date.getFullYear(), today_date.getMonth() + 1, 0);
+        console.log(temp_start)
+      }
+      console.log((this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00')
       this.$db.find({
-        start: {
-          $regex: /./
-          // $regex: /24/
-        },
+        $and: [{
+          start: {
+            $gt: (this.start ? this.start['date'] : temp_start['date']) + ' 00:00:00'
+          }
+        }, {
+          start: {
+            $lt: (this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00'
+          }
+        }],
         // name: "test_import v3",
         $not: {
           status: 'replaced'
@@ -523,12 +536,12 @@ export default {
         //   $ne: 'replaced'
         // }
       }, (err, docs) => {
-        // console.log(docs);
+        console.log(err);
         this.events = docs
       })
     },
     updateEvents(new_rec) {
-      this.events.push(new_rec)
+      // this.events.push(new_rec)
       // console.log('updating');
     },
     viewDay({
@@ -575,9 +588,10 @@ export default {
       end
     }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
-      // console.log(start)
+      console.log(start)
       this.start = start
       this.end = end
+      this.loadEvents()
     },
     nth(d) {
       return d > 3 && d < 21 ?
@@ -591,7 +605,9 @@ export default {
   mounted() {
     EventBus.$on('send_newrec', newrec => {
       // console.log('receiving');
-      this.updateEvents(newrec)
+      this.loadEvents() // saver to reload from database
+      // console.log(newrec);
+      // this.updateEvents(newrec)
     })
   }
 }
