@@ -460,11 +460,28 @@ export default {
         i += 1
         path = homedir() + '/Downloads/calendar_' + i + '.json'
       }
-      // console.log(path);
-      fs.writeFile(path, JSON.stringify(this.events), (err) => {
-        // throws error
-        // console.log(err);
+      this.$db.find({
+        start: {
+          $regex: /./
+          // $regex: /24/
+        },
+        // name: "test_import v3",
+        // $not: {
+        //   status: 'replaced'
+        // }
+        // status: {
+        //   $ne: 'replaced'
+        // }
+      }, (err, docs) => {
+        console.log(err);
+        // this.events = docs
+        fs.writeFile(path, JSON.stringify(docs), (err) => {
+          // throws error
+          console.log(err);
+        })
       })
+      // console.log(path);
+
     },
     save_changes() {
       // todo: split event
@@ -515,9 +532,9 @@ export default {
         var today_date = new Date();
         var temp_start = new Date(today_date.getFullYear(), today_date.getMonth(), 1);
         var temp_end = new Date(today_date.getFullYear(), today_date.getMonth() + 1, 0);
-        console.log(temp_start)
+        // console.log(temp_start)
       }
-      console.log((this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00')
+      // console.log((this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00')
       this.$db.find({
         $and: [{
           start: {
@@ -588,7 +605,7 @@ export default {
       end
     }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
-      console.log(start)
+      // console.log(start)
       this.start = start
       this.end = end
       this.loadEvents()
