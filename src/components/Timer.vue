@@ -408,8 +408,10 @@ export default {
       remote.dialog.showMessageBox(remote.getCurrentWindow(), {
         'message': 'Time\'s Up!',
         'buttons': ['Close']
-      }, (response) => {
+      }).then(result => {
         // console.log(response)
+      }).catch(err => {
+        // console.log(err)
       })
       // console.log('hi')
     },
