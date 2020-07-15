@@ -1,4 +1,6 @@
 <template>
+<!-- FIXED: day display issue: not really issue, simply some block completely
+covers another block. Can be check by setting interval_min=1 and interval_count=24*60 -->
 <v-row class="fill-height">
   <v-col class="pt-0 pb-0">
     <v-sheet height="64" dark color='transparent'>
@@ -218,8 +220,9 @@ export default {
   data: () => ({
     cal_import: mdiUpload, //mdiCalendarImport,
     cal_export: mdiDownload, //mdiCalendarExport,
-    today: shared.formatDate(new Date()).substring(0, 10),
-    focus: shared.formatDate(new Date()).substring(0, 10),
+    // today: shared.formatDate(new Date()).substring(0, 10),
+    // focus: shared.formatDate(new Date()).substring(0, 10
+    focus: '',
     type: 'month',
     typeToLabel: {
       month: 'Month',
@@ -574,7 +577,8 @@ export default {
       return event.color
     },
     setToday() {
-      this.focus = this.today
+      // this.focus = this.today
+      this.focus = ''
     },
     prev() {
       this.$refs.calendar.prev()
