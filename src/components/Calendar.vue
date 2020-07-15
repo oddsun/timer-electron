@@ -1,6 +1,6 @@
 <template>
-<v-layout fill-height>
-  <v-flex>
+<v-row class="fill-height">
+  <v-col class="pt-0 pb-0">
     <v-sheet height="64" dark color='transparent'>
       <v-toolbar flat color="transparent" dark>
         <v-btn outlined class="mr-4" @click="setToday">
@@ -32,8 +32,8 @@
           <span>Export</span>
         </v-tooltip>
         <v-menu bottom right>
-          <template v-slot:activator="{ on }">
-            <v-btn outlined v-on="on">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn outlined v-on="on" v-bind="attrs">
               <span>{{ typeToLabel[type] }}</span>
               <v-icon right>arrow_drop_down</v-icon>
             </v-btn>
@@ -56,17 +56,19 @@
       </v-toolbar>
     </v-sheet>
     <v-sheet class="fill-height-cal-sheet" color="transparent" height="688">
-      <v-calendar backgroundcolor="transparent" dark ref="calendar" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay" @click:date="viewDay"
-        @change="updateRange">
+      <v-calendar backgroundcolor="transparent" dark ref="calendar" event-overlap-mode="stack" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent"
+        @click:more="viewDay" @click:date="viewDay" @change="updateRange">
+        <!-- interval-count="1440" interval-minutes="1"> -->
       </v-calendar>
-      <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" full-width offset-x>
-        <v-card color="rgba(0,0,0,0.8)" min-width="350px" flat>
+      <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" class="full-width" max-width="450" offset-x>
+        <!-- max-height="460"> -->
+        <v-card color="rgba(0,0,0,0.8)" min-width="450px" flat>
           <v-toolbar :color="selectedEvent.color" dark>
             <!-- <v-btn icon @click="edit_cal_event">
               <v-icon>edit</v-icon>
             </v-btn> -->
             <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
-            <v-text-field hide-details solo flat background-color='transparent' v-model="selectedEvent.name"></v-text-field>
+            <v-text-field clearable hide-details solo flat background-color='transparent' v-model="selectedEvent.name"></v-text-field>
             <!-- </v-toolbar-title> -->
             <!-- <v-spacer></v-spacer>
             <v-btn icon>
@@ -77,37 +79,37 @@
             </v-btn> -->
           </v-toolbar>
           <v-card-text>
-            <v-layout column fill-height pl-3 pr-3>
-              <v-flex>
-                <v-layout row fill-height>
-                  <v-flex shrink>
+            <v-row no-gutters class="flex-column fill-height">
+              <v-col>
+                <v-row no-gutters class="fill-height">
+                  <v-col cols="2" sm="2" class="mr-3">
                     <span class="calendar-details-category">Start:</span>
-                  </v-flex>
-                  <v-flex>
+                  </v-col>
+                  <v-col>
                     <span class="calendar-details start" v-html="selectedEvent.start"></span>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex>
-                <v-layout row fill-height>
-                  <v-flex shrink>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col>
+                <v-row no-gutters class="fill-height">
+                  <v-col cols="2" class="flex-shrink-1 mr-3">
                     <span class="calendar-details-category">End:</span>
-                  </v-flex>
-                  <v-flex>
+                  </v-col>
+                  <v-col>
                     <span class="calendar-details end" v-html="selectedEvent.end"></span>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-              <v-flex>
-                <v-layout row fill-height>
-                  <v-flex shrink>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <v-col>
+                <v-row no-gutters class="fill-height">
+                  <v-col cols="2" class="flex-shrink-1 mr-3">
                     <span class="calendar-details-category">Time:</span>
-                  </v-flex>
-                  <v-flex>
+                  </v-col>
+                  <v-col class="pl-0">
                     <span class="calendar-details time" v-html="selectedEvent.time"></span>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
+                  </v-col>
+                </v-row>
+              </v-col>
               <!-- <v-flex shrink>
                     <v-layout column fill-height>
                       <v-flex shrink>
@@ -136,17 +138,18 @@
                   </v-flex>
                 </v-layout>
               </v-flex> -->
-              <v-flex>
-                <v-layout row fill-height>
-                  <v-flex shrink>
+              <v-col>
+                <v-row no-gutters class="fill-height">
+                  <v-col cols="2" class="flex-shrink-1 mr-3">
                     <span class="calendar-details-category">Notes:</span>
-                  </v-flex>
-                  <v-flex>
-                    <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" class="mt-0 pa-0"></v-textarea>
-                  </v-flex>
-                </v-layout>
-              </v-flex>
-            </v-layout>
+                  </v-col>
+                  <v-col>
+                    <!-- <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" class="mt-0 pa-0"></v-textarea> -->
+                    <v-textarea rows="4" row-height="1" clearable outlined hide-details background-color='transparent' v-model="selectedEvent.details" id="calendar-details" no-resize class="mt-0"></v-textarea>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
             <!-- <v-layout row fill-height>
               <v-flex shrink>
                 <v-layout column fill-height width="3em">
@@ -187,8 +190,8 @@
         </v-card>
       </v-menu>
     </v-sheet>
-  </v-flex>
-</v-layout>
+  </v-col>
+</v-row>
 </template>
 
 <script>
@@ -768,7 +771,8 @@ span.calendar-details,
 }
 
 .v-textarea>.v-input__control>.v-input__slot {
-  display: block;
+  /* display: block; */
+  padding: 0 12px !important;
 }
 
 .v-textarea.v-text-field--enclosed .v-text-field__slot textarea {
