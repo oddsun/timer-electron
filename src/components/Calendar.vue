@@ -58,8 +58,9 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
       </v-toolbar>
     </v-sheet>
     <v-sheet class="fill-height-cal-sheet" color="transparent" height="688">
-      <v-calendar backgroundcolor="transparent" dark ref="calendar" event-overlap-mode="stack" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent"
-        @click:more="viewDay" @click:date="viewDay" @change="updateRange">
+      <!-- overlap doesn't work because there is no overlap in timer output, think about it... -->
+      <v-calendar backgroundcolor="transparent" dark ref="calendar" event-overlap-mode="column" event-overlap-threshold="30" v-model="focus" :events="events" :event-color="getEventColor" :event-margin-bottom="3" :now="today" :type="type"
+        @click:event="showEvent" @click:more="viewDay" @click:date="viewDay" @change="updateRange">
         <!-- interval-count="1440" interval-minutes="1"> -->
       </v-calendar>
       <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" class="full-width" max-width="450" offset-x>
