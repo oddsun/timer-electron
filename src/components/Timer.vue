@@ -367,7 +367,7 @@ export default {
       //   z = z || 2
       //   return ('00' + n).slice(-z)
       // }
-
+      // console.log(this.timer_started);
       var curr_micro_sec =
         this.timer_started || this.count_up
           ? this.running_micro_sec
@@ -608,9 +608,13 @@ export default {
       this.is_mouse_down = false;
     },
     validate_input: function(evt) {
+      if (this.remaining_micro_sec) {
+        evt.preventDefault();
+        return false;
+      }
       evt = evt ? evt : window.event;
       var charCode = evt.which ? evt.which : evt.keycode;
-      // console.log(charCode)
+      // console.log(charCode);
       if (
         charCode > 31 &&
         (charCode < 48 || charCode > 57 || this.time_input.length >= 6)
@@ -633,8 +637,10 @@ export default {
       }
       if (this.count_up) {
         this.total_micro_sec_up = 0;
+      } else if (this.remaining_micro_sec) {
+        this.remaining_micro_sec = 0;
       } else {
-        this.total_micro_sec_down = 0;
+        this.time_input = "";
       }
     }
   }
