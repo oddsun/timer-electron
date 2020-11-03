@@ -44,6 +44,7 @@ async function createWindow() {
     height: 800,
     webPreferences: {
       nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      // spellcheck: true
     },
     transparent: true,
     frame: false,
