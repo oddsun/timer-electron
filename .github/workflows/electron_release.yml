@@ -5,8 +5,8 @@ name: Build Electron App (Windows)
 
 on:
   push:
-    branches: 
-      - 'releases/**'
+    tags:
+      - "v*" # matches v1.0.1, v1.2, v2, etc
 
 jobs:
   once:
