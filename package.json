@@ -2,7 +2,7 @@
   "name": "timer-electron",
   "version": "1.0.0",
   "private": true,
-  "author": "nevergami",
+  "author": "oddsun <1161465+oddsun@users.noreply.github.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
