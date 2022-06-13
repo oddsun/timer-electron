@@ -7,6 +7,9 @@ module.exports = {
       nodeIntegration: true,
       builderOptions: {
         "artifactName": "${name}-${os}-${version}.${ext}",
+        "linux": {
+          "target": "deb"
+        }
       }
     }
   },
