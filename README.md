@@ -34,4 +34,4 @@ e.g. json export
 ```
 
 ## Known bugs
-1. Top strip (i.e. TIMER, CALENDAR tab and minimize icon) is not clickable on Windows. Seems to be covered by invisible window title bar that prevents clicking.
+1. Top strip (i.e. TIMER, CALENDAR tab and minimize icon) is not clickable on Windows. Seems to be covered by invisible window title bar that prevents clicking. But these buttons can still be accessed via Tab by cycling focus.
