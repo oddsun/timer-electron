@@ -2,7 +2,7 @@
 [![GitHub license](https://img.shields.io/github/license/oddsun/timer-electron)](https://github.com/oddsun/timer-electron/blob/master/LICENSE)
 [![build](https://github.com/oddsun/timer-electron/actions/workflows/electron_release.yml/badge.svg)](https://github.com/oddsun/timer-electron/actions/workflows/electron_release.yml)
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/oddsun/timer-electron)
-
+![GitHub top language](https://img.shields.io/github/languages/top/oddsun/timer-electron)
 
 Modern cross-platform timer/countdown app written using Vuetify and ElectronJS.
 
