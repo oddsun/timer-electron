@@ -248,31 +248,31 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
 
 <script>
 // TODO: update grid
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
-import fs from "fs";
-import { homedir } from "os";
+import shared from '../shared.js'
+import { EventBus } from '../event-bus.js'
+import fs from 'fs'
+import { homedir } from 'os'
 import {
   mdiCalendarImport,
   mdiCalendarExport,
   mdiDownload,
   mdiUpload
-} from "@mdi/js";
-import { remote } from "electron";
+} from '@mdi/js'
+import { remote } from 'electron'
 
 export default {
   data: () => ({
-    cal_import: mdiUpload, //mdiCalendarImport,
-    cal_export: mdiDownload, //mdiCalendarExport,
+    cal_import: mdiUpload, // mdiCalendarImport,
+    cal_export: mdiDownload, // mdiCalendarExport,
     // today: shared.formatDate(new Date()).substring(0, 10),
     // focus: shared.formatDate(new Date()).substring(0, 10
-    focus: "",
-    type: "month",
+    focus: '',
+    type: 'month',
     typeToLabel: {
-      month: "Month",
-      week: "Week",
-      day: "Day",
-      "4day": "4 Days"
+      month: 'Month',
+      week: 'Week',
+      day: 'Day',
+      '4day': '4 Days'
     },
     start: null,
     end: null,
@@ -410,56 +410,56 @@ export default {
     // ],
   }),
   computed: {
-    title() {
-      const { start, end } = this;
+    title () {
+      const { start, end } = this
       // console.log(this)
       // console.log(start)
       // console.log(end)
       if (!start || !end) {
-        return "";
+        return ''
       }
 
-      const startMonth = this.monthFormatter(start);
-      const endMonth = this.monthFormatter(end);
-      const suffixMonth = startMonth === endMonth ? "" : endMonth;
+      const startMonth = this.monthFormatter(start)
+      const endMonth = this.monthFormatter(end)
+      const suffixMonth = startMonth === endMonth ? '' : endMonth
 
-      const startYear = start.year;
-      const endYear = end.year;
-      const suffixYear = startYear === endYear ? "" : endYear;
+      const startYear = start.year
+      const endYear = end.year
+      const suffixYear = startYear === endYear ? '' : endYear
 
-      const startDay = start.day + this.nth(start.day);
-      const endDay = end.day + this.nth(end.day);
+      const startDay = start.day + this.nth(start.day)
+      const endDay = end.day + this.nth(end.day)
 
       switch (this.type) {
-        case "month":
-          return `${startMonth} ${startYear}`;
-        case "week":
-        case "4day":
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
-        case "day":
-          return `${startMonth} ${startDay} ${startYear}`;
+        case 'month':
+          return `${startMonth} ${startYear}`
+        case 'week':
+        case '4day':
+          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`
+        case 'day':
+          return `${startMonth} ${startDay} ${startYear}`
       }
-      return "";
+      return ''
     },
-    monthFormatter() {
+    monthFormatter () {
       return this.$refs.calendar.getFormatter({
-        timeZone: "UTC",
-        month: "long"
-      });
+        timeZone: 'UTC',
+        month: 'long'
+      })
     }
   },
   methods: {
-    import_cal() {
+    import_cal () {
       // console.log(remote.dialog);
       remote.dialog.showOpenDialog(
         {
-          properties: ["openFile"]
+          properties: ['openFile']
         },
         files => {
           if (files != undefined && files.length === 1) {
             // console.log(files);
             fs.readFile(files[0], (err, data) => {
-              var imported_events = JSON.parse(data);
+              var imported_events = JSON.parse(data)
               // var new_event = this.remove_id(imported_events[0]);
               // console.log(new_event);
               // console.log(imported_events[0]);
@@ -469,7 +469,7 @@ export default {
               // console.log(imported_events);
               // var mod_events = [];
               for (const imported_event of imported_events) {
-                const new_event = this.remove_id(imported_event); // changes event before callback
+                const new_event = this.remove_id(imported_event) // changes event before callback
                 // console.log(new_event);
                 this.$db.find(new_event, (err, docs) => {
                   // console.log(err);
@@ -480,36 +480,36 @@ export default {
                     this.$db.insert(new_event, (err, newrec) => {
                       // console.log(err);
                       // console.log(newrec);
-                      this.loadEvents();
-                    });
+                      this.loadEvents()
+                    })
                   }
-                });
+                })
                 // this.$db.insert(this.remove_id(imported_event), (err, newrec) => {
                 //   console.log(err);
                 //   console.log(newrec);
                 // });
               }
-            });
+            })
           }
         }
-      );
+      )
     },
-    remove_id(old_event) {
+    remove_id (old_event) {
       // this moves _id to original_id
-      var new_event = {};
+      var new_event = {}
       // delete Object.assign(new_event, old_event, {
       //   ["original_id"]: old_event["_id"]
       // })["_id"];
-      delete Object.assign(new_event, old_event)._id;
-      return new_event;
+      delete Object.assign(new_event, old_event)._id
+      return new_event
       // return Object.assign({}, old_event);
     },
-    export_cal() {
-      var path = homedir() + "/Downloads/calendar.json";
-      var i = 1;
+    export_cal () {
+      var path = homedir() + '/Downloads/calendar.json'
+      var i = 1
       while (fs.existsSync(path)) {
-        i += 1;
-        path = homedir() + "/Downloads/calendar_" + i + ".json";
+        i += 1
+        path = homedir() + '/Downloads/calendar_' + i + '.json'
       }
       this.$db.find(
         {
@@ -526,32 +526,32 @@ export default {
           // }
         },
         (err, docs) => {
-          console.log(err);
+          console.log(err)
           // this.events = docs
           fs.writeFile(path, JSON.stringify(docs), err => {
             // throws error
-            console.log(err);
-          });
+            console.log(err)
+          })
         }
-      );
+      )
       // console.log(path);
     },
-    save_changes() {
+    save_changes () {
       // todo: split event
       if (
         this.selectedEvent.name == this.selectedEvent_backup.name &&
         this.selectedEvent.details == this.selectedEvent_backup.details
       ) {
-        this.selectedOpen = false;
+        this.selectedOpen = false
         // console.log("nothing changed")
-        return;
+        return
       }
-      var new_event = {};
+      var new_event = {}
       delete Object.assign(new_event, this.selectedEvent, {
         original_id: this.selectedEvent._id
-      })._id;
+      })._id
       this.$db.insert(new_event, (err, newrec) => {
-        new_event = newrec;
+        new_event = newrec
         // console.log(new_event)
         this.$db.update(
           {
@@ -559,13 +559,13 @@ export default {
           },
           {
             $set: {
-              status: "replaced",
+              status: 'replaced',
               new_id: new_event._id
             }
           },
           {},
           (err, numReplaced) => {}
-        );
+        )
         // this.$db.find({
         //   status: "replaced"
         // }, function(err, docs) {
@@ -573,31 +573,31 @@ export default {
         //   // If no document is found, docs is equal to []
         //   console.log(docs)
         // });
-      });
+      })
       // console.log(new_event);
       // console.log(this.selectedEvent);
-      this.selectedOpen = false;
+      this.selectedOpen = false
     },
-    force_refresh() {
-      this.auto_grow_hack = !this.auto_grow_hack;
+    force_refresh () {
+      this.auto_grow_hack = !this.auto_grow_hack
     },
-    edit_cal_event() {
+    edit_cal_event () {
       // console.log(this.events)
-      this.cal_event_edit_disabled = !this.cal_event_edit_disabled;
+      this.cal_event_edit_disabled = !this.cal_event_edit_disabled
     },
-    loadEvents() {
+    loadEvents () {
       if (!this.start && !this.end) {
-        var today_date = new Date();
+        var today_date = new Date()
         var temp_start = new Date(
           today_date.getFullYear(),
           today_date.getMonth(),
           1
-        );
+        )
         var temp_end = new Date(
           today_date.getFullYear(),
           today_date.getMonth() + 1,
           0
-        );
+        )
         // console.log(temp_start)
       }
       // console.log((this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00')
@@ -607,96 +607,96 @@ export default {
             {
               start: {
                 $gt:
-                  (this.start ? this.start["date"] : temp_start["date"]) +
-                  " 00:00:00"
+                  (this.start ? this.start.date : temp_start.date) +
+                  ' 00:00:00'
               }
             },
             {
               start: {
                 $lt:
-                  (this.end ? this.end["date"] : temp_end["date"]) + " 30:00:00"
+                  (this.end ? this.end.date : temp_end.date) + ' 30:00:00'
               }
             }
           ],
           // name: "test_import v3",
           $not: {
-            status: "replaced"
+            status: 'replaced'
           }
           // status: {
           //   $ne: 'replaced'
           // }
         },
         (err, docs) => {
-          console.log(err);
-          this.events = docs;
+          console.log(err)
+          this.events = docs
         }
-      );
+      )
     },
-    updateEvents(new_rec) {
+    updateEvents (new_rec) {
       // this.events.push(new_rec)
       // console.log('updating');
     },
-    viewDay({ date }) {
-      this.focus = date;
-      this.type = "day";
+    viewDay ({ date }) {
+      this.focus = date
+      this.type = 'day'
     },
-    getEventColor(event) {
-      return event.color;
+    getEventColor (event) {
+      return event.color
     },
-    setToday() {
+    setToday () {
       // this.focus = this.today
-      this.focus = "";
+      this.focus = ''
     },
-    prev() {
-      this.$refs.calendar.prev();
+    prev () {
+      this.$refs.calendar.prev()
     },
-    next() {
-      this.$refs.calendar.next();
+    next () {
+      this.$refs.calendar.next()
     },
-    showEvent({ nativeEvent, event }) {
+    showEvent ({ nativeEvent, event }) {
       const open = () => {
-        this.selectedEvent = event;
-        Object.assign(this.selectedEvent_backup, event);
-        this.selectedElement = nativeEvent.target;
-        setTimeout(() => (this.selectedOpen = true), 10);
+        this.selectedEvent = event
+        Object.assign(this.selectedEvent_backup, event)
+        this.selectedElement = nativeEvent.target
+        setTimeout(() => (this.selectedOpen = true), 10)
         // this.force_refresh()
-      };
-
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        setTimeout(open, 10);
-      } else {
-        open();
       }
 
-      nativeEvent.stopPropagation();
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        setTimeout(open, 10)
+      } else {
+        open()
+      }
+
+      nativeEvent.stopPropagation()
     },
-    updateRange({ start, end }) {
+    updateRange ({ start, end }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
       // console.log(start)
-      this.start = start;
-      this.end = end;
-      this.loadEvents();
+      this.start = start
+      this.end = end
+      this.loadEvents()
     },
-    nth(d) {
+    nth (d) {
       return d > 3 && d < 21
-        ? "th"
-        : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
+        ? 'th'
+        : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     }
   },
-  beforeMount() {
+  beforeMount () {
     // console.log(this);
-    this.loadEvents();
+    this.loadEvents()
   },
-  mounted() {
-    EventBus.$on("send_newrec", newrec => {
+  mounted () {
+    EventBus.$on('send_newrec', newrec => {
       // console.log('receiving');
-      this.loadEvents(); // saver to reload from database
+      this.loadEvents() // saver to reload from database
       // console.log(newrec);
       // this.updateEvents(newrec)
-    });
+    })
   }
-};
+}
 </script>
 
 <style>

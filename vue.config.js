@@ -6,9 +6,9 @@ module.exports = {
     electronBuilder: {
       nodeIntegration: true,
       builderOptions: {
-        "artifactName": "${name}-${os}-${version}.${ext}",
-        "linux": {
-          "target": "deb"
+        artifactName: '${name}-${os}-${version}.${ext}',
+        linux: {
+          target: 'deb'
         }
       }
     }

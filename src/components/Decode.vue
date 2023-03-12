@@ -11,7 +11,7 @@
 
 <script>
 export default {
-  name: "decode",
+  name: 'decode',
   props: {
     letter: String,
     decoded: String
@@ -22,5 +22,5 @@ export default {
   //     return this.decoded;
   //   }
   // }
-};
+}
 </script>

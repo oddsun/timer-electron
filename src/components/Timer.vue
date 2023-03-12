@@ -256,13 +256,13 @@
 </template>
 
 <script>
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
+import shared from '../shared.js'
+import { EventBus } from '../event-bus.js'
 // const {
 //   dialog,
 //   shell
 // } = require("electron").remote
-import { remote } from "electron";
+import { remote } from 'electron'
 import {
   mdiChevronDoubleUp,
   mdiChevronTripleUp,
@@ -273,25 +273,25 @@ import {
   mdiPause,
   mdiPlay,
   mdiRefresh
-} from "@mdi/js";
+} from '@mdi/js'
 
 export default {
-  name: "timer",
+  name: 'timer',
   props: {
     large_win: Boolean
   },
-  data() {
+  data () {
     return {
       // time: '00:00:00',
-      start_time: "",
-      job: "",
-      job_cycle: "",
-      button_text: "Start",
-      stop_time: "",
+      start_time: '',
+      job: '',
+      job_cycle: '',
+      button_text: 'Start',
+      stop_time: '',
       button_active: false,
-      prob_num: "",
+      prob_num: '',
       items: [],
-      comment: "",
+      comment: '',
       color_main: 75, // 130, 90, 90, 75, 130, 50, 120
       color_diff: 60, // -235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
@@ -300,8 +300,8 @@ export default {
       timer_started: false,
       dragging: false,
       is_mouse_down: false,
-      time_input: "",
-      stored_time_input: "",
+      time_input: '',
+      stored_time_input: '',
       remaining_micro_sec: 0,
       total_micro_sec_up: 0,
       total_micro_sec_down: 0,
@@ -320,49 +320,49 @@ export default {
       // start_stop_icon: mdiPlay,
       pause_icon: mdiPause,
       refresh_icon: mdiRefresh
-    };
+    }
   },
   computed: {
-    switch_label: function() {
-      return this.count_up ? "Count Up" : "Count Down";
+    switch_label: function () {
+      return this.count_up ? 'Count Up' : 'Count Down'
     },
-    slider_color: function() {
+    slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
       // } else {
       //   this.temp_color = this.color_diff + this.color_diff;
       // }
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color: function() {
-      return "hsl(" + this.color_main + ", 100%, 85%)";
+    track_color: function () {
+      return 'hsl(' + this.color_main + ', 100%, 85%)'
     },
-    slider_color_diff: function() {
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+    slider_color_diff: function () {
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color_diff: function() {
+    track_color_diff: function () {
       return (
-        "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)"
-      );
+        'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
+      )
     },
-    micro_sec: function() {
+    micro_sec: function () {
       // var n = time_input.length
       // if (n == 0) {
       //   return 0
       // }
       if (this.remaining_micro_sec) {
-        return this.remaining_micro_sec;
+        return this.remaining_micro_sec
       }
-      var sec = this.time_input.slice(-2);
-      var min = this.time_input.slice(-4, -2);
-      var hr = this.time_input.slice(-6, -4);
+      var sec = this.time_input.slice(-2)
+      var min = this.time_input.slice(-4, -2)
+      var hr = this.time_input.slice(-6, -4)
       return (
         (parseInt(hr) || 0) * 3600000 +
         (parseInt(min) || 0) * 60000 +
         (parseInt(sec) || 0) * 1000
-      );
+      )
     },
-    time: function() {
+    time: function () {
       // function pad(n, z) {
       //   z = z || 2
       //   return ('00' + n).slice(-z)
@@ -371,12 +371,12 @@ export default {
       var curr_micro_sec =
         this.timer_started || this.count_up
           ? this.running_micro_sec
-          : this.micro_sec;
+          : this.micro_sec
       curr_micro_sec += this.count_up
         ? this.total_micro_sec_up
-        : -this.total_micro_sec_down;
+        : -this.total_micro_sec_down
 
-      return this.msToTime(curr_micro_sec);
+      return this.msToTime(curr_micro_sec)
       // var ms = curr_micro_sec % 1000
       // var s = (curr_micro_sec - ms) / 1000
       // var secs = s % 60
@@ -387,11 +387,11 @@ export default {
       // return pad(hrs) + ':' + pad(mins) + ':' + pad(secs)
     },
 
-    start_stop_icon: function() {
+    start_stop_icon: function () {
       if (this.timer_started) {
-        return mdiStop;
+        return mdiStop
       }
-      return mdiPlay;
+      return mdiPlay
     }
     // time_curr_session: function() {
     //   var curr_micro_sec = this.timer_started || this.count_up ? this.running_micro_sec : this.micro_sec
@@ -399,73 +399,73 @@ export default {
     // }
   },
   watch: {
-    color_main: function() {
-      this.change_main_color();
+    color_main: function () {
+      this.change_main_color()
     }
   },
   methods: {
-    start_switch: function() {
+    start_switch: function () {
       if (this.count_up || this.timer_started) {
-        this.start();
+        this.start()
       } else {
-        this.focus_input();
+        this.focus_input()
       }
     },
-    enter_switch: function() {
+    enter_switch: function () {
       if (!this.count_up) {
         if (!this.timer_started && !this.micro_sec) {
-          return;
+          return
         }
-        this.start();
+        this.start()
       }
     },
-    start: function(is_stop = false) {
+    start: function (is_stop = false) {
       // console.log('starting_timer')
       if (this.dragging) {
-        return;
+        return
       }
       if (!this.job) {
-        this.timer_started = true;
-        this.start_time = new Date();
+        this.timer_started = true
+        this.start_time = new Date()
         if (!this.count_up) {
-          this.start_micro_sec = this.micro_sec - this.total_micro_sec_down;
-          this.running_micro_sec = this.start_micro_sec;
+          this.start_micro_sec = this.micro_sec - this.total_micro_sec_down
+          this.running_micro_sec = this.start_micro_sec
         }
         this.job = setInterval(() => {
           if (this.count_up) {
-            this.running_micro_sec = Math.abs(new Date() - this.start_time);
+            this.running_micro_sec = Math.abs(new Date() - this.start_time)
           } else {
-            this.count_down_timer();
+            this.count_down_timer()
           }
           // this.time = this.msToTime(Math.abs(new Date() - this.start_time))
           // console.log(this.time);
-        }, 1);
-        this.button_text = "Stop";
-        this.button_active = true;
+        }, 1)
+        this.button_text = 'Stop'
+        this.button_active = true
         if (!this.job_cycle) {
-          this.cycle_color();
+          this.cycle_color()
         }
       } else {
-        this.timer_started = false;
+        this.timer_started = false
         var record_time = this.count_up
           ? this.msToTime(this.running_micro_sec)
-          : this.msToTime(this.start_micro_sec - this.running_micro_sec);
-        this.button_text = "Start";
-        clearInterval(this.job);
+          : this.msToTime(this.start_micro_sec - this.running_micro_sec)
+        this.button_text = 'Start'
+        clearInterval(this.job)
         this.items.unshift({
           time: record_time,
           name: this.prob_num
-        });
-        this.job = "";
-        this.stop_time = new Date();
-        this.button_active = false;
+        })
+        this.job = ''
+        this.stop_time = new Date()
+        this.button_active = false
         if (this.count_up) {
-          this.total_micro_sec_up += this.running_micro_sec;
+          this.total_micro_sec_up += this.running_micro_sec
         } else {
-          this.remaining_micro_sec = this.running_micro_sec;
+          this.remaining_micro_sec = this.running_micro_sec
         }
         // this.remaining_micro_sec = this.running_micro_sec
-        this.running_micro_sec = 0;
+        this.running_micro_sec = 0
         this.$db.insert(
           {
             name: this.prob_num,
@@ -473,21 +473,21 @@ export default {
             end: shared.formatDate(this.stop_time),
             details: this.comment,
             time: record_time,
-            color: "hsl(" + this.color_main + ",100%,35%)"
+            color: 'hsl(' + this.color_main + ',100%,35%)'
           },
           (err, newrec) => {
             // Callback is optional
             // newrec is the newly inserted document, including its _id
             // newrec has no key called notToBeSaved since its value was undefined
-            console.log(err);
-            EventBus.$emit("send_newrec", newrec);
+            console.log(err)
+            EventBus.$emit('send_newrec', newrec)
             if (!this.count_up && this.remaining_micro_sec == 0) {
-              this.show_alert();
+              this.show_alert()
             }
             // console.log(newrec);
             // console.log(this);
           }
-        );
+        )
         // this.$db.find({
         //   name: {
         //     $regex: /test/
@@ -497,41 +497,41 @@ export default {
         //   // If no document is found, docs is equal to []
         //   // console.log(docs)
         // });
-        this.$refs.name.focus();
+        this.$refs.name.focus()
       }
       // console.log(this.prob_num);
     },
-    cycle_color: function() {
+    cycle_color: function () {
       if (!this.job_cycle) {
-        this.cycle_button_off = false;
+        this.cycle_button_off = false
         this.job_cycle = setInterval(() => {
           this.cycle_delta =
             this.color_main > 359 || this.color_main <= 0
               ? -this.cycle_delta
-              : this.cycle_delta;
-          this.color_main = this.color_main + this.cycle_delta;
+              : this.cycle_delta
+          this.color_main = this.color_main + this.cycle_delta
           // console.log(this.time);
           // console.log(this.color_main);
-        }, 5000);
+        }, 5000)
       } else {
-        clearInterval(this.job_cycle);
-        this.job_cycle = "";
-        this.cycle_button_off = true;
+        clearInterval(this.job_cycle)
+        this.job_cycle = ''
+        this.cycle_button_off = true
       }
     },
-    count_down_timer: function() {
+    count_down_timer: function () {
       this.running_micro_sec = Math.max(
         this.start_micro_sec - Math.abs(new Date() - this.start_time),
         0
-      );
+      )
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
-        this.start();
+        this.start()
         // this.show_alert()
       }
     },
-    show_alert: function() {
-      remote.shell.beep();
+    show_alert: function () {
+      remote.shell.beep()
       // FIXME:
       // Electron v9 doesn't have 3rd parameter, instead returns a Promise
       // object, which is like an async object which will produce resutls
@@ -539,112 +539,112 @@ export default {
       remote.dialog
         .showMessageBox(remote.getCurrentWindow(), {
           message: "Time's Up!",
-          buttons: ["Close"]
+          buttons: ['Close']
         })
         .then(result => {
           // console.log(response)
         })
         .catch(err => {
           // console.log(err)
-        });
+        })
       // console.log('hi')
     },
-    clear_history: function() {
-      this.items = [];
+    clear_history: function () {
+      this.items = []
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
     // },
-    msToTime: function(s) {
+    msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad(n, z) {
-        z = z || 2;
-        return ("00" + n).slice(-z);
+      function pad (n, z) {
+        z = z || 2
+        return ('00' + n).slice(-z)
       }
 
-      var ms = s % 1000;
-      s = (s - ms) / 1000;
-      var secs = s % 60;
-      s = (s - secs) / 60;
-      var mins = s % 60;
-      var hrs = (s - mins) / 60;
+      var ms = s % 1000
+      s = (s - ms) / 1000
+      var secs = s % 60
+      s = (s - secs) / 60
+      var mins = s % 60
+      var hrs = (s - mins) / 60
 
-      return pad(hrs) + ":" + pad(mins) + ":" + pad(secs); // + '.' + pad(ms, 3);
+      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
     },
-    focus_comment: function() {
-      this.$refs.comment.focus();
+    focus_comment: function () {
+      this.$refs.comment.focus()
     },
-    focus_input: function() {
+    focus_input: function () {
       // console.log('focusing timer_input')
-      this.$refs.timer_input.focus();
+      this.$refs.timer_input.focus()
     },
-    change_main_color: function() {
+    change_main_color: function () {
       document.documentElement.style.setProperty(
-        "--neon-color-primary",
+        '--neon-color-primary',
         this.color_main
-      );
-      this.$emit("update_color");
+      )
+      this.$emit('update_color')
     },
-    change_contrast: function() {
+    change_contrast: function () {
       document.documentElement.style.setProperty(
-        "--neon-degree",
+        '--neon-degree',
         this.color_diff
-      );
-      this.$emit("update_color");
+      )
+      this.$emit('update_color')
     },
-    mouse_down: function() {
-      this.is_mouse_down = true;
+    mouse_down: function () {
+      this.is_mouse_down = true
       // this.dragging = false; // will mess up starting timer with keydown
     },
-    mouse_move: function() {
+    mouse_move: function () {
       if (this.is_mouse_down) {
-        this.dragging = true;
+        this.dragging = true
       }
     },
-    mouse_up: function() {
+    mouse_up: function () {
       // this.dragging = false;
-      setTimeout(() => (this.dragging = false), 1);
-      this.is_mouse_down = false;
+      setTimeout(() => (this.dragging = false), 1)
+      this.is_mouse_down = false
     },
-    validate_input: function(evt) {
+    validate_input: function (evt) {
       if (this.remaining_micro_sec) {
-        evt.preventDefault();
-        return false;
+        evt.preventDefault()
+        return false
       }
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keycode;
+      evt = evt || window.event
+      var charCode = evt.which ? evt.which : evt.keycode
       // console.log(charCode);
       if (
         charCode > 31 &&
         (charCode < 48 || charCode > 57 || this.time_input.length >= 6)
       ) {
         // console.log('stop event')
-        evt.preventDefault();
+        evt.preventDefault()
       } else {
-        return true;
+        return true
       }
     },
-    toggle_up_down: function() {
+    toggle_up_down: function () {
       if (this.timer_started) {
-        return;
+        return
       }
-      this.count_up = !this.count_up;
+      this.count_up = !this.count_up
     },
-    clear_timer: function() {
+    clear_timer: function () {
       if (this.timer_started) {
-        return;
+        return
       }
       if (this.count_up) {
-        this.total_micro_sec_up = 0;
+        this.total_micro_sec_up = 0
       } else if (this.remaining_micro_sec) {
-        this.remaining_micro_sec = 0;
+        this.remaining_micro_sec = 0
       } else {
-        this.time_input = "";
+        this.time_input = ''
       }
     }
   }
-};
+}
 </script>
 
 <style>
