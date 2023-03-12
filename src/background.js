@@ -43,7 +43,8 @@ async function createWindow () {
     width: 1000,
     height: 800,
     webPreferences: {
-      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION
+      nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+      contextIsolation: !process.env.ELECTRON_NODE_INTEGRATION,
       // spellcheck: true
     },
     transparent: true,
