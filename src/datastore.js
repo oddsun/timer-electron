@@ -4,15 +4,15 @@ import { ipcRenderer } from 'electron'
 
 
 export default ipcRenderer.invoke('getPath').then(
-  (dataPath)=> { 
+  (dataPath) => {
     console.log(path.join(dataPath, 'timer.db'))
     return new Datastore({
-    autoload: true,
-    timerstampData: true,
-    // filename: path.join(process.env.NODE_ENV !== 'production' ? '.' : remote.app.getPath('userData'), 'data/timer.db')
-    filename: path.join(dataPath, 'timer.db')
-  })
-}
+      autoload: true,
+      timerstampData: true,
+      // filename: path.join(process.env.NODE_ENV !== 'production' ? '.' : remote.app.getPath('userData'), 'data/timer.db')
+      filename: path.join(dataPath, 'timer.db')
+    })
+  }
 )
 
 // new Datastore({

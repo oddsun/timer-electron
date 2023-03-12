@@ -19,9 +19,9 @@ import db from './datastore'
 // })
 
 Vue.config.productionTip = false
-db.then((db_instance) => { 
+db.then((db_instance) => {
   console.log(db_instance)
-  Vue.prototype.$db = db_instance 
+  Vue.prototype.$db = db_instance
 })
 
 new Vue({
