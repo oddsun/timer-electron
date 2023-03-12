@@ -9,7 +9,7 @@ import 'typeface-roboto/index.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 // import '@mdi/font/css/materialdesignicons.css'
 
-// import db from './datastore'
+import db from './datastore'
 
 // const Datastore = require('nedb')
 // const db = new Datastore({
@@ -19,7 +19,10 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 // })
 
 Vue.config.productionTip = false
-// Vue.prototype.$db = db
+db.then((db_instance) => { 
+  console.log(db_instance)
+  Vue.prototype.$db = db_instance 
+})
 
 new Vue({
   vuetify,
