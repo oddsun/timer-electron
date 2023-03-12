@@ -9,10 +9,10 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
             Today
           </v-btn>
           <v-btn fab text small @click="prev">
-            <v-icon small>arrow_back_ios</v-icon>
+            <v-icon left>{{ cal_left }}</v-icon>
           </v-btn>
           <v-btn fab text small @click="next">
-            <v-icon small>arrow_forward_ios</v-icon>
+            <v-icon left> {{ cal_right }}</v-icon>
           </v-btn>
           <v-toolbar-title>{{ title }}</v-toolbar-title>
           <v-spacer></v-spacer>
@@ -37,7 +37,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
             <template v-slot:activator="{ on, attrs }">
               <v-btn outlined v-on="on" v-bind="attrs">
                 <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>arrow_drop_down</v-icon>
+                <v-icon right>{{ menu_down }}</v-icon>
               </v-btn>
             </template>
             <v-list>
@@ -59,33 +59,14 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
       </v-sheet>
       <v-sheet class="fill-height-cal-sheet" color="transparent" height="688">
         <!-- overlap doesn't work because there is no overlap in timer output, think about it... -->
-        <v-calendar
-          backgroundcolor="transparent"
-          dark
-          ref="calendar"
-          event-overlap-mode="column"
-          event-overlap-threshold="30"
-          v-model="focus"
-          :events="events"
-          :event-color="getEventColor"
-          :event-margin-bottom="3"
-          :now="today"
-          :type="type"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-          @change="updateRange"
-        >
+        <v-calendar backgroundcolor="transparent" dark ref="calendar" event-overlap-mode="column"
+          event-overlap-threshold="30" v-model="focus" :events="events" :event-color="getEventColor"
+          :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay"
+          @click:date="viewDay" @change="updateRange">
           <!-- interval-count="1440" interval-minutes="1"> -->
         </v-calendar>
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          class="full-width"
-          max-width="450"
-          offset-x
-        >
+        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" class="full-width"
+          max-width="450" offset-x>
           <!-- max-height="460"> -->
           <v-card color="rgba(0,0,0,0.8)" min-width="450px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
@@ -93,14 +74,8 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
               <v-icon>edit</v-icon>
             </v-btn> -->
               <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
-              <v-text-field
-                clearable
-                hide-details
-                solo
-                flat
-                background-color="transparent"
-                v-model="selectedEvent.name"
-              ></v-text-field>
+              <v-text-field clearable hide-details solo flat background-color="transparent"
+                v-model="selectedEvent.name"></v-text-field>
               <!-- </v-toolbar-title> -->
               <!-- <v-spacer></v-spacer>
             <v-btn icon>
@@ -118,10 +93,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">Start:</span>
                     </v-col>
                     <v-col>
-                      <span
-                        class="calendar-details start"
-                        v-html="selectedEvent.start"
-                      ></span>
+                      <span class="calendar-details start" v-html="selectedEvent.start"></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -131,10 +103,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">End:</span>
                     </v-col>
                     <v-col>
-                      <span
-                        class="calendar-details end"
-                        v-html="selectedEvent.end"
-                      ></span>
+                      <span class="calendar-details end" v-html="selectedEvent.end"></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -144,10 +113,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">Time:</span>
                     </v-col>
                     <v-col class="pl-0">
-                      <span
-                        class="calendar-details time"
-                        v-html="selectedEvent.time"
-                      ></span>
+                      <span class="calendar-details time" v-html="selectedEvent.time"></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -186,18 +152,8 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                     </v-col>
                     <v-col>
                       <!-- <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" class="mt-0 pa-0"></v-textarea> -->
-                      <v-textarea
-                        rows="4"
-                        row-height="1"
-                        clearable
-                        outlined
-                        hide-details
-                        background-color="transparent"
-                        v-model="selectedEvent.details"
-                        id="calendar-details"
-                        no-resize
-                        class="mt-0"
-                      ></v-textarea>
+                      <v-textarea rows="4" row-height="1" clearable outlined hide-details background-color="transparent"
+                        v-model="selectedEvent.details" id="calendar-details" no-resize class="mt-0"></v-textarea>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -255,6 +211,9 @@ import { homedir } from 'os'
 import {
   mdiCalendarImport,
   mdiCalendarExport,
+  mdiChevronLeft,
+  mdiChevronRight,
+  mdiChevronDown,
   mdiDownload,
   mdiUpload
 } from '@mdi/js'
@@ -262,6 +221,9 @@ import { remote } from 'electron'
 
 export default {
   data: () => ({
+    menu_down: mdiChevronDown,
+    cal_left: mdiChevronLeft,
+    cal_right: mdiChevronRight,
     cal_import: mdiUpload, // mdiCalendarImport,
     cal_export: mdiDownload, // mdiCalendarExport,
     // today: shared.formatDate(new Date()).substring(0, 10),
@@ -410,7 +372,7 @@ export default {
     // ],
   }),
   computed: {
-    title () {
+    title() {
       const { start, end } = this
       // console.log(this)
       // console.log(start)
@@ -441,7 +403,7 @@ export default {
       }
       return ''
     },
-    monthFormatter () {
+    monthFormatter() {
       return this.$refs.calendar.getFormatter({
         timeZone: 'UTC',
         month: 'long'
@@ -449,7 +411,7 @@ export default {
     }
   },
   methods: {
-    import_cal () {
+    import_cal() {
       // console.log(remote.dialog);
       remote.dialog.showOpenDialog(
         {
@@ -494,7 +456,7 @@ export default {
         }
       )
     },
-    remove_id (old_event) {
+    remove_id(old_event) {
       // this moves _id to original_id
       var new_event = {}
       // delete Object.assign(new_event, old_event, {
@@ -504,7 +466,7 @@ export default {
       return new_event
       // return Object.assign({}, old_event);
     },
-    export_cal () {
+    export_cal() {
       var path = homedir() + '/Downloads/calendar.json'
       var i = 1
       while (fs.existsSync(path)) {
@@ -536,7 +498,7 @@ export default {
       )
       // console.log(path);
     },
-    save_changes () {
+    save_changes() {
       // todo: split event
       if (
         this.selectedEvent.name == this.selectedEvent_backup.name &&
@@ -564,7 +526,7 @@ export default {
             }
           },
           {},
-          (err, numReplaced) => {}
+          (err, numReplaced) => { }
         )
         // this.$db.find({
         //   status: "replaced"
@@ -578,14 +540,14 @@ export default {
       // console.log(this.selectedEvent);
       this.selectedOpen = false
     },
-    force_refresh () {
+    force_refresh() {
       this.auto_grow_hack = !this.auto_grow_hack
     },
-    edit_cal_event () {
+    edit_cal_event() {
       // console.log(this.events)
       this.cal_event_edit_disabled = !this.cal_event_edit_disabled
     },
-    loadEvents () {
+    loadEvents() {
       if (!this.start && !this.end) {
         var today_date = new Date()
         var temp_start = new Date(
@@ -632,28 +594,28 @@ export default {
         }
       )
     },
-    updateEvents (new_rec) {
+    updateEvents(new_rec) {
       // this.events.push(new_rec)
       // console.log('updating');
     },
-    viewDay ({ date }) {
+    viewDay({ date }) {
       this.focus = date
       this.type = 'day'
     },
-    getEventColor (event) {
+    getEventColor(event) {
       return event.color
     },
-    setToday () {
+    setToday() {
       // this.focus = this.today
       this.focus = ''
     },
-    prev () {
+    prev() {
       this.$refs.calendar.prev()
     },
-    next () {
+    next() {
       this.$refs.calendar.next()
     },
-    showEvent ({ nativeEvent, event }) {
+    showEvent({ nativeEvent, event }) {
       const open = () => {
         this.selectedEvent = event
         Object.assign(this.selectedEvent_backup, event)
@@ -671,24 +633,24 @@ export default {
 
       nativeEvent.stopPropagation()
     },
-    updateRange ({ start, end }) {
+    updateRange({ start, end }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
       // console.log(start)
       this.start = start
       this.end = end
       this.loadEvents()
     },
-    nth (d) {
+    nth(d) {
       return d > 3 && d < 21
         ? 'th'
         : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     }
   },
-  beforeMount () {
+  beforeMount() {
     // console.log(this);
     this.loadEvents()
   },
-  mounted () {
+  mounted() {
     EventBus.$on('send_newrec', newrec => {
       // console.log('receiving');
       this.loadEvents() // saver to reload from database
@@ -836,7 +798,7 @@ span.calendar-details,
   /* display: inline-block; */
 }
 
-.v-textarea > .v-input__control > .v-input__slot {
+.v-textarea>.v-input__control>.v-input__slot {
   /* display: block; */
   padding: 0 12px !important;
 }
@@ -846,9 +808,7 @@ span.calendar-details,
   margin-top: 0;
 }
 
-.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
-  > .v-input__control
-  > .v-input__slot,
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot,
 .v-text-field.v-text-field--enclosed .v-text-field__details {
   padding: 0;
 }
