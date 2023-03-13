@@ -34,46 +34,47 @@ jobs:
         os: [windows-latest, macos-latest, ubuntu-latest]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js v12
-      uses: actions/setup-node@v3
-      with:
-        node-version: 12
-        # cache: 'npm'  # cache is not working
-    - name: Install dependencies
-      run: npm ci
-    - name: Build Project
-      run: npm run electron:build
-    - name: Upload Release Asset
-      if: runner.os == 'Windows'
-      id: upload-release-asset-win
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: './dist_electron/timer-electron-win-1.0.0.exe'
-        asset_name: timer-electron-win-setup-${{ github.ref_name }}.exe
-        asset_content_type: application/octet-stream
-    - name: Upload Release Asset
-      if: runner.os == 'macOS'
-      id: upload-release-asset-mac
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: './dist_electron/timer-electron-mac-1.0.0.dmg'
-        asset_name: timer-electron-mac-${{ github.ref_name }}.dmg
-        asset_content_type: application/octet-stream
-    - name: Upload Release Asset
-      if: runner.os == 'Linux'
-      id: upload-release-asset-linux
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: './dist_electron/timer-electron-linux-1.0.0.deb'
-        asset_name: timer-electron-ubuntu-${{ github.ref_name }}.deb
-        asset_content_type: application/octet-stream
+      - uses: actions/checkout@v3
+      - name: Use Node.js v16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          # node version 17/18 gives openssh security error
+          # cache: 'npm'  # cache is not working
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Project
+        run: npm run electron:build
+      - name: Upload Release Asset
+        if: runner.os == 'Windows'
+        id: upload-release-asset-win
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "./dist_electron/timer-electron-win-1.0.0.exe"
+          asset_name: timer-electron-win-setup-${{ github.ref_name }}.exe
+          asset_content_type: application/octet-stream
+      - name: Upload Release Asset
+        if: runner.os == 'macOS'
+        id: upload-release-asset-mac
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "./dist_electron/timer-electron-mac-1.0.0.dmg"
+          asset_name: timer-electron-mac-${{ github.ref_name }}.dmg
+          asset_content_type: application/octet-stream
+      - name: Upload Release Asset
+        if: runner.os == 'Linux'
+        id: upload-release-asset-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.once.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: "./dist_electron/timer-electron-linux-1.0.0.deb"
+          asset_name: timer-electron-ubuntu-${{ github.ref_name }}.deb
+          asset_content_type: application/octet-stream
