@@ -1,205 +1,313 @@
 <!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
-<!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<!-- The way to vertically align is to wrap multiple full width columns around rather than using rows, e.g.:  <v-row class='fill-height' align-content='space-between'> <v-col cols='12'></v-col><v-col cols='12'></v-col><v-col cols='12'></v-col> </v-row>-->
-<v-container fluid fill-height pa-5 ma-0>
-  <v-row no-gutters class="fill-height" justify="space-between">
-    <v-col cols='8' text-center class='mr-5 justify-space-between fill-height' align-self='center'>
-      <v-row class='fill-height' align-content='space-between'>
-        <v-col cols='12'>
-          <!-- <v-container pa-0> -->
-          <v-row>
-            <!-- <div class="input-wrapper"> -->
-            <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
-            <!-- <div class="divider"></div> -->
-            <!-- <v-divider class="border"></v-divider> -->
-            <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
-            <!-- <v-divider class="border"></v-divider> -->
-            <!-- </div> -->
-            <v-col>
-              <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
-            </v-col>
-          </v-row>
-          <v-divider class="border"></v-divider>
-          <!-- <v-flex shrink pl-2>
+  <!-- <div id="timer-cell" :class="{active: button_active}"> -->
+  <!-- The way to vertically align is to wrap multiple full width columns around rather than using rows, e.g.:  <v-row class='fill-height' align-content='space-between'> <v-col cols='12'></v-col><v-col cols='12'></v-col><v-col cols='12'></v-col> </v-row>-->
+  <v-container fluid fill-height pa-5 ma-0>
+    <v-row no-gutters class="fill-height" justify="space-between">
+      <v-col
+        cols="8"
+        text-center
+        class="mr-5 justify-space-between fill-height"
+        align-self="center"
+      >
+        <v-row class="fill-height" align-content="space-between">
+          <v-col cols="12">
+            <!-- <v-container pa-0> -->
+            <v-row>
+              <!-- <div class="input-wrapper"> -->
+              <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
+              <!-- <div class="divider"></div> -->
+              <!-- <v-divider class="border"></v-divider> -->
+              <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
+              <!-- <v-divider class="border"></v-divider> -->
+              <!-- </div> -->
+              <v-col>
+                <v-text-field
+                  ref="name"
+                  id="label-input-name"
+                  v-model="prob_num"
+                  label="Problem Number"
+                  hide-details
+                  clearable
+                  solo
+                  flat
+                  background-color="transparent"
+                  autofocus
+                  @keydown.enter="focus_comment"
+                  class="large-font"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-divider class="border"></v-divider>
+            <!-- <v-flex shrink pl-2>
       <div class="divider"></div>
         </v-flex> -->
-          <v-row>
-            <v-col>
-              <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start"></v-text-field>
-            </v-col>
-          </v-row>
-          <!-- </v-container> -->
-        </v-col>
-        <!-- <v-flex shrink>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  ref="comment"
+                  id="label-input-comment"
+                  v-model="comment"
+                  label="Comments"
+                  hide-details
+                  clearable
+                  solo
+                  flat
+                  background-color="transparent"
+                  @keydown.enter="start"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <!-- </v-container> -->
+          </v-col>
+          <!-- <v-flex shrink>
           <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
           </v-flex> -->
-        <!-- <v-flex class="draggable"> -->
-        <!-- <v-container pa-0 fill-height> -->
-        <v-col cols='12'>
-          <v-row justify='center' align='center' class='mt-md-auto fill-height'>
-            <v-col justify-center>
-              <!-- <v-hover @click.native="start">
+          <!-- <v-flex class="draggable"> -->
+          <!-- <v-container pa-0 fill-height> -->
+          <v-col cols="12">
+            <v-row
+              justify="center"
+              align="center"
+              class="mt-md-auto fill-height"
+            >
+              <v-col justify-center>
+                <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
-              <div id="timer-text-container" :class="{active: button_active}">
-                <!-- <span class='timer-text' :class="{active: button_active}">{{ time }}</span> -->
-                <!-- <v-container fluid> -->
-                <v-row align='center' justify='center'>
-                  <v-col cols='3'>
-                    <v-text-field @focus="$event.target.select()" v-model='hours' background-color='transparent' solo flat placeholder='00' hide-details maxlength="2" v-mask="mask" class="center_input"></v-text-field>
-                  </v-col>
+                <div
+                  id="timer-text-container"
+                  :class="{ active: button_active }"
+                >
+                  <!-- <span class='timer-text' :class="{active: button_active}">{{ time }}</span> -->
+                  <!-- <v-container fluid> -->
+                  <v-row align="center" justify="center">
+                    <v-col cols="3">
+                      <v-text-field
+                        @focus="$event.target.select()"
+                        v-model="hours"
+                        background-color="transparent"
+                        solo
+                        flat
+                        placeholder="00"
+                        hide-details
+                        maxlength="2"
+                        v-mask="mask"
+                        class="center_input"
+                      ></v-text-field>
+                    </v-col>
 
-                  <v-col cols='1'>
-                    <!-- <v-card flat color="transparent" height='1em'> -->
-                    <!-- <v-card-title class='justify-center'>:</v-card-title> -->
-                    <span>:</span>
-                    <!-- </v-card> -->
-                  </v-col>
+                    <v-col cols="1">
+                      <!-- <v-card flat color="transparent" height='1em'> -->
+                      <!-- <v-card-title class='justify-center'>:</v-card-title> -->
+                      <span>:</span>
+                      <!-- </v-card> -->
+                    </v-col>
 
-                  <v-col cols='3'>
-                    <v-text-field @focus="$event.target.select()" v-model='mins' background-color='transparent' solo flat placeholder='00' hide-details maxlength="2" v-mask="mask" class="center_input"></v-text-field>
-                  </v-col>
+                    <v-col cols="3">
+                      <v-text-field
+                        @focus="$event.target.select()"
+                        v-model="mins"
+                        background-color="transparent"
+                        solo
+                        flat
+                        placeholder="00"
+                        hide-details
+                        maxlength="2"
+                        v-mask="mask"
+                        class="center_input"
+                      ></v-text-field>
+                    </v-col>
 
-                  <v-col cols='1'>
-                    <!-- <v-card flat color="transparent" height='1em'> -->
-                    <!-- <v-card-title class='justify-center'>:</v-card-title> -->
-                    <!-- </v-card> -->
-                    <span>:</span>
-                  </v-col>
+                    <v-col cols="1">
+                      <!-- <v-card flat color="transparent" height='1em'> -->
+                      <!-- <v-card-title class='justify-center'>:</v-card-title> -->
+                      <!-- </v-card> -->
+                      <span>:</span>
+                    </v-col>
 
-                  <v-col cols='3'>
-                    <v-text-field @focus="$event.target.select()" v-model='secs' background-color='transparent' solo flat placeholder='00' hide-details maxlength="2" v-mask="mask" class="center_input"></v-text-field>
-                  </v-col>
-                </v-row>
-                <!-- </v-container> -->
-                <!--<p>{{ start_time }}</p>-->
-                <!--<button @click="start">{{button_text}}</button>-->
-                <!-- <v-fade-transition>
+                    <v-col cols="3">
+                      <v-text-field
+                        @focus="$event.target.select()"
+                        v-model="secs"
+                        background-color="transparent"
+                        solo
+                        flat
+                        placeholder="00"
+                        hide-details
+                        maxlength="2"
+                        v-mask="mask"
+                        class="center_input"
+                      ></v-text-field>
+                    </v-col>
+                  </v-row>
+                  <!-- </v-container> -->
+                  <!--<p>{{ start_time }}</p>-->
+                  <!--<button @click="start">{{button_text}}</button>-->
+                  <!-- <v-fade-transition>
                 <v-overlay v-if="hover" absolute> -->
-                <!-- color="#036358" -->
-                <!-- <v-btn>See more info</v-btn> -->
-                <!-- <button class='timer-button' :class="{active: button_active}"></button>
+                  <!-- color="#036358" -->
+                  <!-- <v-btn>See more info</v-btn> -->
+                  <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
               </v-fade-transition> -->
-              </div>
-              <!-- </template>
+                </div>
+                <!-- </template>
         </v-hover> -->
-            </v-col>
-          </v-row>
-        </v-col>
-        <!-- </v-container> -->
-        <!-- <v-row> -->
-        <v-col cols='12'>
-          <!-- <v-container pa-0> -->
-          <v-row align="center" dense justify='end'>
-            <!-- <v-flex> -->
-            <v-col cols='9' justify="end">
-              <v-row no-gutters>
-                <v-col>
-                  <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
-                </v-col>
-              </v-row>
-              <v-row no-gutters>
-                <v-col>
-                  <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
-                </v-col>
-              </v-row>
-            </v-col>
-            <!-- </v-flex> -->
-            <v-col shrink fill-height>
-              <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
-            </v-col>
-            <!-- <v-flex shrink>
+              </v-col>
+            </v-row>
+          </v-col>
+          <!-- </v-container> -->
+          <!-- <v-row> -->
+          <v-col cols="12">
+            <!-- <v-container pa-0> -->
+            <v-row align="center" dense justify="end">
+              <!-- <v-flex> -->
+              <v-col cols="9" justify="end">
+                <v-row no-gutters>
+                  <v-col>
+                    <v-slider
+                      hide-details
+                      v-model="color_main"
+                      min="0"
+                      max="360"
+                      label="color"
+                      thumb-label
+                      @change="change_main_color"
+                      :color="slider_color"
+                      :track-color="track_color"
+                    ></v-slider>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters>
+                  <v-col>
+                    <v-slider
+                      hide-details
+                      v-model="color_diff"
+                      min="-90"
+                      max="90"
+                      label="contrast"
+                      thumb-label
+                      @change="change_contrast"
+                      :color="slider_color_diff"
+                      :track-color="track_color_diff"
+                    ></v-slider>
+                  </v-col>
+                </v-row>
+              </v-col>
+              <!-- </v-flex> -->
+              <v-col shrink fill-height>
+                <button
+                  class="glow-button"
+                  :class="{ inactive: cycle_button_off }"
+                  @click="cycle_color"
+                >
+                  Cycle Color
+                </button>
+              </v-col>
+              <!-- <v-flex shrink>
       <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
     </v-flex> -->
-          </v-row>
-          <!-- </v-container> -->
-        </v-col>
-      </v-row>
-      <!-- </v-row> -->
-    </v-col>
-    <v-divider vertical class="border"></v-divider>
-    <v-col cols='3' text-center shrink align-center justify-space-between fill-height class='ml-5 pa-0'>
-      <v-row>
-        <v-col>
-          <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
-        </v-col>
-      </v-row>
-      <v-row style="overflow-y: auto; height: 0;">
-        <v-col>
-          <v-list two-line disabled dark color="transparent" width="10em">
-            <v-list-item-group>
-              <!-- use v-model="item" to highlight item-->
-              <v-list-item v-for="(item, i) in items" :key="i">
-                <v-list-item-content>
-                  <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
-                  <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>
-          </v-list>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col>
-          <button class="glow-button" @click="clear_history">clear</button>
-        </v-col>
-      </v-row>
-    </v-col> <!-- </div> -->
-  </v-row>
-</v-container>
+            </v-row>
+            <!-- </v-container> -->
+          </v-col>
+        </v-row>
+        <!-- </v-row> -->
+      </v-col>
+      <v-divider vertical class="border"></v-divider>
+      <v-col
+        cols="3"
+        text-center
+        shrink
+        align-center
+        justify-space-between
+        fill-height
+        class="ml-5 pa-0"
+      >
+        <v-row>
+          <v-col>
+            <v-subheader class="timer-side-text active glow opposite"
+              >HISTORY</v-subheader
+            >
+          </v-col>
+        </v-row>
+        <v-row style="overflow-y: auto; height: 0">
+          <v-col>
+            <v-list two-line disabled dark color="transparent" width="10em">
+              <v-list-item-group>
+                <!-- use v-model="item" to highlight item-->
+                <v-list-item v-for="(item, i) in items" :key="i">
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="timer-side-text active opposite"
+                      v-text="item.name"
+                    ></v-list-item-title>
+                    <v-list-item-subtitle
+                      class="timer-side-text active glow"
+                      v-text="item.time"
+                    ></v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col>
+            <button class="glow-button" @click="clear_history">clear</button>
+          </v-col>
+        </v-row>
+      </v-col>
+      <!-- </div> -->
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import shared from '../shared.js'
-import {
-  EventBus
-} from '../event-bus.js'
-import {
-  mask
-} from 'vue-the-mask'
+import shared from "../shared.js";
+import { EventBus } from "../event-bus.js";
+import { mask } from "vue-the-mask";
 
 export default {
-  name: 'test',
+  name: "test",
   directives: {
-    mask
+    mask,
   },
-  data () {
+  data() {
     return {
-      time: '00:00:00',
-      start_time: '',
-      job: '',
-      job_cycle: '',
-      button_text: 'Start',
-      stop_time: '',
+      time: "00:00:00",
+      start_time: "",
+      job: "",
+      job_cycle: "",
+      button_text: "Start",
+      stop_time: "",
       button_active: false,
-      prob_num: '',
+      prob_num: "",
       items: [],
-      comment: '',
+      comment: "",
       color_main: 75, // 130, 90, 90, 75, 130, 50, 120
       color_diff: 60, // -235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
       cycle_delta: 15,
       count_up: true,
       timer_started: false,
-      hours: '00',
-      mins: '00',
-      secs: '00',
-      mask: '##',
+      hours: "00",
+      mins: "00",
+      secs: "00",
+      mask: "##",
       rules: {
-        counter: value => {
-          console.log(value.length <= 2 || 'Max 2 numbers')
-          return value.length <= 2 || 'Max 2 numbers'
+        counter: (value) => {
+          console.log(value.length <= 2 || "Max 2 numbers");
+          return value.length <= 2 || "Max 2 numbers";
         },
-        number: value => {
-          return /^[0-9]{0,2}$/.test(value)
-        }
-      }
-    }
+        number: (value) => {
+          return /^[0-9]{0,2}$/.test(value);
+        },
+      },
+    };
   },
   computed: {
     switch_label: function () {
-      return this.count_up ? 'Count Up' : 'Count Down'
+      return this.count_up ? "Count Up" : "Count Down";
     },
     slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
@@ -207,63 +315,69 @@ export default {
       // } else {
       //   this.temp_color = this.color_diff + this.color_diff;
       // }
-      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color: function () {
-      return 'hsl(' + this.color_main + ', 100%, 85%)'
+      return "hsl(" + this.color_main + ", 100%, 85%)";
     },
     slider_color_diff: function () {
-      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color_diff: function () {
-      return 'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
-    }
+      return (
+        "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)"
+      );
+    },
   },
   watch: {
     color_main: function () {
-      this.change_main_color()
-    }
+      this.change_main_color();
+    },
   },
   methods: {
     start: function () {
       if (!this.job) {
-        this.timer_started = true
-        this.start_time = new Date()
+        this.timer_started = true;
+        this.start_time = new Date();
         this.job = setInterval(() => {
-          this.time = this.msToTime(Math.abs(new Date() - this.start_time))
+          this.time = this.msToTime(Math.abs(new Date() - this.start_time));
           // console.log(this.time);
-        }, 1)
-        this.button_text = 'Stop'
-        this.button_active = true
+        }, 1);
+        this.button_text = "Stop";
+        this.button_active = true;
         if (!this.job_cycle) {
-          this.cycle_color()
+          this.cycle_color();
         }
       } else {
-        this.timer_started = false
-        this.button_text = 'Start'
-        clearInterval(this.job)
+        this.timer_started = false;
+        this.button_text = "Start";
+        clearInterval(this.job);
         this.items.unshift({
           time: this.time,
-          name: this.prob_num
-        })
-        this.job = ''
-        this.stop_time = new Date()
-        this.button_active = false
-        this.$db.insert({
           name: this.prob_num,
-          start: shared.formatDate(this.start_time),
-          end: shared.formatDate(this.stop_time),
-          details: this.comment,
-          time: this.time,
-          color: 'hsl(' + this.color_main + ',100%,35%)'
-        }, (err, newrec) => { // Callback is optional
-          // newrec is the newly inserted document, including its _id
-          // newrec has no key called notToBeSaved since its value was undefined
-          // console.log(newrec)
-          EventBus.$emit('send_newrec', newrec)
-          // console.log(newrec);
-          // console.log(this);
-        })
+        });
+        this.job = "";
+        this.stop_time = new Date();
+        this.button_active = false;
+        this.$db.insert(
+          {
+            name: this.prob_num,
+            start: shared.formatDate(this.start_time),
+            end: shared.formatDate(this.stop_time),
+            details: this.comment,
+            time: this.time,
+            color: "hsl(" + this.color_main + ",100%,35%)",
+          },
+          (err, newrec) => {
+            // Callback is optional
+            // newrec is the newly inserted document, including its _id
+            // newrec has no key called notToBeSaved since its value was undefined
+            // console.log(newrec)
+            EventBus.$emit("send_newrec", newrec);
+            // console.log(newrec);
+            // console.log(this);
+          }
+        );
         // this.$db.find({
         //   name: {
         //     $regex: /test/
@@ -273,27 +387,30 @@ export default {
         //   // If no document is found, docs is equal to []
         //   // console.log(docs)
         // });
-        this.$refs.name.focus()
+        this.$refs.name.focus();
       }
       // console.log(this.prob_num);
     },
     cycle_color: function () {
       if (!this.job_cycle) {
-        this.cycle_button_off = false
+        this.cycle_button_off = false;
         this.job_cycle = setInterval(() => {
-          this.cycle_delta = (this.color_main > 359 || this.color_main <= 0) ? -this.cycle_delta : this.cycle_delta
-          this.color_main = this.color_main + this.cycle_delta
+          this.cycle_delta =
+            this.color_main > 359 || this.color_main <= 0
+              ? -this.cycle_delta
+              : this.cycle_delta;
+          this.color_main = this.color_main + this.cycle_delta;
           // console.log(this.time);
           // console.log(this.color_main);
-        }, 5000)
+        }, 5000);
       } else {
-        clearInterval(this.job_cycle)
-        this.job_cycle = ''
-        this.cycle_button_off = true
+        clearInterval(this.job_cycle);
+        this.job_cycle = "";
+        this.cycle_button_off = true;
       }
     },
     clear_history: function () {
-      this.items = []
+      this.items = [];
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
@@ -301,33 +418,39 @@ export default {
     // },
     msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad (n, z) {
-        z = z || 2
-        return ('00' + n).slice(-z)
+      function pad(n, z) {
+        z = z || 2;
+        return ("00" + n).slice(-z);
       }
 
-      var ms = s % 1000
-      s = (s - ms) / 1000
-      this.secs = s % 60
-      s = (s - this.secs) / 60
-      this.mins = s % 60
-      this.hrs = (s - this.mins) / 60
+      var ms = s % 1000;
+      s = (s - ms) / 1000;
+      this.secs = s % 60;
+      s = (s - this.secs) / 60;
+      this.mins = s % 60;
+      this.hrs = (s - this.mins) / 60;
 
-      return pad(this.hrs) + ':' + pad(this.mins) + ':' + pad(this.secs) // + '.' + pad(ms, 3);
+      return pad(this.hrs) + ":" + pad(this.mins) + ":" + pad(this.secs); // + '.' + pad(ms, 3);
     },
     focus_comment: function () {
-      this.$refs.comment.focus()
+      this.$refs.comment.focus();
     },
     change_main_color: function () {
-      document.documentElement.style.setProperty('--neon-color-primary', this.color_main)
-      this.$emit('update_color')
+      document.documentElement.style.setProperty(
+        "--neon-color-primary",
+        this.color_main
+      );
+      this.$emit("update_color");
     },
     change_contrast: function () {
-      document.documentElement.style.setProperty('--neon-degree', this.color_diff)
-      this.$emit('update_color')
-    }
-  }
-}
+      document.documentElement.style.setProperty(
+        "--neon-degree",
+        this.color_diff
+      );
+      this.$emit("update_color");
+    },
+  },
+};
 </script>
 
 <style>
@@ -348,12 +471,18 @@ export default {
   --neon-color-primary: 75;
   --neon-degree: 60;
   --neon-degree-opposite: 180;
-  --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2*var(--neon-degree));
-  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 2*var(--neon-degree));
-  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 2*var(--neon-degree));
+  --neon-color-complement: calc(
+    var(--neon-color-primary) + var(--neon-degree-opposite) - 2 *
+      var(--neon-degree)
+  );
+  --neon-color-primary-shadow: calc(
+    var(--neon-color-primary) - 2 * var(--neon-degree)
+  );
+  --neon-color-complement-shadow: calc(
+    var(--neon-color-complement) + 2 * var(--neon-degree)
+  );
 
-  --neon-text-shadow:
-    0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
+  --neon-text-shadow: 0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 35%),
@@ -371,8 +500,8 @@ export default {
     0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
     -0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%); */
   --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 85%);
-  --neon-text-shadow-reverse:
-    0 0 0.02em hsl(var(--neon-color-complement), 100%, 25%),
+  --neon-text-shadow-reverse: 0 0 0.02em
+      hsl(var(--neon-color-complement), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
@@ -380,8 +509,7 @@ export default {
     0.02em 0.02em 0.02em hsl(var(--neon-color-complement), 100%, 25%);
   --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 75%);
 
-  --neon-box-shadow:
-    0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+  --neon-box-shadow: 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
     inset 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
     /* 10px -14px 2px transparent,
     inset 10px -14px 2px transparent,
@@ -389,15 +517,14 @@ export default {
     inset 11px -15px 2px hsl(var(--neon-color-complement), 100%, 50%),
     20px -28px 2px hsl(var(--neon-color-complement), 100%, 50%),
     inset 20px 28px 2px hsl(var(--neon-color-complement), 100%, 50%), */
-    0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+      0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%);
   --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
-  --neon-box-shadow-reverse:
-    0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
+  --neon-box-shadow-reverse: 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     inset 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
     inset 0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
@@ -405,9 +532,13 @@ export default {
     inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%);
-  --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
-  --neon-box-shadow-flipped:
-    0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  --neon-box-shadow-highlight-reverse: hsl(
+    var(--neon-color-primary),
+    100%,
+    75%
+  );
+  --neon-box-shadow-flipped: 0 0 1px
+      hsl(var(--neon-color-complement-shadow), 100%, 50%),
     inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
     inset 0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
@@ -415,7 +546,11 @@ export default {
     inset 0 0 4px hsl(var(--neon-color-complement), 80%, 50%);
   /* 0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
   inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%); */
-  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-complement-shadow), 100%, 75%);
+  --neon-box-shadow-highlight-flipped: hsl(
+    var(--neon-color-complement-shadow),
+    100%,
+    75%
+  );
 }
 
 button.timer-button {
@@ -441,10 +576,8 @@ button.timer-button {
   /* box-shadow: 0 0 1px transparent; */
   /* -webkit-backface-visibility: hidden; */
   -webkit-transition:
-    /* all 1s; */
-    border-radius 0.2s ease-in-out 0s,
-    transform 0.2s ease-in-out 0s,
-    box-shadow 0.3s ease-in-out 0s,
+    /* all 1s; */ border-radius 0.2s ease-in-out 0s,
+    transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
 }
 
@@ -540,7 +673,7 @@ div#timer-cell:hover {
 
 #triangle-right {
   display: inline-block;
-  content: '';
+  content: "";
   border-top: 15px solid transparent;
   border-left: 30px solid var(--neon-text-color);
   border-bottom: 15px solid transparent;
@@ -549,8 +682,7 @@ div#timer-cell:hover {
 div#timer-text-container {
   position: relative;
   border: 1px solid transparent;
-  -webkit-transition:
-    all 0.3s ease-in-out 0s;
+  -webkit-transition: all 0.3s ease-in-out 0s;
   border-radius: 5px;
 }
 
@@ -579,8 +711,8 @@ span.timer-text {
     /* text-shadow 1s,
   color 1s,
   border 1s,
-  box-shadow 1s; */
-    all 0.3s ease-in-out 0s;
+  box-shadow 1s; */ all
+    0.3s ease-in-out 0s;
 }
 
 .timer-text.active {
@@ -639,23 +771,14 @@ span.timer-text {
 
 span.timer-text.active_old {
   color: white;
-  text-shadow:
-    -0.5px -0.5px 0.5px #fff,
-    0.5px 0.5px 0.5px #fff,
-    -0.5px 0.5px 0.5px #fff,
-    0.5px -0.5px 0.5px #fff,
-    0 0 2px var(--neon-text-color),
-    0 0 4px var(--neon-text-color),
-    0 0 8px var(--neon-text-color),
-    0 0 12px var(--neon-text-color);
+  text-shadow: -0.5px -0.5px 0.5px #fff, 0.5px 0.5px 0.5px #fff,
+    -0.5px 0.5px 0.5px #fff, 0.5px -0.5px 0.5px #fff,
+    0 0 2px var(--neon-text-color), 0 0 4px var(--neon-text-color),
+    0 0 8px var(--neon-text-color), 0 0 12px var(--neon-text-color);
   /* 0 0 5px var(--neon-text-color); */
 
-  box-shadow:
-    0 0 2px #fff,
-    inset 0 0 2px #fff,
-    0 0 4px var(--neon-border-color),
-    inset 0 0 4px var(--neon-border-color),
-    0 0 6px var(--neon-border-color),
+  box-shadow: 0 0 2px #fff, inset 0 0 2px #fff, 0 0 4px var(--neon-border-color),
+    inset 0 0 4px var(--neon-border-color), 0 0 6px var(--neon-border-color),
     inset 0 0 6px var(--neon-border-color);
   /* border: 2px solid var(--neon-border-color); */
   border: 2px solid white;
@@ -670,14 +793,14 @@ span.timer-text.active_old {
 } */
 
 button.timer-button:after {
-  content: '\25B7';
+  content: "\25B7";
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
   /* font-size: 1.5em; */
 }
 
 button.timer-button.active:after {
-  content: '\2668';
+  content: "\2668";
   text-shadow: none;
   color: transparent;
   /* display: block; */
@@ -686,7 +809,7 @@ button.timer-button.active:after {
 }
 
 button.timer-button.active:hover:after {
-  content: '\2668';
+  content: "\2668";
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
 }
@@ -726,13 +849,18 @@ button.timer-button.active:hover:after {
 } */
 
 .theme--light.v-text-field--outlined fieldset,
-.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(
+    .v-input--has-state
+  ):hover
+  fieldset {
   border-color: var(--neon-box-shadow-highlight);
 }
 
 .v-input__slot:before,
 .v-input__slot:hover:before,
-.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:before {
+.theme--light.v-text-field:not(.v-input--has-state)
+  > .v-input__control
+  > .v-input__slot:before {
   border-color: var(--neon-box-shadow-highlight-flipped) !important;
 }
 
@@ -790,7 +918,7 @@ input {
 } */
 
 .v-text-field.v-text-field--enclosed .v-text-field__details,
-.v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
+.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot {
   padding: 0;
 }
 
@@ -811,11 +939,15 @@ input {
   top: calc(50% - 19px);
 }
 
-.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple {
+.v-application--is-ltr
+  .v-input--switch--inset.v-input--is-dirty
+  .v-input--selection-controls__ripple {
   transform: translate(0, 0) !important;
 }
 
-.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb {
+.v-application--is-ltr
+  .v-input--switch--inset.v-input--is-dirty
+  .v-input--switch__thumb {
   transform: translate(20px, 0) !important;
 }
 

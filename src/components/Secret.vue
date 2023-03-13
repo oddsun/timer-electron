@@ -117,112 +117,112 @@
 </template>
 
 <script>
-import Decode from './Decode'
-import decode_dict from '../data/decode_dict_init.json'
-import encoded_letters from '../data/encoded_letters.json'
-import part1 from '../data/part1.json'
-import part_two from '../data/part2.json'
+import Decode from "./Decode";
+import decode_dict from "../data/decode_dict_init.json";
+import encoded_letters from "../data/encoded_letters.json";
+import part1 from "../data/part1.json";
+import part_two from "../data/part2.json";
 export default {
-  name: 'secret',
+  name: "secret",
   components: {
-    Decode
+    Decode,
   },
-  data () {
+  data() {
     return {
       letters: encoded_letters,
       // dict: { h: "" },
       dict: decode_dict,
       current_focus: null,
-      part_one: part1.join(''),
+      part_one: part1.join(""),
       part_two,
-      part_one_key: '',
+      part_one_key: "",
       current_focus_part_one: false,
       current_focus_part_two: null,
       tab_puzzle: null,
-      part_two_key: Array(part_two.length).fill('')
-    }
+      part_two_key: Array(part_two.length).fill(""),
+    };
   },
   computed: {
     vigenere_decoded: function () {
-      var temp = []
+      var temp = [];
       for (var i = 0; i < this.part_two.length; i++) {
-        temp.push(this.vigenere_decode(this.part_two[i], this.part_two_key[i]))
+        temp.push(this.vigenere_decode(this.part_two[i], this.part_two_key[i]));
       }
-      return temp.join('')
-    }
+      return temp.join("");
+    },
   },
   methods: {
     focus_letter: function (i) {
-      this.current_focus = i
-      this.current_focus_part_one = false
-      this.current_focus_part_two = null
-      this.$refs.letters[i].focus()
+      this.current_focus = i;
+      this.current_focus_part_one = false;
+      this.current_focus_part_two = null;
+      this.$refs.letters[i].focus();
     },
     focus_part_one_letters: function () {
-      this.current_focus = null
-      this.current_focus_part_one = true
-      this.current_focus_part_two = null
+      this.current_focus = null;
+      this.current_focus_part_one = true;
+      this.current_focus_part_two = null;
       // this.$refs.part_one[i].focus();
     },
     focus_part_two_letters: function (i) {
-      this.current_focus = null
-      this.current_focus_part_one = false
-      this.current_focus_part_two = i
-      this.$refs.part_two[i].focus()
+      this.current_focus = null;
+      this.current_focus_part_one = false;
+      this.current_focus_part_two = i;
+      this.$refs.part_two[i].focus();
     },
     enter_decode: function (evt, letter, index) {
-      evt = evt || window.event
-      var charCode = evt.which ? evt.which : evt.keycode
+      evt = evt || window.event;
+      var charCode = evt.which ? evt.which : evt.keycode;
       // charCode = charCode + 97 - 65;
       if (charCode == 39) {
-        var new_focus = (index + 1) % this.letters.length
+        var new_focus = (index + 1) % this.letters.length;
         // console.log(new_focus);
-        this.focus_letter(new_focus)
-        return
+        this.focus_letter(new_focus);
+        return;
       } else if (charCode == 37) {
-        var new_focus = (index - 1) % this.letters.length
-        new_focus = new_focus < 0 ? new_focus + this.letters.length : new_focus
-        this.focus_letter(new_focus)
-        return
+        var new_focus = (index - 1) % this.letters.length;
+        new_focus = new_focus < 0 ? new_focus + this.letters.length : new_focus;
+        this.focus_letter(new_focus);
+        return;
       }
-      this.dict[letter] = String.fromCharCode(charCode) // new properties are not reactive
+      this.dict[letter] = String.fromCharCode(charCode); // new properties are not reactive
       // console.log(this.dict);
     },
     caesar_shift: function (charCode, shiftCharCode) {
-      if (charCode >= 'a'.charCodeAt(0) && charCode <= 'z'.charCodeAt(0)) {
-        charCode -= 'a'.charCodeAt(0)
-        shiftCharCode -= 'a'.charCodeAt(0)
-        charCode -= shiftCharCode
-        charCode %= 26
-        charCode = charCode < 0 ? charCode + 26 : charCode
-        return charCode + 'a'.charCodeAt(0)
+      if (charCode >= "a".charCodeAt(0) && charCode <= "z".charCodeAt(0)) {
+        charCode -= "a".charCodeAt(0);
+        shiftCharCode -= "a".charCodeAt(0);
+        charCode -= shiftCharCode;
+        charCode %= 26;
+        charCode = charCode < 0 ? charCode + 26 : charCode;
+        return charCode + "a".charCodeAt(0);
       }
-      return charCode
+      return charCode;
     },
     vigenere_decode: function (text, key) {
       // console.log(key);
-      if (key == null || key == '') {
-        return ''
+      if (key == null || key == "") {
+        return "";
       }
-      var j = 0
-      var new_text = ''
+      var j = 0;
+      var new_text = "";
       // console.log(key.length);
       for (var i = 0; i < text.length; i++) {
-        var charCode = text.charCodeAt(i)
+        var charCode = text.charCodeAt(i);
         // console.log(j);
         new_text += String.fromCharCode(
           this.caesar_shift(charCode, key.charCodeAt(j))
-        )
-        if (charCode >= 'a'.charCodeAt(0) && charCode <= 'z'.charCodeAt(0)) {
-          j++
-          j %= key.length
+        );
+        if (charCode >= "a".charCodeAt(0) && charCode <= "z".charCodeAt(0)) {
+          j++;
+          j %= key.length;
         }
       }
       // console.log(new_text);
-      return new_text
-    }
-  }
-}
+      return new_text;
+    },
+  },
+};
 </script>
 
 <style>

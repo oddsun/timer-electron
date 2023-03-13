@@ -1,5 +1,5 @@
 <template>
-  <v-app :dark="dark_theme" style="background: rgba(0,0,0,0.5)">
+  <v-app :dark="dark_theme" style="background: rgba(0, 0, 0, 0.5)">
     <!-- <v-toolbar app class="draggable" style="background: rgba(0,0,0,0.7)">
       <v-toolbar-title class="headline text-uppercase">
         <span>Timer</span> -->
@@ -30,7 +30,7 @@
     <v-tabs-items v-model="tab" :class="{
       'small-window': $vuetify.breakpoint.xsOnly,
       draggable: $vuetify.breakpoint.xsOnly,
-      'non-draggable': !$vuetify.breakpoint.xsOnly
+      'non-draggable': !$vuetify.breakpoint.xsOnly,
     }">
       <v-tab-item>
         <Timer @update_color="update_color" :large_win="large_win" />
@@ -56,19 +56,19 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld'
-import Timer from './components/Timer'
-import Calendar from './components/Calendar'
-import Secret from './components/Secret'
-import { mdiResize, mdiArrowCollapse, mdiArrowExpand } from '@mdi/js'
-import { ipcRenderer } from 'electron'
+import Timer from "./components/Timer";
+import Calendar from "./components/Calendar";
+import Secret from "./components/Secret";
+import { mdiResize, mdiArrowCollapse, mdiArrowExpand } from "@mdi/js";
+import { ipcRenderer } from "electron";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
     // HelloWorld,
     Timer,
     Calendar,
-    Secret
+    Secret,
   },
   data() {
     return {
@@ -77,18 +77,18 @@ export default {
       dark_theme: true,
       tab_color_hue: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue(
-          '--neon-color-primary'
+          "--neon-color-primary"
         ),
         10
       ),
       tab_color_diff: parseInt(
         getComputedStyle(document.documentElement).getPropertyValue(
-          '--neon-degree'
+          "--neon-degree"
         ),
         10
       ),
-      large_win: true
-    }
+      large_win: true,
+    };
   },
   computed: {
     tab_color: {
@@ -99,51 +99,51 @@ export default {
         // console.log(this.tab_color_diff);
         // console.log(this.tab_color_hue + 180 - 2 * this.tab_color_diff)
         return (
-          'hsl(' +
+          "hsl(" +
           (this.tab_color_hue + 180 - 2 * this.tab_color_diff) +
-          ', 100%, 75%)'
-        )
+          ", 100%, 75%)"
+        );
       },
       set: function (new_value) {
         // console.log(new_value);
-        var colors = new_value.split(' ')
+        var colors = new_value.split(" ");
         // console.log(colors);
-        this.tab_color_hue = parseInt(colors[0], 10)
-        this.tab_color_diff = parseInt(colors[colors.length - 1], 10)
-      }
-    }
+        this.tab_color_hue = parseInt(colors[0], 10);
+        this.tab_color_diff = parseInt(colors[colors.length - 1], 10);
+      },
+    },
   },
   methods: {
     toggle_theme: function () {
-      this.dark_theme = !this.dark_theme
+      this.dark_theme = !this.dark_theme;
     },
     update_color: function () {
       // console.log(document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + getComputedStyle(document.documentElement).getPropertyValue('--neon-degree'));
       this.tab_color =
         document.documentElement.style.getPropertyValue(
-          '--neon-color-primary'
+          "--neon-color-primary"
         ) +
-        ' ' +
+        " " +
         getComputedStyle(document.documentElement).getPropertyValue(
-          '--neon-degree'
-        )
+          "--neon-degree"
+        );
       // this.tab_color = document.documentElement.style.getPropertyValue('--neon-color-primary') + " " + document.documentElement.style.getPropertyValue('--neon-degree'); //this doesn't work when property isn't set by js.
       // this.tab_color_hue = parseInt(document.documentElement.style.getPropertyValue('--neon-color-primary'), 10);
       // this.tab_color_diff = parseInt(document.documentElement.style.getPropertyValue('--neon-degree'), 10);
     },
     resize_window: function () {
-      this.large_win = !this.large_win
+      this.large_win = !this.large_win;
       if (!this.large_win) {
-        this.tab = 0
-        this.resize = mdiArrowExpand
+        this.tab = 0;
+        this.resize = mdiArrowExpand;
         // this.$refs.timer.focus();
       } else {
-        this.resize = mdiArrowCollapse
+        this.resize = mdiArrowCollapse;
       }
-      ipcRenderer.send('resize', this.large_win)
-    }
-  }
-}
+      ipcRenderer.send("resize", this.large_win);
+    },
+  },
+};
 </script>
 
 <style>

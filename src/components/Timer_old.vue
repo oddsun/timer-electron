@@ -1,131 +1,222 @@
 <!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
-<!-- <div id="timer-cell" :class="{active: button_active}"> -->
-<v-container fluid fill-height pa-5 ma-0 row justify-space-between>
-  <v-layout column text-center mr-5 justify-space-between>
-    <v-flex shrink mb-2 class="d-none d-sm-flex">
-      <!-- <div class="input-wrapper"> -->
-      <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
-      <!-- <div class="divider"></div> -->
-      <!-- <v-divider class="border"></v-divider> -->
-      <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
-      <!-- <v-divider class="border"></v-divider> -->
-      <!-- </div> -->
-      <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Problem Number" hide-details clearable solo flat background-color="transparent" autofocus @keydown.enter="focus_comment" class="large-font"></v-text-field>
-    </v-flex>
-    <v-divider class="border d-none d-sm-flex"></v-divider>
-    <!-- <v-flex shrink pl-2>
+  <!-- <div id="timer-cell" :class="{active: button_active}"> -->
+  <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
+    <v-layout column text-center mr-5 justify-space-between>
+      <v-flex shrink mb-2 class="d-none d-sm-flex">
+        <!-- <div class="input-wrapper"> -->
+        <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
+        <!-- <div class="divider"></div> -->
+        <!-- <v-divider class="border"></v-divider> -->
+        <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
+        <!-- <v-divider class="border"></v-divider> -->
+        <!-- </div> -->
+        <v-text-field
+          ref="name"
+          id="label-input-name"
+          v-model="prob_num"
+          label="Problem Number"
+          hide-details
+          clearable
+          solo
+          flat
+          background-color="transparent"
+          autofocus
+          @keydown.enter="focus_comment"
+          class="large-font"
+        ></v-text-field>
+      </v-flex>
+      <v-divider class="border d-none d-sm-flex"></v-divider>
+      <!-- <v-flex shrink pl-2>
       <div class="divider"></div>
     </v-flex> -->
-    <v-flex shrink mt-1 class="d-none d-sm-flex">
-      <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
-    </v-flex>
-    <v-flex shrink class="d-none d-sm-flex">
-      <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
-    </v-flex>
-    <!-- <v-flex class="draggable"> -->
-    <v-flex @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch">
-      <v-layout justify-center column fill-height ref='timer'>
-        <!-- <v-hover @click.native="start">
+      <v-flex shrink mt-1 class="d-none d-sm-flex">
+        <v-text-field
+          ref="comment"
+          id="label-input-comment"
+          v-model="comment"
+          label="Comments"
+          hide-details
+          clearable
+          solo
+          flat
+          background-color="transparent"
+          @keydown.enter="start_switch"
+        ></v-text-field>
+      </v-flex>
+      <v-flex shrink class="d-none d-sm-flex">
+        <v-switch
+          v-model="count_up"
+          :label="switch_label"
+          hide-details
+          inset
+          :color="track_color_diff"
+          :disabled="timer_started"
+        ></v-switch>
+      </v-flex>
+      <!-- <v-flex class="draggable"> -->
+      <v-flex
+        @mousedown="mouse_down"
+        @mousemove="mouse_move"
+        @mouseup="mouse_up"
+        @click="start_switch"
+      >
+        <v-layout justify-center column fill-height ref="timer">
+          <!-- <v-hover @click.native="start">
           <template v-slot:default="{ hover }"> -->
-        <div id="timer-text-container" :class="{active: button_active}">
-          <v-text-field ref='timer_input' class='timer-input' v-model='time_input' hide-details @keypress='validate_input($event)' @keydown.enter='enter_switch'></v-text-field>
-          <span class='timer-text' :class="{active: button_active, 'small-text': $vuetify.breakpoint.xsOnly}">{{ time }}</span>
-          <!--  :rules='rules' -->
-          <!--<p>{{ start_time }}</p>-->
-          <!--<button @click="start">{{button_text}}</button>-->
-          <!-- <v-fade-transition>
+          <div id="timer-text-container" :class="{ active: button_active }">
+            <v-text-field
+              ref="timer_input"
+              class="timer-input"
+              v-model="time_input"
+              hide-details
+              @keypress="validate_input($event)"
+              @keydown.enter="enter_switch"
+            ></v-text-field>
+            <span
+              class="timer-text"
+              :class="{
+                active: button_active,
+                'small-text': $vuetify.breakpoint.xsOnly,
+              }"
+              >{{ time }}</span
+            >
+            <!--  :rules='rules' -->
+            <!--<p>{{ start_time }}</p>-->
+            <!--<button @click="start">{{button_text}}</button>-->
+            <!-- <v-fade-transition>
                 <v-overlay v-if="hover" absolute> -->
-          <!-- color="#036358" -->
-          <!-- <v-btn>See more info</v-btn> -->
-          <!-- <button class='timer-button' :class="{active: button_active}"></button>
+            <!-- color="#036358" -->
+            <!-- <v-btn>See more info</v-btn> -->
+            <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
               </v-fade-transition> -->
-        </div>
-        <!-- </template>
+          </div>
+          <!-- </template>
         </v-hover> -->
-      </v-layout>
-    </v-flex>
-    <v-flex shrink class="d-none d-sm-flex">
-      <v-layout row align-center>
-        <v-flex>
-          <v-layout fill-height column justify-end>
-            <v-flex shrink>
-              <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
-            </v-flex>
-            <v-flex shrink>
-              <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
-            </v-flex>
-          </v-layout>
-        </v-flex>
-        <v-flex shrink fill-height>
-          <button class="glow-button" :class="{inactive: cycle_button_off}" @click="cycle_color">Cycle Color</button>
-        </v-flex>
-        <!-- <v-flex shrink>
+        </v-layout>
+      </v-flex>
+      <v-flex shrink class="d-none d-sm-flex">
+        <v-layout row align-center>
+          <v-flex>
+            <v-layout fill-height column justify-end>
+              <v-flex shrink>
+                <v-slider
+                  hide-details
+                  v-model="color_main"
+                  min="0"
+                  max="360"
+                  label="color"
+                  thumb-label
+                  @change="change_main_color"
+                  :color="slider_color"
+                  :track-color="track_color"
+                ></v-slider>
+              </v-flex>
+              <v-flex shrink>
+                <v-slider
+                  hide-details
+                  v-model="color_diff"
+                  min="-90"
+                  max="90"
+                  label="contrast"
+                  thumb-label
+                  @change="change_contrast"
+                  :color="slider_color_diff"
+                  :track-color="track_color_diff"
+                ></v-slider>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <v-flex shrink fill-height>
+            <button
+              class="glow-button"
+              :class="{ inactive: cycle_button_off }"
+              @click="cycle_color"
+            >
+              Cycle Color
+            </button>
+          </v-flex>
+          <!-- <v-flex shrink>
       <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
     </v-flex> -->
-      </v-layout>
-    </v-flex>
-  </v-layout>
-  <v-divider vertical class="border d-none d-sm-flex"></v-divider>
-  <v-layout text-center shrink column align-center justify-space-between fill-height ml-5 pa-0 class="d-none d-sm-flex">
-    <v-flex shrink>
-      <v-subheader class="timer-side-text active glow opposite">HISTORY</v-subheader>
-    </v-flex>
-    <v-flex style="overflow-y: auto; height: 0;">
-      <v-list two-line disabled dark color="transparent" width="10em">
-        <v-list-item-group>
-          <!-- use v-model="item" to highlight item-->
-          <v-list-item v-for="(item, i) in items" :key="i">
-            <v-list-item-content>
-              <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
-              <v-list-item-subtitle class="timer-side-text active glow" v-text="item.time"></v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list-item-group>
-      </v-list>
-    </v-flex>
-    <v-flex text-center shrink>
-      <button class="glow-button" @click="clear_history">clear</button>
-    </v-flex>
-  </v-layout> <!-- </div> -->
-</v-container>
+        </v-layout>
+      </v-flex>
+    </v-layout>
+    <v-divider vertical class="border d-none d-sm-flex"></v-divider>
+    <v-layout
+      text-center
+      shrink
+      column
+      align-center
+      justify-space-between
+      fill-height
+      ml-5
+      pa-0
+      class="d-none d-sm-flex"
+    >
+      <v-flex shrink>
+        <v-subheader class="timer-side-text active glow opposite"
+          >HISTORY</v-subheader
+        >
+      </v-flex>
+      <v-flex style="overflow-y: auto; height: 0">
+        <v-list two-line disabled dark color="transparent" width="10em">
+          <v-list-item-group>
+            <!-- use v-model="item" to highlight item-->
+            <v-list-item v-for="(item, i) in items" :key="i">
+              <v-list-item-content>
+                <v-list-item-title
+                  class="timer-side-text active opposite"
+                  v-text="item.name"
+                ></v-list-item-title>
+                <v-list-item-subtitle
+                  class="timer-side-text active glow"
+                  v-text="item.time"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-flex>
+      <v-flex text-center shrink>
+        <button class="glow-button" @click="clear_history">clear</button>
+      </v-flex>
+    </v-layout>
+    <!-- </div> -->
+  </v-container>
 </template>
 
 <script>
-import shared from '../shared.js'
-import {
-  EventBus
-} from '../event-bus.js'
+import shared from "../shared.js";
+import { EventBus } from "../event-bus.js";
 // const {
 //   dialog,
 //   shell
 // } = require("electron").remote
-import {
-  remote
-} from 'electron'
+import { remote } from "electron";
 import {
   mdiChevronDoubleUp,
   mdiChevronTripleUp,
   mdiChevronDown,
   mdiChevronDoubleDown,
-  mdiChevronTripleDown
-} from '@mdi/js'
+  mdiChevronTripleDown,
+} from "@mdi/js";
 
 export default {
-  name: 'timer',
-  data () {
+  name: "timer",
+  data() {
     return {
       // time: '00:00:00',
-      start_time: '',
-      job: '',
-      job_cycle: '',
-      button_text: 'Start',
-      stop_time: '',
+      start_time: "",
+      job: "",
+      job_cycle: "",
+      button_text: "Start",
+      stop_time: "",
       button_active: false,
-      prob_num: '',
+      prob_num: "",
       items: [],
-      comment: '',
+      comment: "",
       color_main: 75, // 130, 90, 90, 75, 130, 50, 120
       color_diff: 60, // -235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
@@ -134,7 +225,7 @@ export default {
       timer_started: false,
       dragging: false,
       is_mouse_down: false,
-      time_input: '',
+      time_input: "",
       remaining_micro_sec: 0,
       // rules: [
       //   value => !!value || 'Required.',
@@ -145,12 +236,12 @@ export default {
       //   },
       // ],
       start_micro_sec: 0,
-      running_micro_sec: 0
-    }
+      running_micro_sec: 0,
+    };
   },
   computed: {
     switch_label: function () {
-      return this.count_up ? 'Count Up' : 'Count Down'
+      return this.count_up ? "Count Up" : "Count Down";
     },
     slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
@@ -158,124 +249,139 @@ export default {
       // } else {
       //   this.temp_color = this.color_diff + this.color_diff;
       // }
-      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color: function () {
-      return 'hsl(' + this.color_main + ', 100%, 85%)'
+      return "hsl(" + this.color_main + ", 100%, 85%)";
     },
     slider_color_diff: function () {
-      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
+      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
     },
     track_color_diff: function () {
-      return 'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
+      return (
+        "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)"
+      );
     },
     micro_sec: function () {
       // var n = time_input.length
       // if (n == 0) {
       //   return 0
       // }
-      var sec = this.time_input.slice(-2)
-      var min = this.time_input.slice(-4, -2)
-      var hr = this.time_input.slice(-6, -4)
-      return (parseInt(hr) || 0) * 3600000 + (parseInt(min) || 0) * 60000 + (parseInt(sec) || 0) * 1000
+      var sec = this.time_input.slice(-2);
+      var min = this.time_input.slice(-4, -2);
+      var hr = this.time_input.slice(-6, -4);
+      return (
+        (parseInt(hr) || 0) * 3600000 +
+        (parseInt(min) || 0) * 60000 +
+        (parseInt(sec) || 0) * 1000
+      );
     },
     time: function () {
-      function pad (n, z) {
-        z = z || 2
-        return ('00' + n).slice(-z)
+      function pad(n, z) {
+        z = z || 2;
+        return ("00" + n).slice(-z);
       }
 
-      var curr_micro_sec = this.timer_started || this.count_up ? this.running_micro_sec : this.micro_sec
+      var curr_micro_sec =
+        this.timer_started || this.count_up
+          ? this.running_micro_sec
+          : this.micro_sec;
 
-      var ms = curr_micro_sec % 1000
-      var s = (curr_micro_sec - ms) / 1000
-      var secs = s % 60
-      s = (s - secs) / 60
-      var mins = s % 60
-      var hrs = (s - mins) / 60
+      var ms = curr_micro_sec % 1000;
+      var s = (curr_micro_sec - ms) / 1000;
+      var secs = s % 60;
+      s = (s - secs) / 60;
+      var mins = s % 60;
+      var hrs = (s - mins) / 60;
 
-      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs)
-    }
+      return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
+    },
   },
   watch: {
     color_main: function () {
-      this.change_main_color()
-    }
+      this.change_main_color();
+    },
   },
   methods: {
     start_switch: function () {
       if (this.count_up || this.timer_started) {
-        this.start()
+        this.start();
       } else {
-        this.focus_input()
+        this.focus_input();
       }
     },
     enter_switch: function () {
       if (!this.count_up) {
         if (!this.timer_started && !this.micro_sec) {
-          return
+          return;
         }
-        this.start()
+        this.start();
       }
     },
     start: function () {
       // console.log('starting_timer')
       if (this.dragging) {
-        return
+        return;
       }
       if (!this.job) {
-        this.timer_started = true
-        this.start_time = new Date()
+        this.timer_started = true;
+        this.start_time = new Date();
         if (!this.count_up) {
-          this.start_micro_sec = this.micro_sec
-          this.running_micro_sec = this.micro_sec
+          this.start_micro_sec = this.micro_sec;
+          this.running_micro_sec = this.micro_sec;
         }
         this.job = setInterval(() => {
           if (this.count_up) {
-            this.running_micro_sec = Math.abs(new Date() - this.start_time)
+            this.running_micro_sec = Math.abs(new Date() - this.start_time);
           } else {
-            this.count_down_timer()
+            this.count_down_timer();
           }
           // this.time = this.msToTime(Math.abs(new Date() - this.start_time))
           // console.log(this.time);
-        }, 1)
-        this.button_text = 'Stop'
-        this.button_active = true
+        }, 1);
+        this.button_text = "Stop";
+        this.button_active = true;
         if (!this.job_cycle) {
-          this.cycle_color()
+          this.cycle_color();
         }
       } else {
-        this.timer_started = false
-        var record_time = this.count_up ? this.time : this.msToTime(this.start_micro_sec - this.running_micro_sec)
-        this.button_text = 'Start'
-        clearInterval(this.job)
+        this.timer_started = false;
+        var record_time = this.count_up
+          ? this.time
+          : this.msToTime(this.start_micro_sec - this.running_micro_sec);
+        this.button_text = "Start";
+        clearInterval(this.job);
         this.items.unshift({
           time: record_time,
-          name: this.prob_num
-        })
-        this.job = ''
-        this.stop_time = new Date()
-        this.button_active = false
-        this.remaining_micro_sec = this.running_micro_sec
-        this.running_micro_sec = 0
-        this.$db.insert({
           name: this.prob_num,
-          start: shared.formatDate(this.start_time),
-          end: shared.formatDate(this.stop_time),
-          details: this.comment,
-          time: record_time,
-          color: 'hsl(' + this.color_main + ',100%,35%)'
-        }, (err, newrec) => { // Callback is optional
-          // newrec is the newly inserted document, including its _id
-          // newrec has no key called notToBeSaved since its value was undefined
-          // console.log(newrec)
-          EventBus.$emit('send_newrec', newrec)
-          if (!this.count_up && this.remaining_micro_sec == 0) {
-            this.show_alert()
+        });
+        this.job = "";
+        this.stop_time = new Date();
+        this.button_active = false;
+        this.remaining_micro_sec = this.running_micro_sec;
+        this.running_micro_sec = 0;
+        this.$db.insert(
+          {
+            name: this.prob_num,
+            start: shared.formatDate(this.start_time),
+            end: shared.formatDate(this.stop_time),
+            details: this.comment,
+            time: record_time,
+            color: "hsl(" + this.color_main + ",100%,35%)",
+          },
+          (err, newrec) => {
+            // Callback is optional
+            // newrec is the newly inserted document, including its _id
+            // newrec has no key called notToBeSaved since its value was undefined
+            // console.log(newrec)
+            EventBus.$emit("send_newrec", newrec);
+            if (!this.count_up && this.remaining_micro_sec == 0) {
+              this.show_alert();
+            }
+            // console.log(newrec);
+            // console.log(this);
           }
-          // console.log(newrec);
-          // console.log(this);
-        })
+        );
         // this.$db.find({
         //   name: {
         //     $regex: /test/
@@ -285,49 +391,59 @@ export default {
         //   // If no document is found, docs is equal to []
         //   // console.log(docs)
         // });
-        this.$refs.name.focus()
+        this.$refs.name.focus();
       }
       // console.log(this.prob_num);
     },
     cycle_color: function () {
       if (!this.job_cycle) {
-        this.cycle_button_off = false
+        this.cycle_button_off = false;
         this.job_cycle = setInterval(() => {
-          this.cycle_delta = (this.color_main > 359 || this.color_main <= 0) ? -this.cycle_delta : this.cycle_delta
-          this.color_main = this.color_main + this.cycle_delta
+          this.cycle_delta =
+            this.color_main > 359 || this.color_main <= 0
+              ? -this.cycle_delta
+              : this.cycle_delta;
+          this.color_main = this.color_main + this.cycle_delta;
           // console.log(this.time);
           // console.log(this.color_main);
-        }, 5000)
+        }, 5000);
       } else {
-        clearInterval(this.job_cycle)
-        this.job_cycle = ''
-        this.cycle_button_off = true
+        clearInterval(this.job_cycle);
+        this.job_cycle = "";
+        this.cycle_button_off = true;
       }
     },
     count_down_timer: function () {
-      this.running_micro_sec = Math.max(this.start_micro_sec - (Math.abs(new Date() - this.start_time)), 0)
+      this.running_micro_sec = Math.max(
+        this.start_micro_sec - Math.abs(new Date() - this.start_time),
+        0
+      );
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
-        this.start()
+        this.start();
         // this.show_alert()
       }
     },
     show_alert: function () {
-      remote.shell.beep()
+      remote.shell.beep();
       // FIXME:
       // Electron v9 doesn't have 3rd parameter, instead returns a Promise
       // object, which is like an async object which will produce resutls
       // when ready. Should fix when upgrading to v9.
-      remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-        message: 'Time\'s Up!',
-        buttons: ['Close']
-      }, (response) => {
-        // console.log(response)
-      })
+      remote.dialog.showMessageBox(
+        remote.getCurrentWindow(),
+        {
+          message: "Time's Up!",
+          buttons: ["Close"],
+        },
+        (response) => {
+          // console.log(response)
+        }
+      );
       // console.log('hi')
     },
     clear_history: function () {
-      this.items = []
+      this.items = [];
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
@@ -335,62 +451,71 @@ export default {
     // },
     msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad (n, z) {
-        z = z || 2
-        return ('00' + n).slice(-z)
+      function pad(n, z) {
+        z = z || 2;
+        return ("00" + n).slice(-z);
       }
 
-      var ms = s % 1000
-      s = (s - ms) / 1000
-      var secs = s % 60
-      s = (s - secs) / 60
-      var mins = s % 60
-      var hrs = (s - mins) / 60
+      var ms = s % 1000;
+      s = (s - ms) / 1000;
+      var secs = s % 60;
+      s = (s - secs) / 60;
+      var mins = s % 60;
+      var hrs = (s - mins) / 60;
 
-      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
+      return pad(hrs) + ":" + pad(mins) + ":" + pad(secs); // + '.' + pad(ms, 3);
     },
     focus_comment: function () {
-      this.$refs.comment.focus()
+      this.$refs.comment.focus();
     },
     focus_input: function () {
       // console.log('focusing timer_input')
-      this.$refs.timer_input.focus()
+      this.$refs.timer_input.focus();
     },
     change_main_color: function () {
-      document.documentElement.style.setProperty('--neon-color-primary', this.color_main)
-      this.$emit('update_color')
+      document.documentElement.style.setProperty(
+        "--neon-color-primary",
+        this.color_main
+      );
+      this.$emit("update_color");
     },
     change_contrast: function () {
-      document.documentElement.style.setProperty('--neon-degree', this.color_diff)
-      this.$emit('update_color')
+      document.documentElement.style.setProperty(
+        "--neon-degree",
+        this.color_diff
+      );
+      this.$emit("update_color");
     },
     mouse_down: function () {
-      this.is_mouse_down = true
+      this.is_mouse_down = true;
       // this.dragging = false; // will mess up starting timer with keydown
     },
     mouse_move: function () {
       if (this.is_mouse_down) {
-        this.dragging = true
+        this.dragging = true;
       }
     },
     mouse_up: function () {
       // this.dragging = false;
-      setTimeout(() => this.dragging = false, 1)
-      this.is_mouse_down = false
+      setTimeout(() => (this.dragging = false), 1);
+      this.is_mouse_down = false;
     },
     validate_input: function (evt) {
-      evt = (evt) || window.event
-      var charCode = (evt.which) ? evt.which : evt.keycode
+      evt = evt || window.event;
+      var charCode = evt.which ? evt.which : evt.keycode;
       // console.log(charCode)
-      if (charCode > 31 && (charCode < 48 || charCode > 57 || this.time_input.length >= 6)) {
+      if (
+        charCode > 31 &&
+        (charCode < 48 || charCode > 57 || this.time_input.length >= 6)
+      ) {
         // console.log('stop event')
-        evt.preventDefault()
+        evt.preventDefault();
       } else {
-        return true
+        return true;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
@@ -411,12 +536,18 @@ export default {
   --neon-color-primary: 75;
   --neon-degree: 60;
   --neon-degree-opposite: 180;
-  --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2*var(--neon-degree));
-  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 2*var(--neon-degree));
-  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 2*var(--neon-degree));
+  --neon-color-complement: calc(
+    var(--neon-color-primary) + var(--neon-degree-opposite) - 2 *
+      var(--neon-degree)
+  );
+  --neon-color-primary-shadow: calc(
+    var(--neon-color-primary) - 2 * var(--neon-degree)
+  );
+  --neon-color-complement-shadow: calc(
+    var(--neon-color-complement) + 2 * var(--neon-degree)
+  );
 
-  --neon-text-shadow:
-    0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
+  --neon-text-shadow: 0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 0.1em hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 0.2em hsl(var(--neon-color-primary-shadow), 100%, 35%),
@@ -434,8 +565,8 @@ export default {
     0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
     -0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%); */
   --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 85%);
-  --neon-text-shadow-reverse:
-    0 0 0.02em hsl(var(--neon-color-complement), 100%, 25%),
+  --neon-text-shadow-reverse: 0 0 0.02em
+      hsl(var(--neon-color-complement), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
@@ -443,8 +574,7 @@ export default {
     0.02em 0.02em 0.02em hsl(var(--neon-color-complement), 100%, 25%);
   --neon-text-highlight-reverse: hsl(var(--neon-color-complement), 100%, 75%);
 
-  --neon-box-shadow:
-    0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
+  --neon-box-shadow: 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
     inset 0 0 2px hsl(var(--neon-color-complement), 100%, 50%),
     /* 10px -14px 2px transparent,
     inset 10px -14px 2px transparent,
@@ -452,16 +582,20 @@ export default {
     inset 11px -15px 2px hsl(var(--neon-color-complement), 100%, 50%),
     20px -28px 2px hsl(var(--neon-color-complement), 100%, 50%),
     inset 20px 28px 2px hsl(var(--neon-color-complement), 100%, 50%), */
-    0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+      0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%);
   --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
-  --neon-box-shadow-highlight-transparent: hsla(var(--neon-color-complement), 100%, 75%, 0.3);
-  --neon-box-shadow-reverse:
-    0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
+  --neon-box-shadow-highlight-transparent: hsla(
+    var(--neon-color-complement),
+    100%,
+    75%,
+    0.3
+  );
+  --neon-box-shadow-reverse: 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     inset 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
     inset 0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
@@ -469,9 +603,13 @@ export default {
     inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%);
-  --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary), 100%, 75%);
-  --neon-box-shadow-flipped:
-    0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  --neon-box-shadow-highlight-reverse: hsl(
+    var(--neon-color-primary),
+    100%,
+    75%
+  );
+  --neon-box-shadow-flipped: 0 0 1px
+      hsl(var(--neon-color-complement-shadow), 100%, 50%),
     inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
     inset 0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
@@ -479,7 +617,11 @@ export default {
     inset 0 0 4px hsl(var(--neon-color-complement), 80%, 50%);
   /* 0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
   inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%); */
-  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-complement-shadow), 100%, 75%);
+  --neon-box-shadow-highlight-flipped: hsl(
+    var(--neon-color-complement-shadow),
+    100%,
+    75%
+  );
 }
 
 button.timer-button {
@@ -505,10 +647,8 @@ button.timer-button {
   /* box-shadow: 0 0 1px transparent; */
   /* -webkit-backface-visibility: hidden; */
   -webkit-transition:
-    /* all 1s; */
-    border-radius 0.2s ease-in-out 0s,
-    transform 0.2s ease-in-out 0s,
-    box-shadow 0.3s ease-in-out 0s,
+    /* all 1s; */ border-radius 0.2s ease-in-out 0s,
+    transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
 }
 
@@ -604,7 +744,7 @@ div#timer-cell:hover {
 
 #triangle-right {
   display: inline-block;
-  content: '';
+  content: "";
   border-top: 15px solid transparent;
   border-left: 30px solid var(--neon-text-color);
   border-bottom: 15px solid transparent;
@@ -614,8 +754,8 @@ div#timer-text-container {
   position: relative;
   border: 1px solid transparent;
   -webkit-transition:
-    /* transform 0s ease-in-out 0s; */
-    all 0.3s ease-in-out 0s;
+    /* transform 0s ease-in-out 0s; */ all 0.3s ease-in-out
+    0s;
   border-radius: 5px;
 }
 
@@ -648,8 +788,8 @@ span.timer-text {
     /* text-shadow 1s,
   color 1s,
   border 1s,
-  box-shadow 1s; */
-    all 0.3s ease-in-out 0s;
+  box-shadow 1s; */ all
+    0.3s ease-in-out 0s;
   /* transform 0s ease-in-out 0s; */
 }
 
@@ -657,13 +797,13 @@ span.small-text {
   font-size: 4em;
 }
 
-.timer-input.v-input--is-focused+.timer-text {
+.timer-input.v-input--is-focused + .timer-text {
   /* text-decoration-line: underline; */
   /* text-decoration-thickness: 0.1em; */
   border-bottom: 1px solid;
 }
 
-.timer-input.v-input--is-focused+.timer-text.active {
+.timer-input.v-input--is-focused + .timer-text.active {
   /* text-decoration: none; */
   border-bottom: 1px solid transparent;
 }
@@ -725,23 +865,14 @@ span.small-text {
 
 span.timer-text.active_old {
   color: white;
-  text-shadow:
-    -0.5px -0.5px 0.5px #fff,
-    0.5px 0.5px 0.5px #fff,
-    -0.5px 0.5px 0.5px #fff,
-    0.5px -0.5px 0.5px #fff,
-    0 0 2px var(--neon-text-color),
-    0 0 4px var(--neon-text-color),
-    0 0 8px var(--neon-text-color),
-    0 0 12px var(--neon-text-color);
+  text-shadow: -0.5px -0.5px 0.5px #fff, 0.5px 0.5px 0.5px #fff,
+    -0.5px 0.5px 0.5px #fff, 0.5px -0.5px 0.5px #fff,
+    0 0 2px var(--neon-text-color), 0 0 4px var(--neon-text-color),
+    0 0 8px var(--neon-text-color), 0 0 12px var(--neon-text-color);
   /* 0 0 5px var(--neon-text-color); */
 
-  box-shadow:
-    0 0 2px #fff,
-    inset 0 0 2px #fff,
-    0 0 4px var(--neon-border-color),
-    inset 0 0 4px var(--neon-border-color),
-    0 0 6px var(--neon-border-color),
+  box-shadow: 0 0 2px #fff, inset 0 0 2px #fff, 0 0 4px var(--neon-border-color),
+    inset 0 0 4px var(--neon-border-color), 0 0 6px var(--neon-border-color),
     inset 0 0 6px var(--neon-border-color);
   /* border: 2px solid var(--neon-border-color); */
   border: 2px solid white;
@@ -756,14 +887,14 @@ span.timer-text.active_old {
 } */
 
 button.timer-button:after {
-  content: '\25B7';
+  content: "\25B7";
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
   /* font-size: 1.5em; */
 }
 
 button.timer-button.active:after {
-  content: '\2668';
+  content: "\2668";
   text-shadow: none;
   color: transparent;
   /* display: block; */
@@ -772,7 +903,7 @@ button.timer-button.active:after {
 }
 
 button.timer-button.active:hover:after {
-  content: '\2668';
+  content: "\2668";
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
 }
@@ -812,13 +943,18 @@ button.timer-button.active:hover:after {
 } */
 
 .theme--light.v-text-field--outlined fieldset,
-.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(
+    .v-input--has-state
+  ):hover
+  fieldset {
   border-color: var(--neon-box-shadow-highlight);
 }
 
 .v-input__slot:before,
 .v-input__slot:hover:before,
-.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:before {
+.theme--light.v-text-field:not(.v-input--has-state)
+  > .v-input__control
+  > .v-input__slot:before {
   border-color: var(--neon-box-shadow-highlight-flipped) !important;
 }
 
@@ -876,7 +1012,7 @@ input {
 } */
 
 .v-text-field.v-text-field--enclosed .v-text-field__details,
-.v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
+.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot {
   padding: 0;
 }
 
@@ -897,11 +1033,15 @@ input {
   top: calc(50% - 19px);
 }
 
-.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple {
+.v-application--is-ltr
+  .v-input--switch--inset.v-input--is-dirty
+  .v-input--selection-controls__ripple {
   transform: translate(0, 0) !important;
 }
 
-.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb {
+.v-application--is-ltr
+  .v-input--switch--inset.v-input--is-dirty
+  .v-input--switch__thumb {
   transform: translate(20px, 0) !important;
 }
 

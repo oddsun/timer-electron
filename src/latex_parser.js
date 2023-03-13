@@ -1,5 +1,5 @@
 export default {
-  parse_latex: function(s) {
+  parse_latex: function (s) {
     var i = 0;
     var ast = [];
     var prev_type = '';
@@ -10,13 +10,14 @@ export default {
         case !prev_type || prev_type === curr_type:
           temp += s[i];
           break;
-        case
+        case true:
+          break;
         default:
-
+          break;
       }
     }
   },
-  get_type: function(char) {
+  get_type: function (char) {
     switch (true) {
       case /^[0-9.]$/.test(char):
         return 'number';

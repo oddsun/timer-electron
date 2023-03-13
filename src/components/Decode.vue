@@ -11,16 +11,16 @@
 
 <script>
 export default {
-  name: 'decode',
+  name: "decode",
   props: {
     letter: String,
-    decoded: String
-  }
+    decoded: String,
+  },
   // computed: {
   //   decoded_u: function() {
   //     console.log(this.decoded);
   //     return this.decoded;
   //   }
   // }
-}
+};
 </script>

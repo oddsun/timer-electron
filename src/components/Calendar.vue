@@ -5,9 +5,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
     <v-col class="pt-0 pb-0">
       <v-sheet height="64" dark color="transparent">
         <v-toolbar flat color="transparent" dark>
-          <v-btn outlined class="mr-4" @click="setToday">
-            Today
-          </v-btn>
+          <v-btn outlined class="mr-4" @click="setToday"> Today </v-btn>
           <v-btn fab text small @click="prev">
             <v-icon left>{{ cal_left }}</v-icon>
           </v-btn>
@@ -59,14 +57,33 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
       </v-sheet>
       <v-sheet class="fill-height-cal-sheet" color="transparent" height="688">
         <!-- overlap doesn't work because there is no overlap in timer output, think about it... -->
-        <v-calendar backgroundcolor="transparent" dark ref="calendar" event-overlap-mode="column"
-          event-overlap-threshold="30" v-model="focus" :events="events" :event-color="getEventColor"
-          :event-margin-bottom="3" :now="today" :type="type" @click:event="showEvent" @click:more="viewDay"
-          @click:date="viewDay" @change="updateRange">
+        <v-calendar
+          backgroundcolor="transparent"
+          dark
+          ref="calendar"
+          event-overlap-mode="column"
+          event-overlap-threshold="30"
+          v-model="focus"
+          :events="events"
+          :event-color="getEventColor"
+          :event-margin-bottom="3"
+          :now="today"
+          :type="type"
+          @click:event="showEvent"
+          @click:more="viewDay"
+          @click:date="viewDay"
+          @change="updateRange"
+        >
           <!-- interval-count="1440" interval-minutes="1"> -->
         </v-calendar>
-        <v-menu v-model="selectedOpen" :close-on-content-click="false" :activator="selectedElement" class="full-width"
-          max-width="450" offset-x>
+        <v-menu
+          v-model="selectedOpen"
+          :close-on-content-click="false"
+          :activator="selectedElement"
+          class="full-width"
+          max-width="450"
+          offset-x
+        >
           <!-- max-height="460"> -->
           <v-card color="rgba(0,0,0,0.8)" min-width="450px" flat>
             <v-toolbar :color="selectedEvent.color" dark>
@@ -74,8 +91,14 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
               <v-icon>edit</v-icon>
             </v-btn> -->
               <!-- <v-toolbar-title v-model="selectedEvent.name" v-html="selectedEvent.name"> :disabled="cal_event_edit_disabled"-->
-              <v-text-field clearable hide-details solo flat background-color="transparent"
-                v-model="selectedEvent.name"></v-text-field>
+              <v-text-field
+                clearable
+                hide-details
+                solo
+                flat
+                background-color="transparent"
+                v-model="selectedEvent.name"
+              ></v-text-field>
               <!-- </v-toolbar-title> -->
               <!-- <v-spacer></v-spacer>
             <v-btn icon>
@@ -93,7 +116,10 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">Start:</span>
                     </v-col>
                     <v-col>
-                      <span class="calendar-details start" v-html="selectedEvent.start"></span>
+                      <span
+                        class="calendar-details start"
+                        v-html="selectedEvent.start"
+                      ></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -103,7 +129,10 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">End:</span>
                     </v-col>
                     <v-col>
-                      <span class="calendar-details end" v-html="selectedEvent.end"></span>
+                      <span
+                        class="calendar-details end"
+                        v-html="selectedEvent.end"
+                      ></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -113,7 +142,10 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                       <span class="calendar-details-category">Time:</span>
                     </v-col>
                     <v-col class="pl-0">
-                      <span class="calendar-details time" v-html="selectedEvent.time"></span>
+                      <span
+                        class="calendar-details time"
+                        v-html="selectedEvent.time"
+                      ></span>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -152,8 +184,18 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
                     </v-col>
                     <v-col>
                       <!-- <v-textarea :key="auto_grow_hack" rows="1" row-height="1" auto-grow hide-details solo flat background-color='transparent' v-model="selectedEvent.details" id="calendar-details" class="mt-0 pa-0"></v-textarea> -->
-                      <v-textarea rows="4" row-height="1" clearable outlined hide-details background-color="transparent"
-                        v-model="selectedEvent.details" id="calendar-details" no-resize class="mt-0"></v-textarea>
+                      <v-textarea
+                        rows="4"
+                        row-height="1"
+                        clearable
+                        outlined
+                        hide-details
+                        background-color="transparent"
+                        v-model="selectedEvent.details"
+                        id="calendar-details"
+                        no-resize
+                        class="mt-0"
+                      ></v-textarea>
                     </v-col>
                   </v-row>
                 </v-col>
@@ -191,9 +233,7 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
               <v-btn text color="white" @click="selectedOpen = false">
                 Cancel
               </v-btn>
-              <v-btn text color="white" @click="save_changes">
-                Save
-              </v-btn>
+              <v-btn text color="white" @click="save_changes"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
@@ -204,10 +244,10 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
 
 <script>
 // TODO: update grid
-import shared from '../shared.js'
-import { EventBus } from '../event-bus.js'
-import fs from 'fs'
-import { homedir } from 'os'
+import shared from "../shared.js";
+import { EventBus } from "../event-bus.js";
+import fs from "fs";
+import { homedir } from "os";
 import {
   mdiCalendarImport,
   mdiCalendarExport,
@@ -215,9 +255,9 @@ import {
   mdiChevronRight,
   mdiChevronDown,
   mdiDownload,
-  mdiUpload
-} from '@mdi/js'
-import { remote } from 'electron'
+  mdiUpload,
+} from "@mdi/js";
+import { remote } from "electron";
 
 export default {
   data: () => ({
@@ -228,13 +268,13 @@ export default {
     cal_export: mdiDownload, // mdiCalendarExport,
     // today: shared.formatDate(new Date()).substring(0, 10),
     // focus: shared.formatDate(new Date()).substring(0, 10
-    focus: '',
-    type: 'month',
+    focus: "",
+    type: "month",
     typeToLabel: {
-      month: 'Month',
-      week: 'Week',
-      day: 'Day',
-      '4day': '4 Days'
+      month: "Month",
+      week: "Week",
+      day: "Day",
+      "4day": "4 Days",
     },
     start: null,
     end: null,
@@ -244,7 +284,7 @@ export default {
     selectedOpen: false,
     events: [],
     cal_event_edit_disabled: true,
-    auto_grow_hack: true
+    auto_grow_hack: true,
     // events: [{
     //     name: 'Vacation',
     //     details: 'Going to the beach!',
@@ -373,55 +413,55 @@ export default {
   }),
   computed: {
     title() {
-      const { start, end } = this
+      const { start, end } = this;
       // console.log(this)
       // console.log(start)
       // console.log(end)
       if (!start || !end) {
-        return ''
+        return "";
       }
 
-      const startMonth = this.monthFormatter(start)
-      const endMonth = this.monthFormatter(end)
-      const suffixMonth = startMonth === endMonth ? '' : endMonth
+      const startMonth = this.monthFormatter(start);
+      const endMonth = this.monthFormatter(end);
+      const suffixMonth = startMonth === endMonth ? "" : endMonth;
 
-      const startYear = start.year
-      const endYear = end.year
-      const suffixYear = startYear === endYear ? '' : endYear
+      const startYear = start.year;
+      const endYear = end.year;
+      const suffixYear = startYear === endYear ? "" : endYear;
 
-      const startDay = start.day + this.nth(start.day)
-      const endDay = end.day + this.nth(end.day)
+      const startDay = start.day + this.nth(start.day);
+      const endDay = end.day + this.nth(end.day);
 
       switch (this.type) {
-        case 'month':
-          return `${startMonth} ${startYear}`
-        case 'week':
-        case '4day':
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`
-        case 'day':
-          return `${startMonth} ${startDay} ${startYear}`
+        case "month":
+          return `${startMonth} ${startYear}`;
+        case "week":
+        case "4day":
+          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`;
+        case "day":
+          return `${startMonth} ${startDay} ${startYear}`;
       }
-      return ''
+      return "";
     },
     monthFormatter() {
       return this.$refs.calendar.getFormatter({
-        timeZone: 'UTC',
-        month: 'long'
-      })
-    }
+        timeZone: "UTC",
+        month: "long",
+      });
+    },
   },
   methods: {
     import_cal() {
       // console.log(remote.dialog);
       remote.dialog.showOpenDialog(
         {
-          properties: ['openFile']
+          properties: ["openFile"],
         },
-        files => {
+        (files) => {
           if (files != undefined && files.length === 1) {
             // console.log(files);
             fs.readFile(files[0], (err, data) => {
-              var imported_events = JSON.parse(data)
+              var imported_events = JSON.parse(data);
               // var new_event = this.remove_id(imported_events[0]);
               // console.log(new_event);
               // console.log(imported_events[0]);
@@ -431,7 +471,7 @@ export default {
               // console.log(imported_events);
               // var mod_events = [];
               for (const imported_event of imported_events) {
-                const new_event = this.remove_id(imported_event) // changes event before callback
+                const new_event = this.remove_id(imported_event); // changes event before callback
                 // console.log(new_event);
                 this.$db.find(new_event, (err, docs) => {
                   // console.log(err);
@@ -442,43 +482,43 @@ export default {
                     this.$db.insert(new_event, (err, newrec) => {
                       // console.log(err);
                       // console.log(newrec);
-                      this.loadEvents()
-                    })
+                      this.loadEvents();
+                    });
                   }
-                })
+                });
                 // this.$db.insert(this.remove_id(imported_event), (err, newrec) => {
                 //   console.log(err);
                 //   console.log(newrec);
                 // });
               }
-            })
+            });
           }
         }
-      )
+      );
     },
     remove_id(old_event) {
       // this moves _id to original_id
-      var new_event = {}
+      var new_event = {};
       // delete Object.assign(new_event, old_event, {
       //   ["original_id"]: old_event["_id"]
       // })["_id"];
-      delete Object.assign(new_event, old_event)._id
-      return new_event
+      delete Object.assign(new_event, old_event)._id;
+      return new_event;
       // return Object.assign({}, old_event);
     },
     export_cal() {
-      var path = homedir() + '/Downloads/calendar.json'
-      var i = 1
+      var path = homedir() + "/Downloads/calendar.json";
+      var i = 1;
       while (fs.existsSync(path)) {
-        i += 1
-        path = homedir() + '/Downloads/calendar_' + i + '.json'
+        i += 1;
+        path = homedir() + "/Downloads/calendar_" + i + ".json";
       }
       this.$db.find(
         {
           start: {
-            $regex: /./
+            $regex: /./,
             // $regex: /24/
-          }
+          },
           // name: "test_import v3",
           // $not: {
           //   status: 'replaced'
@@ -488,14 +528,14 @@ export default {
           // }
         },
         (err, docs) => {
-          console.log(err)
+          console.log(err);
           // this.events = docs
-          fs.writeFile(path, JSON.stringify(docs), err => {
+          fs.writeFile(path, JSON.stringify(docs), (err) => {
             // throws error
-            console.log(err)
-          })
+            console.log(err);
+          });
         }
-      )
+      );
       // console.log(path);
     },
     save_changes() {
@@ -504,30 +544,30 @@ export default {
         this.selectedEvent.name == this.selectedEvent_backup.name &&
         this.selectedEvent.details == this.selectedEvent_backup.details
       ) {
-        this.selectedOpen = false
+        this.selectedOpen = false;
         // console.log("nothing changed")
-        return
+        return;
       }
-      var new_event = {}
+      var new_event = {};
       delete Object.assign(new_event, this.selectedEvent, {
-        original_id: this.selectedEvent._id
-      })._id
+        original_id: this.selectedEvent._id,
+      })._id;
       this.$db.insert(new_event, (err, newrec) => {
-        new_event = newrec
+        new_event = newrec;
         // console.log(new_event)
         this.$db.update(
           {
-            _id: this.selectedEvent._id
+            _id: this.selectedEvent._id,
           },
           {
             $set: {
-              status: 'replaced',
-              new_id: new_event._id
-            }
+              status: "replaced",
+              new_id: new_event._id,
+            },
           },
           {},
-          (err, numReplaced) => { }
-        )
+          (err, numReplaced) => {}
+        );
         // this.$db.find({
         //   status: "replaced"
         // }, function(err, docs) {
@@ -535,31 +575,31 @@ export default {
         //   // If no document is found, docs is equal to []
         //   console.log(docs)
         // });
-      })
+      });
       // console.log(new_event);
       // console.log(this.selectedEvent);
-      this.selectedOpen = false
+      this.selectedOpen = false;
     },
     force_refresh() {
-      this.auto_grow_hack = !this.auto_grow_hack
+      this.auto_grow_hack = !this.auto_grow_hack;
     },
     edit_cal_event() {
       // console.log(this.events)
-      this.cal_event_edit_disabled = !this.cal_event_edit_disabled
+      this.cal_event_edit_disabled = !this.cal_event_edit_disabled;
     },
     loadEvents() {
       if (!this.start && !this.end) {
-        var today_date = new Date()
+        var today_date = new Date();
         var temp_start = new Date(
           today_date.getFullYear(),
           today_date.getMonth(),
           1
-        )
+        );
         var temp_end = new Date(
           today_date.getFullYear(),
           today_date.getMonth() + 1,
           0
-        )
+        );
         // console.log(temp_start)
       }
       // console.log((this.end ? this.end['date'] : temp_end['date']) + ' 30:00:00')
@@ -570,95 +610,94 @@ export default {
               start: {
                 $gt:
                   (this.start ? this.start.date : temp_start.date) +
-                  ' 00:00:00'
-              }
+                  " 00:00:00",
+              },
             },
             {
               start: {
-                $lt:
-                  (this.end ? this.end.date : temp_end.date) + ' 30:00:00'
-              }
-            }
+                $lt: (this.end ? this.end.date : temp_end.date) + " 30:00:00",
+              },
+            },
           ],
           // name: "test_import v3",
           $not: {
-            status: 'replaced'
-          }
+            status: "replaced",
+          },
           // status: {
           //   $ne: 'replaced'
           // }
         },
         (err, docs) => {
-          console.log(err)
-          this.events = docs
+          console.log(err);
+          this.events = docs;
         }
-      )
+      );
     },
     updateEvents(new_rec) {
       // this.events.push(new_rec)
       // console.log('updating');
     },
     viewDay({ date }) {
-      this.focus = date
-      this.type = 'day'
+      this.focus = date;
+      this.type = "day";
     },
     getEventColor(event) {
-      return event.color
+      return event.color;
     },
     setToday() {
       // this.focus = this.today
-      this.focus = ''
+      this.focus = "";
     },
     prev() {
-      this.$refs.calendar.prev()
+      this.$refs.calendar.prev();
     },
     next() {
-      this.$refs.calendar.next()
+      this.$refs.calendar.next();
     },
     showEvent({ nativeEvent, event }) {
       const open = () => {
-        this.selectedEvent = event
-        Object.assign(this.selectedEvent_backup, event)
-        this.selectedElement = nativeEvent.target
-        setTimeout(() => (this.selectedOpen = true), 10)
+        this.selectedEvent = event;
+        Object.assign(this.selectedEvent_backup, event);
+        this.selectedElement = nativeEvent.target;
+        setTimeout(() => (this.selectedOpen = true), 10);
         // this.force_refresh()
-      }
+      };
 
       if (this.selectedOpen) {
-        this.selectedOpen = false
-        setTimeout(open, 10)
+        this.selectedOpen = false;
+        setTimeout(open, 10);
       } else {
-        open()
+        open();
       }
 
-      nativeEvent.stopPropagation()
+      nativeEvent.stopPropagation();
     },
     updateRange({ start, end }) {
       // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
       // console.log(start)
-      this.start = start
-      this.end = end
-      this.loadEvents()
+      this.start = start;
+      this.end = end;
+      this.loadEvents();
     },
     nth(d) {
       return d > 3 && d < 21
-        ? 'th'
-        : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
-    }
+        ? "th"
+        : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
+    },
   },
   beforeMount() {
     // console.log(this);
-    this.loadEvents()
+    this.loadEvents();
   },
   mounted() {
-    EventBus.$on('send_newrec', newrec => {
+    EventBus.$on("send_newrec", (newrec) => {
       // console.log('receiving');
-      this.loadEvents() // saver to reload from database
+      this.loadEvents(); // saver to reload from database
       // console.log(newrec);
       // this.updateEvents(newrec)
-    })
-  }
-}
+    });
+  },
+};
 </script>
 
 <style>
@@ -666,9 +705,9 @@ export default {
   color: white;
 }
 
-.fill-height-cal-sheet {
-  /* height: calc(100% - 64px); */
-}
+/* .fill-height-cal-sheet { */
+/* height: calc(100% - 64px); */
+/* } */
 
 .theme--dark.v-calendar-weekly {
   border-left: none;
@@ -771,12 +810,12 @@ span.calendar-details,
   top: 0;
 }
 
-.calendar-details.start,
-.calendar-details.end {
-  /* padding-right: 8em; */
-  /* width: 5em; */
-  /* line-height: 32px; */
-}
+/* .calendar-details.start,
+.calendar-details.end { */
+/* padding-right: 8em; */
+/* width: 5em; */
+/* line-height: 32px; */
+/* } */
 
 .theme--dark.v-calendar-weekly .v-calendar-weekly__head-weekday.v-past {
   color: white;
@@ -798,7 +837,7 @@ span.calendar-details,
   /* display: inline-block; */
 }
 
-.v-textarea>.v-input__control>.v-input__slot {
+.v-textarea > .v-input__control > .v-input__slot {
   /* display: block; */
   padding: 0 12px !important;
 }
@@ -808,7 +847,9 @@ span.calendar-details,
   margin-top: 0;
 }
 
-.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)>.v-input__control>.v-input__slot,
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
+  > .v-input__control
+  > .v-input__slot,
 .v-text-field.v-text-field--enclosed .v-text-field__details {
   padding: 0;
 }
