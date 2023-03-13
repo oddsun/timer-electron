@@ -1,6 +1,6 @@
 {
   "name": "timer-electron",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "author": "oddsun <1161465+oddsun@users.noreply.github.com>",
   "scripts": {
