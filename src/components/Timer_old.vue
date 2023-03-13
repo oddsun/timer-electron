@@ -114,7 +114,7 @@ import {
 
 export default {
   name: 'timer',
-  data() {
+  data () {
     return {
       // time: '00:00:00',
       start_time: '',
@@ -149,10 +149,10 @@ export default {
     }
   },
   computed: {
-    switch_label: function() {
+    switch_label: function () {
       return this.count_up ? 'Count Up' : 'Count Down'
     },
-    slider_color: function() {
+    slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
       // } else {
@@ -160,16 +160,16 @@ export default {
       // }
       return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color: function() {
+    track_color: function () {
       return 'hsl(' + this.color_main + ', 100%, 85%)'
     },
-    slider_color_diff: function() {
+    slider_color_diff: function () {
       return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color_diff: function() {
+    track_color_diff: function () {
       return 'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
     },
-    micro_sec: function() {
+    micro_sec: function () {
       // var n = time_input.length
       // if (n == 0) {
       //   return 0
@@ -179,8 +179,8 @@ export default {
       var hr = this.time_input.slice(-6, -4)
       return (parseInt(hr) || 0) * 3600000 + (parseInt(min) || 0) * 60000 + (parseInt(sec) || 0) * 1000
     },
-    time: function() {
-      function pad(n, z) {
+    time: function () {
+      function pad (n, z) {
         z = z || 2
         return ('00' + n).slice(-z)
       }
@@ -198,19 +198,19 @@ export default {
     }
   },
   watch: {
-    color_main: function() {
+    color_main: function () {
       this.change_main_color()
     }
   },
   methods: {
-    start_switch: function() {
+    start_switch: function () {
       if (this.count_up || this.timer_started) {
         this.start()
       } else {
         this.focus_input()
       }
     },
-    enter_switch: function() {
+    enter_switch: function () {
       if (!this.count_up) {
         if (!this.timer_started && !this.micro_sec) {
           return
@@ -218,7 +218,7 @@ export default {
         this.start()
       }
     },
-    start: function() {
+    start: function () {
       // console.log('starting_timer')
       if (this.dragging) {
         return
@@ -289,7 +289,7 @@ export default {
       }
       // console.log(this.prob_num);
     },
-    cycle_color: function() {
+    cycle_color: function () {
       if (!this.job_cycle) {
         this.cycle_button_off = false
         this.job_cycle = setInterval(() => {
@@ -304,7 +304,7 @@ export default {
         this.cycle_button_off = true
       }
     },
-    count_down_timer: function() {
+    count_down_timer: function () {
       this.running_micro_sec = Math.max(this.start_micro_sec - (Math.abs(new Date() - this.start_time)), 0)
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
@@ -312,30 +312,30 @@ export default {
         // this.show_alert()
       }
     },
-    show_alert: function() {
+    show_alert: function () {
       remote.shell.beep()
       // FIXME:
       // Electron v9 doesn't have 3rd parameter, instead returns a Promise
       // object, which is like an async object which will produce resutls
       // when ready. Should fix when upgrading to v9.
       remote.dialog.showMessageBox(remote.getCurrentWindow(), {
-        'message': 'Time\'s Up!',
-        'buttons': ['Close']
+        message: 'Time\'s Up!',
+        buttons: ['Close']
       }, (response) => {
         // console.log(response)
       })
       // console.log('hi')
     },
-    clear_history: function() {
+    clear_history: function () {
       this.items = []
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
     // },
-    msToTime: function(s) {
+    msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
-      function pad(n, z) {
+      function pad (n, z) {
         z = z || 2
         return ('00' + n).slice(-z)
       }
@@ -349,37 +349,37 @@ export default {
 
       return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
     },
-    focus_comment: function() {
+    focus_comment: function () {
       this.$refs.comment.focus()
     },
-    focus_input: function() {
+    focus_input: function () {
       // console.log('focusing timer_input')
       this.$refs.timer_input.focus()
     },
-    change_main_color: function() {
+    change_main_color: function () {
       document.documentElement.style.setProperty('--neon-color-primary', this.color_main)
       this.$emit('update_color')
     },
-    change_contrast: function() {
+    change_contrast: function () {
       document.documentElement.style.setProperty('--neon-degree', this.color_diff)
       this.$emit('update_color')
     },
-    mouse_down: function() {
+    mouse_down: function () {
       this.is_mouse_down = true
       // this.dragging = false; // will mess up starting timer with keydown
     },
-    mouse_move: function() {
+    mouse_move: function () {
       if (this.is_mouse_down) {
         this.dragging = true
       }
     },
-    mouse_up: function() {
+    mouse_up: function () {
       // this.dragging = false;
       setTimeout(() => this.dragging = false, 1)
       this.is_mouse_down = false
     },
-    validate_input: function(evt) {
-      evt = (evt) ? evt : window.event
+    validate_input: function (evt) {
+      evt = (evt) || window.event
       var charCode = (evt.which) ? evt.which : evt.keycode
       // console.log(charCode)
       if (charCode > 31 && (charCode < 48 || charCode > 57 || this.time_input.length >= 6)) {

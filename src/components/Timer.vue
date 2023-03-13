@@ -3,191 +3,121 @@
   <!-- <div id="timer-cell" :class="{active: button_active}"> -->
   <v-container fluid fill-height pa-0 ma-0>
     <v-row no-gutters class="fill-height" justify="space-between">
-      <v-col
-        cols="12"
-        sm="10"
-        text-center
-        class="pa-0 ma-0 justify-space-between fill-height"
-        align-self="center"
-      >
-        <v-row
-          class="fill-height ma-0 pa-3"
-          :class="{ border_right: large_win }"
-          align-content="space-between"
-        >
+      <!-- 1. Left timer part -->
+      <v-col cols="12" sm="10" text-center class="pa-0 ma-0 justify-space-between fill-height" align-self="center">
+        <v-row class="fill-height ma-0 pa-3" :class="{ border_right: large_win }" align-content="space-between">
+          <!-- 3 cols of 12 (max) wraps around into 3 spaced out rows, a hack -->
+          <!-- 1.1 Text -->
           <v-col cols="12" class="pa-0">
             <v-row class="d-none d-sm-flex">
-              <v-col class="pt-0 pb-0">
-                <v-text-field
-                  ref="name"
-                  id="label-input-name"
-                  v-model="prob_num"
-                  label="Problem Number"
-                  hide-details
-                  clearable
-                  solo
-                  flat
-                  background-color="transparent"
-                  autofocus
-                  @keydown.enter="focus_comment"
-                  class="large-font"
-                ></v-text-field>
+              <!-- 2 cols of 12 (max) wraps around into 2 spaced out rows, a hack -->
+              <!-- 1.1.1 Title -->
+              <v-col cols="12" class="pb-0">
+                <v-text-field ref="name" id="label-input-name" v-model="prob_num" label="Title" hide-details clearable
+                  solo flat background-color="transparent" autofocus @keydown.enter="focus_comment"
+                  class="large-font"></v-text-field>
+              </v-col>
+              <!-- 1.1.d Divider -->
+              <v-divider class="border d-none d-sm-flex ml-3 mr-3"></v-divider>
+              <!-- 1.1.2 Comment -->
+              <v-col cols="12" class="pt-1 pb-0">
+                <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details
+                  clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
               </v-col>
             </v-row>
-            <v-divider class="border d-none d-sm-flex"></v-divider>
+          <!-- <v-divider class="border d-none d-sm-flex"></v-divider>
             <v-row class="d-none d-sm-flex">
               <v-col class="pt-1 pb-0">
-                <v-text-field
-                  ref="comment"
-                  id="label-input-comment"
-                  v-model="comment"
-                  label="Comments"
-                  hide-details
-                  clearable
-                  solo
-                  flat
-                  background-color="transparent"
-                  @keydown.enter="start_switch"
-                ></v-text-field>
+                <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details
+                  clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
               </v-col>
-            </v-row>
+                              </v-row> -->
           </v-col>
           <!-- <v-flex class="draggable"> -->
+          <!-- 1.2. Timer -->
           <v-col cols="12" class="pa-0">
-            <v-row
-              no-gutters
-              justify="center"
-              align="center"
-              class="mt-md-auto fill-height"
-            >
+            <v-row no-gutters justify="center" align="center" class="mt-md-auto fill-height">
               <!-- @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch"> -->
-
+              <!-- 3 cols of 12 (max) wraps around into 3 spaced out rows, a hack -->
+              <!-- 1.2.1 Up/Down Buttons (timer vs count down) -->
               <v-col cols="12" justify="center" align="center">
                 <!-- <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch> -->
 
-                <button
-                  class="glow-button inactive"
-                  :class="{ noborder: !count_up }"
-                  @click="toggle_up_down"
-                >
+                <button class="glow-button inactive" :class="{ noborder: !count_up }" @click="toggle_up_down">
                   <v-icon>{{ up_icon }}</v-icon>
                 </button>
-                <button
-                  class="glow-button inactive"
-                  :class="{ noborder: count_up }"
-                  @click="toggle_up_down"
-                >
+                <button class="glow-button inactive" :class="{ noborder: count_up }" @click="toggle_up_down">
                   <v-icon>{{ down_icon }}</v-icon>
                 </button>
                 <!-- <span>{{count_up}}</span> -->
               </v-col>
-              <v-col
-                cols="12"
-                justify="center"
-                align="center"
-                ref="timer"
-                @mousedown="mouse_down"
-                @mousemove="mouse_move"
-                @mouseup="mouse_up"
-                @click="start_switch"
-              >
+              <!-- 1.2.2 Timer Text  -->
+              <v-col cols="12" justify="center" align="center" ref="timer" @mousedown="mouse_down" @mousemove="mouse_move"
+                @mouseup="mouse_up" @click="start_switch">
                 <!-- <v-hover @click.native="start"> <template v-slot:default="{ hover }"> -->
-                <div
-                  id="timer-text-container"
-                  :class="{ active: button_active }"
-                >
-                  <v-text-field
-                    ref="timer_input"
-                    class="timer-input"
-                    v-model="time_input"
-                    hide-details
-                    @keypress="validate_input($event)"
-                    @keydown.enter="enter_switch"
-                  ></v-text-field>
-                  <span
-                    class="timer-text"
-                    :class="{
-                      active: button_active,
-                      'small-text': $vuetify.breakpoint.xsOnly
-                    }"
-                    >{{ time }}</span
-                  >
+                <div id="timer-text-container" :class="{ active: button_active }">
+                  <v-text-field ref="timer_input" class="timer-input" v-model="time_input" hide-details
+                    @keypress="validate_input($event)" @keydown.enter="enter_switch"></v-text-field>
+                  <span class="timer-text" :class="{
+                    active: button_active,
+                    'small-text': $vuetify.breakpoint.xsOnly
+                  }">{{ time }}</span>
                   <!--  :rules='rules' -->
                   <!--<p>{{ start_time }}</p>-->
                   <!--<button @click="start">{{button_text}}</button>-->
-                  <!-- <v-fade-transition>
-                <v-overlay v-if="hover" absolute> -->
+                <!-- <v-fade-transition>
+                                                            <v-overlay v-if="hover" absolute> -->
                   <!-- color="#036358" -->
                   <!-- <v-btn>See more info</v-btn> -->
-                  <!-- <button class='timer-button' :class="{active: button_active}"></button>
+                <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
-              </v-fade-transition> -->
+                                                          </v-fade-transition> -->
                 </div>
                 <!-- </template> </v-hover> -->
               </v-col>
+              <!-- 1.2.3 Start/Stop/Reset buttons  -->
               <v-col cols="12" justify="center" align="center">
                 <!-- <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch> -->
 
                 <button class="glow-button inactive noborder" @click="start">
                   <v-icon>{{ start_stop_icon }}</v-icon>
                 </button>
-                <button
-                  class="glow-button inactive noborder"
-                  @click="clear_timer"
-                >
+                <button class="glow-button inactive noborder" @click="clear_timer">
                   <v-icon>{{ refresh_icon }}</v-icon>
                 </button>
                 <!-- <span>{{total_micro_sec_down}} {{micro_sec}}</span> -->
               </v-col>
             </v-row>
-            <!-- <v-row class="d-none d-sm-flex">
+          <!-- <v-row class="d-none d-sm-flex">
             <v-col>
               <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
             </v-col>
-          </v-row> -->
+                                                      </v-row> -->
           </v-col>
+          <!-- 1.3. Colar Bar -->
           <v-col cols="12" class="d-none d-sm-flex pa-0">
             <!-- <v-container pa-0> -->
             <v-row align="center" no-gutters justify="end">
               <!-- <v-flex> -->
               <v-col cols="10" justify="end">
+                <!-- 1.3.1 Color -->
                 <v-row no-gutters>
                   <v-col>
-                    <v-slider
-                      hide-details
-                      v-model="color_main"
-                      min="0"
-                      max="360"
-                      label="color"
-                      thumb-label
-                      @change="change_main_color"
-                      :color="slider_color"
-                      :track-color="track_color"
-                    ></v-slider>
+                    <v-slider hide-details v-model="color_main" min="0" max="360" label="color" thumb-label
+                      @change="change_main_color" :color="slider_color" :track-color="track_color"></v-slider>
                   </v-col>
                 </v-row>
+                <!-- 1.3.2 Contrast -->
                 <v-row no-gutters>
                   <v-col>
-                    <v-slider
-                      hide-details
-                      v-model="color_diff"
-                      min="-90"
-                      max="90"
-                      label="contrast"
-                      thumb-label
-                      @change="change_contrast"
-                      :color="slider_color_diff"
-                      :track-color="track_color_diff"
-                    ></v-slider>
+                    <v-slider hide-details v-model="color_diff" min="-90" max="90" label="contrast" thumb-label
+                      @change="change_contrast" :color="slider_color_diff" :track-color="track_color_diff"></v-slider>
                   </v-col>
                 </v-row>
               </v-col>
+              <!-- 1.3.right Cycle Button -->
               <v-col align="center" justify="center">
-                <button
-                  class="glow-button"
-                  :class="{ inactive: cycle_button_off }"
-                  @click="cycle_color"
-                >
+                <button class="glow-button" :class="{ inactive: cycle_button_off }" @click="cycle_color">
                   Cycle Color
                 </button>
               </v-col>
@@ -199,13 +129,9 @@
         <!-- </v-row> -->
       </v-col>
       <!-- <v-divider vertical class="border d-none d-sm-flex"></v-divider> -->
-      <v-col
-        cols="0"
-        sm="2"
-        align="center"
-        justify="space-between"
-        class="ml-0 pa-0 d-none d-sm-flex fill-height flex-column"
-      >
+      <!-- 2. Right history part -->
+      <v-col cols="0" sm="2" align="center" justify="space-between"
+        class="ml-0 pa-0 d-none d-sm-flex fill-height flex-column">
         <!-- <v-row class="fill-height flex-column" no-gutters align-content='space-between'> <v-col cols="12" class="ml-0"> -->
         <v-row class="ma-0 flex-grow-0 flex-shrink-1">
           <v-col justify="center" align="center" class="pt-1">
@@ -214,24 +140,15 @@
           </v-col>
         </v-row>
         <!-- </v-col>  </v-row>  <v-col cols="12" class="flex-grow-1"> -->
-        <v-row
-          style="overflow-y: auto; height: 0;"
-          class="fill-height flex-grow-1"
-        >
+        <v-row style="overflow-y: auto; height: 0;" class="fill-height flex-grow-1">
           <v-col>
             <v-list two-line disabled dark color=" transparent" width="10em">
               <v-list-item-group>
                 <!-- use v-model="item" to highlight item-->
                 <v-list-item v-for="(item, i) in items" :key="i">
                   <v-list-item-content>
-                    <v-list-item-title
-                      class="timer-side-text active opposite"
-                      v-text="item.name"
-                    ></v-list-item-title>
-                    <v-list-item-subtitle
-                      class="timer-side-text active"
-                      v-text="item.time"
-                    ></v-list-item-subtitle>
+                    <v-list-item-title class="timer-side-text active opposite" v-text="item.name"></v-list-item-title>
+                    <v-list-item-subtitle class="timer-side-text active" v-text="item.time"></v-list-item-subtitle>
                     <!-- can add "glow" to class for above -->
                   </v-list-item-content>
                 </v-list-item>
@@ -247,8 +164,8 @@
             </button>
           </v-col>
         </v-row>
-        <!-- </v-col>
-  </v-row> -->
+      <!-- </v-col>
+                                              </v-row> -->
       </v-col>
       <!-- </div> -->
     </v-row>
@@ -256,13 +173,13 @@
 </template>
 
 <script>
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
+import shared from '../shared.js'
+import { EventBus } from '../event-bus.js'
 // const {
 //   dialog,
 //   shell
 // } = require("electron").remote
-import { remote } from "electron";
+import { remote } from 'electron'
 import {
   mdiChevronDoubleUp,
   mdiChevronTripleUp,
@@ -273,25 +190,25 @@ import {
   mdiPause,
   mdiPlay,
   mdiRefresh
-} from "@mdi/js";
+} from '@mdi/js'
 
 export default {
-  name: "timer",
+  name: 'timer',
   props: {
     large_win: Boolean
   },
   data() {
     return {
       // time: '00:00:00',
-      start_time: "",
-      job: "",
-      job_cycle: "",
-      button_text: "Start",
-      stop_time: "",
+      start_time: '',
+      job: '',
+      job_cycle: '',
+      button_text: 'Start',
+      stop_time: '',
       button_active: false,
-      prob_num: "",
+      prob_num: '',
       items: [],
-      comment: "",
+      comment: '',
       color_main: 75, // 130, 90, 90, 75, 130, 50, 120
       color_diff: 60, // -235, -100, -45, +-60, 60, -60, 60
       cycle_button_off: true,
@@ -300,8 +217,8 @@ export default {
       timer_started: false,
       dragging: false,
       is_mouse_down: false,
-      time_input: "",
-      stored_time_input: "",
+      time_input: '',
+      stored_time_input: '',
       remaining_micro_sec: 0,
       total_micro_sec_up: 0,
       total_micro_sec_down: 0,
@@ -320,49 +237,49 @@ export default {
       // start_stop_icon: mdiPlay,
       pause_icon: mdiPause,
       refresh_icon: mdiRefresh
-    };
+    }
   },
   computed: {
-    switch_label: function() {
-      return this.count_up ? "Count Up" : "Count Down";
+    switch_label: function () {
+      return this.count_up ? 'Count Up' : 'Count Down'
     },
-    slider_color: function() {
+    slider_color: function () {
       // if (Math.abs(this.color_diff) < 90) {
       //   this.temp_color = this.color_main + this.color_diff + 180;
       // } else {
       //   this.temp_color = this.color_diff + this.color_diff;
       // }
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color: function() {
-      return "hsl(" + this.color_main + ", 100%, 85%)";
+    track_color: function () {
+      return 'hsl(' + this.color_main + ', 100%, 85%)'
     },
-    slider_color_diff: function() {
-      return "hsl(" + (this.color_main + 180) + ", 100%, 75%)";
+    slider_color_diff: function () {
+      return 'hsl(' + (this.color_main + 180) + ', 100%, 75%)'
     },
-    track_color_diff: function() {
+    track_color_diff: function () {
       return (
-        "hsl(" + (this.color_main + 180 - 2 * this.color_diff) + ", 100%, 75%)"
-      );
+        'hsl(' + (this.color_main + 180 - 2 * this.color_diff) + ', 100%, 75%)'
+      )
     },
-    micro_sec: function() {
+    micro_sec: function () {
       // var n = time_input.length
       // if (n == 0) {
       //   return 0
       // }
       if (this.remaining_micro_sec) {
-        return this.remaining_micro_sec;
+        return this.remaining_micro_sec
       }
-      var sec = this.time_input.slice(-2);
-      var min = this.time_input.slice(-4, -2);
-      var hr = this.time_input.slice(-6, -4);
+      var sec = this.time_input.slice(-2)
+      var min = this.time_input.slice(-4, -2)
+      var hr = this.time_input.slice(-6, -4)
       return (
         (parseInt(hr) || 0) * 3600000 +
         (parseInt(min) || 0) * 60000 +
         (parseInt(sec) || 0) * 1000
-      );
+      )
     },
-    time: function() {
+    time: function () {
       // function pad(n, z) {
       //   z = z || 2
       //   return ('00' + n).slice(-z)
@@ -371,12 +288,12 @@ export default {
       var curr_micro_sec =
         this.timer_started || this.count_up
           ? this.running_micro_sec
-          : this.micro_sec;
+          : this.micro_sec
       curr_micro_sec += this.count_up
         ? this.total_micro_sec_up
-        : -this.total_micro_sec_down;
+        : -this.total_micro_sec_down
 
-      return this.msToTime(curr_micro_sec);
+      return this.msToTime(curr_micro_sec)
       // var ms = curr_micro_sec % 1000
       // var s = (curr_micro_sec - ms) / 1000
       // var secs = s % 60
@@ -387,11 +304,11 @@ export default {
       // return pad(hrs) + ':' + pad(mins) + ':' + pad(secs)
     },
 
-    start_stop_icon: function() {
+    start_stop_icon: function () {
       if (this.timer_started) {
-        return mdiStop;
+        return mdiStop
       }
-      return mdiPlay;
+      return mdiPlay
     }
     // time_curr_session: function() {
     //   var curr_micro_sec = this.timer_started || this.count_up ? this.running_micro_sec : this.micro_sec
@@ -399,73 +316,73 @@ export default {
     // }
   },
   watch: {
-    color_main: function() {
-      this.change_main_color();
+    color_main: function () {
+      this.change_main_color()
     }
   },
   methods: {
-    start_switch: function() {
+    start_switch: function () {
       if (this.count_up || this.timer_started) {
-        this.start();
+        this.start()
       } else {
-        this.focus_input();
+        this.focus_input()
       }
     },
-    enter_switch: function() {
+    enter_switch: function () {
       if (!this.count_up) {
         if (!this.timer_started && !this.micro_sec) {
-          return;
+          return
         }
-        this.start();
+        this.start()
       }
     },
-    start: function(is_stop = false) {
+    start: function (is_stop = false) {
       // console.log('starting_timer')
       if (this.dragging) {
-        return;
+        return
       }
       if (!this.job) {
-        this.timer_started = true;
-        this.start_time = new Date();
+        this.timer_started = true
+        this.start_time = new Date()
         if (!this.count_up) {
-          this.start_micro_sec = this.micro_sec - this.total_micro_sec_down;
-          this.running_micro_sec = this.start_micro_sec;
+          this.start_micro_sec = this.micro_sec - this.total_micro_sec_down
+          this.running_micro_sec = this.start_micro_sec
         }
         this.job = setInterval(() => {
           if (this.count_up) {
-            this.running_micro_sec = Math.abs(new Date() - this.start_time);
+            this.running_micro_sec = Math.abs(new Date() - this.start_time)
           } else {
-            this.count_down_timer();
+            this.count_down_timer()
           }
           // this.time = this.msToTime(Math.abs(new Date() - this.start_time))
           // console.log(this.time);
-        }, 1);
-        this.button_text = "Stop";
-        this.button_active = true;
+        }, 1)
+        this.button_text = 'Stop'
+        this.button_active = true
         if (!this.job_cycle) {
-          this.cycle_color();
+          this.cycle_color()
         }
       } else {
-        this.timer_started = false;
+        this.timer_started = false
         var record_time = this.count_up
           ? this.msToTime(this.running_micro_sec)
-          : this.msToTime(this.start_micro_sec - this.running_micro_sec);
-        this.button_text = "Start";
-        clearInterval(this.job);
+          : this.msToTime(this.start_micro_sec - this.running_micro_sec)
+        this.button_text = 'Start'
+        clearInterval(this.job)
         this.items.unshift({
           time: record_time,
           name: this.prob_num
-        });
-        this.job = "";
-        this.stop_time = new Date();
-        this.button_active = false;
+        })
+        this.job = ''
+        this.stop_time = new Date()
+        this.button_active = false
         if (this.count_up) {
-          this.total_micro_sec_up += this.running_micro_sec;
+          this.total_micro_sec_up += this.running_micro_sec
         } else {
-          this.remaining_micro_sec = this.running_micro_sec;
+          this.remaining_micro_sec = this.running_micro_sec
         }
         // this.remaining_micro_sec = this.running_micro_sec
-        this.running_micro_sec = 0;
+        this.running_micro_sec = 0
         this.$db.insert(
           {
             name: this.prob_num,
@@ -473,21 +390,21 @@ export default {
             end: shared.formatDate(this.stop_time),
             details: this.comment,
             time: record_time,
-            color: "hsl(" + this.color_main + ",100%,35%)"
+            color: 'hsl(' + this.color_main + ',100%,35%)'
           },
           (err, newrec) => {
             // Callback is optional
             // newrec is the newly inserted document, including its _id
             // newrec has no key called notToBeSaved since its value was undefined
-            console.log(err);
-            EventBus.$emit("send_newrec", newrec);
+            console.log(err)
+            EventBus.$emit('send_newrec', newrec)
             if (!this.count_up && this.remaining_micro_sec == 0) {
-              this.show_alert();
+              this.show_alert()
             }
             // console.log(newrec);
             // console.log(this);
           }
-        );
+        )
         // this.$db.find({
         //   name: {
         //     $regex: /test/
@@ -497,41 +414,41 @@ export default {
         //   // If no document is found, docs is equal to []
         //   // console.log(docs)
         // });
-        this.$refs.name.focus();
+        this.$refs.name.focus()
       }
       // console.log(this.prob_num);
     },
-    cycle_color: function() {
+    cycle_color: function () {
       if (!this.job_cycle) {
-        this.cycle_button_off = false;
+        this.cycle_button_off = false
         this.job_cycle = setInterval(() => {
           this.cycle_delta =
             this.color_main > 359 || this.color_main <= 0
               ? -this.cycle_delta
-              : this.cycle_delta;
-          this.color_main = this.color_main + this.cycle_delta;
+              : this.cycle_delta
+          this.color_main = this.color_main + this.cycle_delta
           // console.log(this.time);
           // console.log(this.color_main);
-        }, 5000);
+        }, 5000)
       } else {
-        clearInterval(this.job_cycle);
-        this.job_cycle = "";
-        this.cycle_button_off = true;
+        clearInterval(this.job_cycle)
+        this.job_cycle = ''
+        this.cycle_button_off = true
       }
     },
-    count_down_timer: function() {
+    count_down_timer: function () {
       this.running_micro_sec = Math.max(
         this.start_micro_sec - Math.abs(new Date() - this.start_time),
         0
-      );
+      )
       // console.log(this.start_micro_sec)
       if (this.running_micro_sec <= 0) {
-        this.start();
+        this.start()
         // this.show_alert()
       }
     },
-    show_alert: function() {
-      remote.shell.beep();
+    show_alert: function () {
+      remote.shell.beep()
       // FIXME:
       // Electron v9 doesn't have 3rd parameter, instead returns a Promise
       // object, which is like an async object which will produce resutls
@@ -539,112 +456,112 @@ export default {
       remote.dialog
         .showMessageBox(remote.getCurrentWindow(), {
           message: "Time's Up!",
-          buttons: ["Close"]
+          buttons: ['Close']
         })
         .then(result => {
           // console.log(response)
         })
         .catch(err => {
           // console.log(err)
-        });
+        })
       // console.log('hi')
     },
-    clear_history: function() {
-      this.items = [];
+    clear_history: function () {
+      this.items = []
     },
     // start_counting: function() {
     //   this.time = self.msToTime(Math.abs(new Date() - this.start_time));
     //   console.log(this.time);
     // },
-    msToTime: function(s) {
+    msToTime: function (s) {
       // Pad to 2 or 3 digits, default is 2
       function pad(n, z) {
-        z = z || 2;
-        return ("00" + n).slice(-z);
+        z = z || 2
+        return ('00' + n).slice(-z)
       }
 
-      var ms = s % 1000;
-      s = (s - ms) / 1000;
-      var secs = s % 60;
-      s = (s - secs) / 60;
-      var mins = s % 60;
-      var hrs = (s - mins) / 60;
+      var ms = s % 1000
+      s = (s - ms) / 1000
+      var secs = s % 60
+      s = (s - secs) / 60
+      var mins = s % 60
+      var hrs = (s - mins) / 60
 
-      return pad(hrs) + ":" + pad(mins) + ":" + pad(secs); // + '.' + pad(ms, 3);
+      return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) // + '.' + pad(ms, 3);
     },
-    focus_comment: function() {
-      this.$refs.comment.focus();
+    focus_comment: function () {
+      this.$refs.comment.focus()
     },
-    focus_input: function() {
+    focus_input: function () {
       // console.log('focusing timer_input')
-      this.$refs.timer_input.focus();
+      this.$refs.timer_input.focus()
     },
-    change_main_color: function() {
+    change_main_color: function () {
       document.documentElement.style.setProperty(
-        "--neon-color-primary",
+        '--neon-color-primary',
         this.color_main
-      );
-      this.$emit("update_color");
+      )
+      this.$emit('update_color')
     },
-    change_contrast: function() {
+    change_contrast: function () {
       document.documentElement.style.setProperty(
-        "--neon-degree",
+        '--neon-degree',
         this.color_diff
-      );
-      this.$emit("update_color");
+      )
+      this.$emit('update_color')
     },
-    mouse_down: function() {
-      this.is_mouse_down = true;
+    mouse_down: function () {
+      this.is_mouse_down = true
       // this.dragging = false; // will mess up starting timer with keydown
     },
-    mouse_move: function() {
+    mouse_move: function () {
       if (this.is_mouse_down) {
-        this.dragging = true;
+        this.dragging = true
       }
     },
-    mouse_up: function() {
+    mouse_up: function () {
       // this.dragging = false;
-      setTimeout(() => (this.dragging = false), 1);
-      this.is_mouse_down = false;
+      setTimeout(() => (this.dragging = false), 1)
+      this.is_mouse_down = false
     },
-    validate_input: function(evt) {
+    validate_input: function (evt) {
       if (this.remaining_micro_sec) {
-        evt.preventDefault();
-        return false;
+        evt.preventDefault()
+        return false
       }
-      evt = evt ? evt : window.event;
-      var charCode = evt.which ? evt.which : evt.keycode;
+      evt = evt || window.event
+      var charCode = evt.which ? evt.which : evt.keycode
       // console.log(charCode);
       if (
         charCode > 31 &&
         (charCode < 48 || charCode > 57 || this.time_input.length >= 6)
       ) {
         // console.log('stop event')
-        evt.preventDefault();
+        evt.preventDefault()
       } else {
-        return true;
+        return true
       }
     },
-    toggle_up_down: function() {
+    toggle_up_down: function () {
       if (this.timer_started) {
-        return;
+        return
       }
-      this.count_up = !this.count_up;
+      this.count_up = !this.count_up
     },
-    clear_timer: function() {
+    clear_timer: function () {
       if (this.timer_started) {
-        return;
+        return
       }
       if (this.count_up) {
-        this.total_micro_sec_up = 0;
+        this.total_micro_sec_up = 0
       } else if (this.remaining_micro_sec) {
-        this.remaining_micro_sec = 0;
+        this.remaining_micro_sec = 0
       } else {
-        this.time_input = "";
+        this.time_input = ''
       }
     }
   }
-};
+}
 </script>
 
 <style>
@@ -665,16 +582,9 @@ export default {
   --neon-color-primary: 75;
   --neon-degree: 60;
   --neon-degree-opposite: 180;
-  --neon-color-complement: calc(
-    var(--neon-color-primary) + var(--neon-degree-opposite) - 2 *
-      var(--neon-degree)
-  );
-  --neon-color-primary-shadow: calc(
-    var(--neon-color-primary) - 2 * var(--neon-degree)
-  );
-  --neon-color-complement-shadow: calc(
-    var(--neon-color-complement) + 2 * var(--neon-degree)
-  );
+  --neon-color-complement: calc(var(--neon-color-primary) + var(--neon-degree-opposite) - 2 * var(--neon-degree));
+  --neon-color-primary-shadow: calc(var(--neon-color-primary) - 2 * var(--neon-degree));
+  --neon-color-complement-shadow: calc(var(--neon-color-complement) + 2 * var(--neon-degree));
 
   --neon-text-shadow: 0 0 0.02em hsl(var(--neon-color-primary), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-primary-shadow), 100%, 50%),
@@ -694,8 +604,7 @@ export default {
     0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%),
     -0.5em -0.5em 0.1em hsl(var(--neon-color-primary), 100%, 50%); */
   --neon-text-highlight: hsl(var(--neon-color-primary), 100%, 85%);
-  --neon-text-shadow-reverse: 0 0 0.02em
-      hsl(var(--neon-color-complement), 100%, 25%),
+  --neon-text-shadow-reverse: 0 0 0.02em hsl(var(--neon-color-complement), 100%, 25%),
     0 0 0.05em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.1em hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 0.2em hsl(var(--neon-color-complement-shadow), 100%, 35%),
@@ -711,19 +620,17 @@ export default {
     inset 11px -15px 2px hsl(var(--neon-color-complement), 100%, 50%),
     20px -28px 2px hsl(var(--neon-color-complement), 100%, 50%),
     inset 20px 28px 2px hsl(var(--neon-color-complement), 100%, 50%), */
-      0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
+    0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 3px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 6px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-complement-shadow), 100%, 35%);
   --neon-box-shadow-highlight: hsl(var(--neon-color-complement), 100%, 75%);
-  --neon-box-shadow-highlight-transparent: hsla(
-    var(--neon-color-complement),
-    100%,
-    75%,
-    0.3
-  );
+  --neon-box-shadow-highlight-transparent: hsla(var(--neon-color-complement),
+      100%,
+      75%,
+      0.3);
   --neon-box-shadow-reverse: 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     inset 0 0 1px hsl(var(--neon-color-primary), 100%, 25%),
     0 0 2px hsl(var(--neon-color-primary-shadow), 100%, 50%),
@@ -732,13 +639,10 @@ export default {
     inset 0 0 6px hsl(var(--neon-color-primary-shadow), 100%, 50%),
     0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%),
     inset 0 0 10px hsl(var(--neon-color-primary-shadow), 100%, 35%);
-  --neon-box-shadow-highlight-reverse: hsl(
-    var(--neon-color-primary),
-    100%,
-    75%
-  );
-  --neon-box-shadow-flipped: 0 0 1px
-      hsl(var(--neon-color-complement-shadow), 100%, 50%),
+  --neon-box-shadow-highlight-reverse: hsl(var(--neon-color-primary),
+      100%,
+      75%);
+  --neon-box-shadow-flipped: 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
     inset 0 0 1px hsl(var(--neon-color-complement-shadow), 100%, 50%),
     0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
     inset 0 0 2px hsl(var(--neon-color-complement), 80%, 50%),
@@ -746,11 +650,9 @@ export default {
     inset 0 0 4px hsl(var(--neon-color-complement), 80%, 50%);
   /* 0 0 10px hsl(var(--neon-color-complement), 100%, 50%),
   inset 0 0 10px hsl(var(--neon-color-complement), 100%, 50%); */
-  --neon-box-shadow-highlight-flipped: hsl(
-    var(--neon-color-complement-shadow),
-    100%,
-    75%
-  );
+  --neon-box-shadow-highlight-flipped: hsl(var(--neon-color-complement-shadow),
+      100%,
+      75%);
 }
 
 button.timer-button {
@@ -776,7 +678,13 @@ button.timer-button {
   /* box-shadow: 0 0 1px transparent; */
   /* -webkit-backface-visibility: hidden; */
   -webkit-transition:
-    /* all 1s; */ border-radius 0.2s ease-in-out 0s,
+    /* all 1s; */
+    border-radius 0.2s ease-in-out 0s,
+    transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
+    border 0.3s ease-in-out 0s;
+  transition:
+    /* all 1s; */
+    border-radius 0.2s ease-in-out 0s,
     transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
 }
@@ -806,6 +714,7 @@ button.timer-button.active {
   box-shadow: var(--neon-box-shadow);
   border: 1px solid var(--neon-box-shadow-highlight);
   -webkit-transform: scale(0.5);
+  transform: scale(0.5);
   /* -webkit-transition: all 0.3s linear 0s; */
 }
 
@@ -819,6 +728,7 @@ button.timer-button.active:hover {
   /* color: var(--row-background); */
   /* color: var(--neon-text-color); */
   -webkit-transform: scale(1);
+  transform: scale(1);
 }
 
 button.glow-button {
@@ -865,19 +775,19 @@ div#timer-cell {
   /* border: 1px solid var(--neon-box-shadow-highlight-reverse); */
 }
 
-div#timer-cell:hover,
-div#timer-cell.active {
-  /* background: #ccf6ff; */
-  /* background: var(--row-background); */
-  /* color: var(--neon-text-color); */
-  /* border: 1px solid transparent; */
-}
+/* div#timer-cell:hover,
+div#timer-cell.active { */
+/* background: #ccf6ff; */
+/* background: var(--row-background); */
+/* color: var(--neon-text-color); */
+/* border: 1px solid transparent; */
+/* } */
 
-div#timer-cell:hover {
-  /* box-shadow: var(--neon-box-shadow-reverse);
+/* div#timer-cell:hover { */
+/* box-shadow: var(--neon-box-shadow-reverse);
   border: 1px solid var(--neon-box-shadow-highlight-reverse); */
-  /* -webkit-transition: border 0.1s linear 0s, box-shadow 0.1s linear 0s; */
-}
+/* -webkit-transition: border 0.1s linear 0s, box-shadow 0.1s linear 0s; */
+/* } */
 
 #triangle-right {
   display: inline-block;
@@ -891,8 +801,10 @@ div#timer-text-container {
   position: relative;
   border: 1px solid transparent;
   -webkit-transition:
-    /* transform 0s ease-in-out 0s; */ all 0.3s ease-in-out
-    0s;
+    /* transform 0s ease-in-out 0s; */
+    all 0.3s ease-in-out 0s;
+  transition:
+    all 0.3s ease-in-out 0s;
   border-radius: 5px;
 }
 
@@ -903,7 +815,7 @@ div#timer-text-container {
 
 span.timer-text {
   display: block;
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   /* font-weight: bold; */
   color: var(--neon-text-highlight);
   font-size: 10em;
@@ -917,7 +829,7 @@ span.timer-text {
   margin-right: 2em; */
   /* padding-top: 0.3em;
   padding-bottom: 0.3em; */
-  vertical-align: middle;
+  /* vertical-align: middle; */
   border: 1px solid transparent;
   box-shadow: none;
   text-shadow: none;
@@ -925,22 +837,24 @@ span.timer-text {
     /* text-shadow 1s,
   color 1s,
   border 1s,
-  box-shadow 1s; */ all
-    0.3s ease-in-out 0s;
+  box-shadow 1s; */
+    all 0.3s ease-in-out 0s;
   /* transform 0s ease-in-out 0s; */
+  transition:
+    all 0.3s ease-in-out 0s;
 }
 
 span.small-text {
   font-size: 4em;
 }
 
-.timer-input.v-input--is-focused + .timer-text {
+.timer-input.v-input--is-focused+.timer-text {
   /* text-decoration-line: underline; */
   /* text-decoration-thickness: 0.1em; */
   border-bottom: 1px solid;
 }
 
-.timer-input.v-input--is-focused + .timer-text.active {
+.timer-input.v-input--is-focused+.timer-text.active {
   /* text-decoration: none; */
   border-bottom: 1px solid transparent;
 }
@@ -959,7 +873,7 @@ span.small-text {
 .timer-side-text.active {
   /* text-shadow: var(--neon-text-shadow); */
   color: var(--neon-box-shadow-highlight-flipped) !important;
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 2em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -970,7 +884,7 @@ span.small-text {
 .timer-side-text.active.opposite {
   /* text-shadow: var(--neon-text-shadow); */
   color: var(--neon-text-highlight) !important;
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 2em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -981,7 +895,7 @@ span.small-text {
 .timer-side-text.active.glow {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -992,7 +906,7 @@ span.small-text {
 .timer-side-text.active.glow.opposite {
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 2em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -1050,7 +964,7 @@ button.timer-button.active:hover:after {
 .v-textarea.v-text-field--enclosed .v-text-field__slot textarea,
 .v-input .v-label {
   color: var(--neon-text-highlight);
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 1.5em;
   /* border: var(--neon-text-shadow-highlight); */
 }
@@ -1080,16 +994,13 @@ button.timer-button.active:hover:after {
 } */
 
 .theme--light.v-text-field--outlined fieldset,
-.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover
-  fieldset {
+.theme--light.v-text-field--outlined:not(.v-input--is-focused):not(.v-input--has-state):hover fieldset {
   border-color: var(--neon-box-shadow-highlight);
 }
 
 .v-input__slot:before,
 .v-input__slot:hover:before,
-.theme--light.v-text-field:not(.v-input--has-state)
-  > .v-input__control
-  > .v-input__slot:before {
+.theme--light.v-text-field:not(.v-input--has-state)>.v-input__control>.v-input__slot:before {
   border-color: var(--neon-box-shadow-highlight-flipped) !important;
 }
 
@@ -1116,7 +1027,7 @@ input {
   outline: 0;
   caret-color: var(--neon-text-highlight);
   color: var(--neon-text-highlight);
-  font-family: "Iceland", cursive;
+  font-family: "iceland", cursive;
   font-size: 2em;
   margin-bottom: -1em;
   margin-top: -1em;
@@ -1152,7 +1063,7 @@ input {
 } */
 
 .v-text-field.v-text-field--enclosed .v-text-field__details,
-.v-text-field.v-text-field--enclosed > .v-input__control > .v-input__slot {
+.v-text-field.v-text-field--enclosed>.v-input__control>.v-input__slot {
   padding: 0;
 }
 
@@ -1173,15 +1084,11 @@ input {
   top: calc(50% - 19px);
 }
 
-.v-application--is-ltr
-  .v-input--switch--inset.v-input--is-dirty
-  .v-input--selection-controls__ripple {
+.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--selection-controls__ripple {
   transform: translate(0, 0) !important;
 }
 
-.v-application--is-ltr
-  .v-input--switch--inset.v-input--is-dirty
-  .v-input--switch__thumb {
+.v-application--is-ltr .v-input--switch--inset.v-input--is-dirty .v-input--switch__thumb {
   transform: translate(20px, 0) !important;
 }
 
