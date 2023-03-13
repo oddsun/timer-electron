@@ -188,8 +188,8 @@
 </template>
 
 <script>
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
+import shared from "../src/shared.js";
+import { EventBus } from "../src/event-bus.js";
 // const {
 //   dialog,
 //   shell

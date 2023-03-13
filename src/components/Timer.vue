@@ -62,7 +62,7 @@
                 <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details
                   clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
               </v-col>
-                              </v-row> -->
+                                    </v-row> -->
           </v-col>
           <!-- <v-flex class="draggable"> -->
           <!-- 1.2. Timer -->
@@ -131,12 +131,12 @@
                   <!--<p>{{ start_time }}</p>-->
                   <!--<button @click="start">{{button_text}}</button>-->
                   <!-- <v-fade-transition>
-                                                            <v-overlay v-if="hover" absolute> -->
+                                                                  <v-overlay v-if="hover" absolute> -->
                   <!-- color="#036358" -->
                   <!-- <v-btn>See more info</v-btn> -->
                   <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
-                                                          </v-fade-transition> -->
+                                                                </v-fade-transition> -->
                 </div>
                 <!-- </template> </v-hover> -->
               </v-col>
@@ -160,7 +160,7 @@
             <v-col>
               <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
             </v-col>
-                                                      </v-row> -->
+                                                            </v-row> -->
           </v-col>
           <!-- 1.3. Colar Bar -->
           <v-col cols="12" class="d-none d-sm-flex pa-0">
@@ -269,7 +269,7 @@
           </v-col>
         </v-row>
         <!-- </v-col>
-                                              </v-row> -->
+                                                    </v-row> -->
       </v-col>
       <!-- </div> -->
     </v-row>
@@ -285,10 +285,10 @@ import { EventBus } from "../event-bus.js";
 // } = require("electron").remote
 import { remote } from "electron";
 import {
-  mdiChevronDoubleUp,
+  // mdiChevronDoubleUp,
   mdiChevronTripleUp,
-  mdiChevronDown,
-  mdiChevronDoubleDown,
+  // mdiChevronDown,
+  // mdiChevronDoubleDown,
   mdiChevronTripleDown,
   mdiStop,
   mdiPause,
@@ -441,6 +441,7 @@ export default {
       }
     },
     start: function (is_stop = false) {
+      is_stop;
       // console.log('starting_timer')
       if (this.dragging) {
         return;
@@ -563,9 +564,11 @@ export default {
           buttons: ["Close"],
         })
         .then((result) => {
+          result;
           // console.log(response)
         })
         .catch((err) => {
+          err;
           // console.log(err)
         });
       // console.log('hi')

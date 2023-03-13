@@ -53,21 +53,6 @@
       "electron-builder": "^23.0.3"
     }
   },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "plugin:prettier/recommended"
-    ],
-    "rules": {},
-    "parserOptions": {
-      "parser": "@babel/eslint-parser"
-    }
-  },
   "postcss": {
     "plugins": {
       "autoprefixer": {}

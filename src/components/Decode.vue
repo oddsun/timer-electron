@@ -1,12 +1,12 @@
 <template>
-  <v-col>
-    <v-row justify="center">
+  <v-row>
+    <v-col cols="12" justify="center">
       <span v-html="letter"></span>
-    </v-row>
-    <v-row justify="center">
+    </v-col>
+    <v-col cols="12" justify="center">
       <span class="opposite-color" v-html="decoded"></span>
-    </v-row>
-  </v-col>
+    </v-col>
+  </v-row>
 </template>
 
 <script>

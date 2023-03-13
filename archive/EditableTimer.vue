@@ -263,8 +263,8 @@
 </template>
 
 <script>
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
+import shared from "../src/shared.js";
+import { EventBus } from "../src/event-bus.js";
 import { mask } from "vue-the-mask";
 
 export default {
@@ -579,6 +579,10 @@ button.timer-button {
     /* all 1s; */ border-radius 0.2s ease-in-out 0s,
     transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
+  transition:
+    /* all 1s; */ border-radius 0.2s ease-in-out 0s,
+    transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
+    border 0.3s ease-in-out 0s;
 }
 
 button.timer-button:hover {
@@ -606,6 +610,7 @@ button.timer-button.active {
   box-shadow: var(--neon-box-shadow);
   border: 1px solid var(--neon-box-shadow-highlight);
   -webkit-transform: scale(0.5);
+  transform: scale(0.5);
   /* -webkit-transition: all 0.3s linear 0s; */
 }
 

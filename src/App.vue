@@ -17,7 +17,14 @@
     <!-- </v-toolbar> -->
 
     <!-- <v-content> -->
-    <v-tabs background-color="transparent" dark :color="tab_color" class="draggable d-none d-sm-flex" left v-model="tab">
+    <v-tabs
+      background-color="transparent"
+      dark
+      :color="tab_color"
+      class="draggable d-none d-sm-flex"
+      left
+      v-model="tab"
+    >
       <v-tab class="d-none d-sm-flex">Timer</v-tab>
       <v-tab class="d-none d-sm-flex">Calendar</v-tab>
       <v-tab class="d-none d-sm-flex secret">Secret</v-tab>
@@ -27,11 +34,14 @@
     </v-btn> -->
       <!-- <HelloWorld/> -->
     </v-tabs>
-    <v-tabs-items v-model="tab" :class="{
-      'small-window': $vuetify.breakpoint.xsOnly,
-      draggable: $vuetify.breakpoint.xsOnly,
-      'non-draggable': !$vuetify.breakpoint.xsOnly,
-    }">
+    <v-tabs-items
+      v-model="tab"
+      :class="{
+        'small-window': $vuetify.breakpoint.xsOnly,
+        draggable: $vuetify.breakpoint.xsOnly,
+        'non-draggable': !$vuetify.breakpoint.xsOnly,
+      }"
+    >
       <v-tab-item>
         <Timer @update_color="update_color" :large_win="large_win" />
       </v-tab-item>
@@ -47,7 +57,15 @@
       <!-- </v-content> -->
     </v-tabs-items>
     <v-layout class="window-config">
-      <v-btn fab text small :ripple="false" class="mr-0" @click="resize_window" dark>
+      <v-btn
+        fab
+        text
+        small
+        :ripple="false"
+        class="mr-0"
+        @click="resize_window"
+        dark
+      >
         <v-icon>{{ resize }}</v-icon>
       </v-btn>
     </v-layout>
@@ -72,6 +90,7 @@ export default {
   },
   data() {
     return {
+      unused_resize: mdiResize,
       resize: mdiArrowCollapse,
       tab: null,
       dark_theme: true,
@@ -186,7 +205,7 @@ span {
   height: 100%;
 }
 
-.theme--dark.v-tabs>.v-tabs-bar .v-tab.secret:not(.v-tab--active) {
+.theme--dark.v-tabs > .v-tabs-bar .v-tab.secret:not(.v-tab--active) {
   color: transparent;
 }
 </style>

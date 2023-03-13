@@ -244,13 +244,13 @@ covers another block. Can be check by setting interval_min=1 and interval_count=
 
 <script>
 // TODO: update grid
-import shared from "../shared.js";
+// import shared from "../shared.js";
 import { EventBus } from "../event-bus.js";
 import fs from "fs";
 import { homedir } from "os";
 import {
-  mdiCalendarImport,
-  mdiCalendarExport,
+  // mdiCalendarImport,
+  // mdiCalendarExport,
   mdiChevronLeft,
   mdiChevronRight,
   mdiChevronDown,
@@ -482,6 +482,7 @@ export default {
                     this.$db.insert(new_event, (err, newrec) => {
                       // console.log(err);
                       // console.log(newrec);
+                      console("error insert", err, newrec);
                       this.loadEvents();
                     });
                   }
@@ -566,7 +567,9 @@ export default {
             },
           },
           {},
-          (err, numReplaced) => {}
+          (err, numReplaced) => {
+            console.log("error replace", err, numReplaced);
+          }
         );
         // this.$db.find({
         //   status: "replaced"
@@ -634,6 +637,7 @@ export default {
       );
     },
     updateEvents(new_rec) {
+      new_rec;
       // this.events.push(new_rec)
       // console.log('updating');
     },
@@ -691,6 +695,7 @@ export default {
   },
   mounted() {
     EventBus.$on("send_newrec", (newrec) => {
+      newrec;
       // console.log('receiving');
       this.loadEvents(); // saver to reload from database
       // console.log(newrec);

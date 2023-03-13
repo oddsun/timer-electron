@@ -72,7 +72,7 @@
                 class="nooutline noborder"
                 tabindex="0"
               >
-                <v-row>
+                <v-row no-gutters class="pt-5" justify="space-between">
                   <v-text-field
                     ref="part_two"
                     id="part_two_key"
@@ -95,19 +95,15 @@
                   >
                   </v-text-field>
                 </v-row>
-                <v-row>
-                  <Decode
-                    :letter="letters"
-                    :decoded="vigenere_decode(letters, part_two_key[index])"
-                  />
-                </v-row>
+                <Decode
+                  :letter="letters"
+                  :decoded="vigenere_decode(letters, part_two_key[index])"
+                />
               </v-col>
             </v-row>
           </v-tab-item>
           <v-tab-item>
-            <v-row>
-              <Decode :letter="part_two.join('')" :decoded="vigenere_decoded" />
-            </v-row>
+            <Decode :letter="part_two.join('')" :decoded="vigenere_decoded" />
           </v-tab-item>
         </v-tabs-items>
       </v-row>
@@ -173,14 +169,15 @@ export default {
     enter_decode: function (evt, letter, index) {
       evt = evt || window.event;
       var charCode = evt.which ? evt.which : evt.keycode;
+      var new_focus;
       // charCode = charCode + 97 - 65;
       if (charCode == 39) {
-        var new_focus = (index + 1) % this.letters.length;
+        new_focus = (index + 1) % this.letters.length;
         // console.log(new_focus);
         this.focus_letter(new_focus);
         return;
       } else if (charCode == 37) {
-        var new_focus = (index - 1) % this.letters.length;
+        new_focus = (index - 1) % this.letters.length;
         new_focus = new_focus < 0 ? new_focus + this.letters.length : new_focus;
         this.focus_letter(new_focus);
         return;

@@ -1,0 +1,24 @@
+{
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[vue]": {
+    "editor.defaultFormatter": null,
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "vue"
+  ],
+  "html.format.wrapAttributes": "force-expand-multiline",
+  // "runOnSave.commands": [
+  //   {
+  //       "command": "npm run lint ${file}",
+  //       "runIn": "terminal"
+  //   },
+  // ]
+}
