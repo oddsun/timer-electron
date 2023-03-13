@@ -1,306 +1,210 @@
 <!-- button for auto color switching, change color for main tab, editable comments -->
 <template>
   <!-- <div id="timer-cell" :class="{active: button_active}"> -->
-  <v-container fluid fill-height pa-0 ma-0>
-    <v-row no-gutters class="fill-height" justify="space-between">
-      <!-- 1. Left timer part -->
-      <v-col
-        cols="12"
-        sm="10"
-        text-center
-        class="pa-0 ma-0 justify-space-between fill-height"
-        align-self="center"
+  <v-container fluid fill-height pa-5 ma-0 row justify-space-between>
+    <v-layout column text-center mr-5 justify-space-between>
+      <v-flex shrink mb-2 class="d-none d-sm-flex">
+        <!-- <div class="input-wrapper"> -->
+        <!-- <input type="text" placeholder="Problem Number" v-model="prob_num" /> -->
+        <!-- <div class="divider"></div> -->
+        <!-- <v-divider class="border"></v-divider> -->
+        <!-- <input type="text" placeholder="Comments" v-model="comment" class='small' /> -->
+        <!-- <v-divider class="border"></v-divider> -->
+        <!-- </div> -->
+        <v-text-field
+          ref="name"
+          id="label-input-name"
+          v-model="prob_num"
+          label="Problem Number"
+          hide-details
+          clearable
+          solo
+          flat
+          background-color="transparent"
+          autofocus
+          @keydown.enter="focus_comment"
+          class="large-font"
+        ></v-text-field>
+      </v-flex>
+      <v-divider class="border d-none d-sm-flex"></v-divider>
+      <!-- <v-flex shrink pl-2>
+      <div class="divider"></div>
+    </v-flex> -->
+      <v-flex shrink mt-1 class="d-none d-sm-flex">
+        <v-text-field
+          ref="comment"
+          id="label-input-comment"
+          v-model="comment"
+          label="Comments"
+          hide-details
+          clearable
+          solo
+          flat
+          background-color="transparent"
+          @keydown.enter="start_switch"
+        ></v-text-field>
+      </v-flex>
+      <v-flex shrink class="d-none d-sm-flex">
+        <v-switch
+          v-model="count_up"
+          :label="switch_label"
+          hide-details
+          inset
+          :color="track_color_diff"
+          :disabled="timer_started"
+        ></v-switch>
+      </v-flex>
+      <!-- <v-flex class="draggable"> -->
+      <v-flex
+        @mousedown="mouse_down"
+        @mousemove="mouse_move"
+        @mouseup="mouse_up"
+        @click="start_switch"
       >
-        <v-row
-          class="fill-height ma-0 pa-3"
-          :class="{ border_right: large_win }"
-          align-content="space-between"
-        >
-          <!-- 3 cols of 12 (max) wraps around into 3 spaced out rows, a hack -->
-          <!-- 1.1 Text -->
-          <v-col cols="12" class="pa-0">
-            <v-row class="d-none d-sm-flex">
-              <!-- 2 cols of 12 (max) wraps around into 2 spaced out rows, a hack -->
-              <!-- 1.1.1 Title -->
-              <v-col cols="12" class="pb-0">
-                <v-text-field
-                  ref="name"
-                  id="label-input-name"
-                  v-model="prob_num"
-                  label="Title"
-                  hide-details
-                  clearable
-                  solo
-                  flat
-                  background-color="transparent"
-                  autofocus
-                  @keydown.enter="focus_comment"
-                  class="large-font"
-                ></v-text-field>
-              </v-col>
-              <!-- 1.1.d Divider -->
-              <v-divider class="border d-none d-sm-flex ml-3 mr-3"></v-divider>
-              <!-- 1.1.2 Comment -->
-              <v-col cols="12" class="pt-1 pb-0">
-                <v-text-field
-                  ref="comment"
-                  id="label-input-comment"
-                  v-model="comment"
-                  label="Comments"
-                  hide-details
-                  clearable
-                  solo
-                  flat
-                  background-color="transparent"
-                  @keydown.enter="start_switch"
-                ></v-text-field>
-              </v-col>
-            </v-row>
-            <!-- <v-divider class="border d-none d-sm-flex"></v-divider>
-            <v-row class="d-none d-sm-flex">
-              <v-col class="pt-1 pb-0">
-                <v-text-field ref="comment" id="label-input-comment" v-model="comment" label="Comments" hide-details
-                  clearable solo flat background-color="transparent" @keydown.enter="start_switch"></v-text-field>
-              </v-col>
-                                    </v-row> -->
-          </v-col>
-          <!-- <v-flex class="draggable"> -->
-          <!-- 1.2. Timer -->
-          <v-col cols="12" class="pa-0">
-            <v-row
-              no-gutters
-              justify="center"
-              align="center"
-              class="mt-md-auto fill-height"
+        <v-layout justify-center column fill-height ref="timer">
+          <!-- <v-hover @click.native="start">
+          <template v-slot:default="{ hover }"> -->
+          <div id="timer-text-container" :class="{ active: button_active }">
+            <v-text-field
+              ref="timer_input"
+              class="timer-input"
+              v-model="time_input"
+              hide-details
+              @keypress="validate_input($event)"
+              @keydown.enter="enter_switch"
+            ></v-text-field>
+            <span
+              class="timer-text"
+              :class="{
+                active: button_active,
+                'small-text': $vuetify.breakpoint.xsOnly,
+              }"
+              >{{ time }}</span
             >
-              <!-- @mousedown="mouse_down" @mousemove="mouse_move" @mouseup="mouse_up" @click="start_switch"> -->
-              <!-- 3 cols of 12 (max) wraps around into 3 spaced out rows, a hack -->
-              <!-- 1.2.1 Up/Down Buttons (timer vs count down) -->
-              <v-col cols="12" justify="center" align="center">
-                <!-- <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch> -->
-
-                <button
-                  class="glow-button inactive"
-                  :class="{ noborder: !count_up }"
-                  @click="toggle_up_down"
-                >
-                  <v-icon>{{ up_icon }}</v-icon>
-                </button>
-                <button
-                  class="glow-button inactive"
-                  :class="{ noborder: count_up }"
-                  @click="toggle_up_down"
-                >
-                  <v-icon>{{ down_icon }}</v-icon>
-                </button>
-                <!-- <span>{{count_up}}</span> -->
-              </v-col>
-              <!-- 1.2.2 Timer Text  -->
-              <v-col
-                cols="12"
-                justify="center"
-                align="center"
-                ref="timer"
-                @mousedown="mouse_down"
-                @mousemove="mouse_move"
-                @mouseup="mouse_up"
-                @click="start_switch"
-              >
-                <!-- <v-hover @click.native="start"> <template v-slot:default="{ hover }"> -->
-                <div
-                  id="timer-text-container"
-                  :class="{ active: button_active }"
-                >
-                  <v-text-field
-                    ref="timer_input"
-                    class="timer-input"
-                    v-model="time_input"
-                    hide-details
-                    @keypress="validate_input($event)"
-                    @keydown.enter="enter_switch"
-                  ></v-text-field>
-                  <span
-                    class="timer-text"
-                    :class="{
-                      active: button_active,
-                      'small-text': $vuetify.breakpoint.xsOnly,
-                    }"
-                    >{{ time }}</span
-                  >
-                  <!--  :rules='rules' -->
-                  <!--<p>{{ start_time }}</p>-->
-                  <!--<button @click="start">{{button_text}}</button>-->
-                  <!-- <v-fade-transition>
-                                                                  <v-overlay v-if="hover" absolute> -->
-                  <!-- color="#036358" -->
-                  <!-- <v-btn>See more info</v-btn> -->
-                  <!-- <button class='timer-button' :class="{active: button_active}"></button>
+            <!--  :rules='rules' -->
+            <!--<p>{{ start_time }}</p>-->
+            <!--<button @click="start">{{button_text}}</button>-->
+            <!-- <v-fade-transition>
+                <v-overlay v-if="hover" absolute> -->
+            <!-- color="#036358" -->
+            <!-- <v-btn>See more info</v-btn> -->
+            <!-- <button class='timer-button' :class="{active: button_active}"></button>
                 </v-overlay>
-                                                                </v-fade-transition> -->
-                </div>
-                <!-- </template> </v-hover> -->
-              </v-col>
-              <!-- 1.2.3 Start/Stop/Reset buttons  -->
-              <v-col cols="12" justify="center" align="center">
-                <!-- <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch> -->
-
-                <button class="glow-button inactive noborder" @click="start">
-                  <v-icon>{{ start_stop_icon }}</v-icon>
-                </button>
-                <button
-                  class="glow-button inactive noborder"
-                  @click="clear_timer"
-                >
-                  <v-icon>{{ refresh_icon }}</v-icon>
-                </button>
-                <!-- <span>{{total_micro_sec_down}} {{micro_sec}}</span> -->
-              </v-col>
-            </v-row>
-            <!-- <v-row class="d-none d-sm-flex">
-            <v-col>
-              <v-switch v-model="count_up" :label='switch_label' hide-details inset :color='track_color_diff' :disabled="timer_started"></v-switch>
-            </v-col>
-                                                            </v-row> -->
-          </v-col>
-          <!-- 1.3. Colar Bar -->
-          <v-col cols="12" class="d-none d-sm-flex pa-0">
-            <!-- <v-container pa-0> -->
-            <v-row align="center" no-gutters justify="end">
-              <!-- <v-flex> -->
-              <v-col cols="10" justify="end">
-                <!-- 1.3.1 Color -->
-                <v-row no-gutters>
-                  <v-col>
-                    <v-slider
-                      hide-details
-                      v-model="color_main"
-                      min="0"
-                      max="360"
-                      label="color"
-                      thumb-label
-                      @change="change_main_color"
-                      :color="slider_color"
-                      :track-color="track_color"
-                    ></v-slider>
-                  </v-col>
-                </v-row>
-                <!-- 1.3.2 Contrast -->
-                <v-row no-gutters>
-                  <v-col>
-                    <v-slider
-                      hide-details
-                      v-model="color_diff"
-                      min="-90"
-                      max="90"
-                      label="contrast"
-                      thumb-label
-                      @change="change_contrast"
-                      :color="slider_color_diff"
-                      :track-color="track_color_diff"
-                    ></v-slider>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <!-- 1.3.right Cycle Button -->
-              <v-col align="center" justify="center">
-                <button
-                  class="glow-button"
-                  :class="{ inactive: cycle_button_off }"
-                  @click="cycle_color"
-                >
-                  Cycle Color
-                </button>
-              </v-col>
-              <!-- <v-flex shrink> <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea> </v-flex> -->
-            </v-row>
-            <!-- </v-container> -->
-          </v-col>
-        </v-row>
-        <!-- </v-row> -->
-      </v-col>
-      <!-- <v-divider vertical class="border d-none d-sm-flex"></v-divider> -->
-      <!-- 2. Right history part -->
-      <v-col
-        cols="0"
-        sm="2"
-        align="center"
-        justify="space-between"
-        class="ml-0 pa-0 d-none d-sm-flex fill-height flex-column"
-      >
-        <!-- <v-row class="fill-height flex-column" no-gutters align-content='space-between'> <v-col cols="12" class="ml-0"> -->
-        <v-row class="ma-0 flex-grow-0 flex-shrink-1">
-          <v-col justify="center" align="center" class="pt-1">
-            <span class="timer-side-text active opposite">HISTORY</span>
-            <!-- can add "glow" to class for above -->
-          </v-col>
-        </v-row>
-        <!-- </v-col>  </v-row>  <v-col cols="12" class="flex-grow-1"> -->
-        <v-row
-          style="overflow-y: auto; height: 0"
-          class="fill-height flex-grow-1"
-        >
-          <v-col>
-            <v-list two-line disabled dark color=" transparent" width="10em">
-              <v-list-item-group>
-                <!-- use v-model="item" to highlight item-->
-                <v-list-item v-for="(item, i) in items" :key="i">
-                  <v-list-item-content>
-                    <v-list-item-title
-                      class="timer-side-text active opposite"
-                      v-text="item.name"
-                    ></v-list-item-title>
-                    <v-list-item-subtitle
-                      class="timer-side-text active"
-                      v-text="item.time"
-                    ></v-list-item-subtitle>
-                    <!-- can add "glow" to class for above -->
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-col>
-        </v-row>
-        <!-- </v-col> <v-col cols="12" class="ml-n3"> -->
-        <v-row class="flex-shrink-1 flex-grow-0">
-          <v-col justify="center" align="center" class="mb-2">
-            <button class="glow-button inactive" @click="clear_history">
-              clear
+              </v-fade-transition> -->
+          </div>
+          <!-- </template>
+        </v-hover> -->
+        </v-layout>
+      </v-flex>
+      <v-flex shrink class="d-none d-sm-flex">
+        <v-layout row align-center>
+          <v-flex>
+            <v-layout fill-height column justify-end>
+              <v-flex shrink>
+                <v-slider
+                  hide-details
+                  v-model="color_main"
+                  min="0"
+                  max="360"
+                  label="color"
+                  thumb-label
+                  @change="change_main_color"
+                  :color="slider_color"
+                  :track-color="track_color"
+                ></v-slider>
+              </v-flex>
+              <v-flex shrink>
+                <v-slider
+                  hide-details
+                  v-model="color_diff"
+                  min="-90"
+                  max="90"
+                  label="contrast"
+                  thumb-label
+                  @change="change_contrast"
+                  :color="slider_color_diff"
+                  :track-color="track_color_diff"
+                ></v-slider>
+              </v-flex>
+            </v-layout>
+          </v-flex>
+          <v-flex shrink fill-height>
+            <button
+              class="glow-button"
+              :class="{ inactive: cycle_button_off }"
+              @click="cycle_color"
+            >
+              Cycle Color
             </button>
-          </v-col>
-        </v-row>
-        <!-- </v-col>
-                                                    </v-row> -->
-      </v-col>
-      <!-- </div> -->
-    </v-row>
+          </v-flex>
+          <!-- <v-flex shrink>
+      <v-textarea id="comment-inpiut" v-model="comment" no-resize outlined label="Comments" hide-details></v-textarea>
+    </v-flex> -->
+        </v-layout>
+      </v-flex>
+    </v-layout>
+    <v-divider vertical class="border d-none d-sm-flex"></v-divider>
+    <v-layout
+      text-center
+      shrink
+      column
+      align-center
+      justify-space-between
+      fill-height
+      ml-5
+      pa-0
+      class="d-none d-sm-flex"
+    >
+      <v-flex shrink>
+        <v-subheader class="timer-side-text active glow opposite"
+          >HISTORY</v-subheader
+        >
+      </v-flex>
+      <v-flex style="overflow-y: auto; height: 0">
+        <v-list two-line disabled dark color="transparent" width="10em">
+          <v-list-item-group>
+            <!-- use v-model="item" to highlight item-->
+            <v-list-item v-for="(item, i) in items" :key="i">
+              <v-list-item-content>
+                <v-list-item-title
+                  class="timer-side-text active opposite"
+                  v-text="item.name"
+                ></v-list-item-title>
+                <v-list-item-subtitle
+                  class="timer-side-text active glow"
+                  v-text="item.time"
+                ></v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list-item-group>
+        </v-list>
+      </v-flex>
+      <v-flex text-center shrink>
+        <button class="glow-button" @click="clear_history">clear</button>
+      </v-flex>
+    </v-layout>
+    <!-- </div> -->
   </v-container>
 </template>
 
 <script>
-import shared from "../shared.js";
-import { EventBus } from "../event-bus.js";
+import shared from "../src/shared.js";
+import { EventBus } from "../src/event-bus.js";
 // const {
 //   dialog,
 //   shell
 // } = require("electron").remote
 import { remote } from "electron";
 import {
-  // mdiChevronDoubleUp,
+  mdiChevronDoubleUp,
   mdiChevronTripleUp,
-  // mdiChevronDown,
-  // mdiChevronDoubleDown,
+  mdiChevronDown,
+  mdiChevronDoubleDown,
   mdiChevronTripleDown,
-  mdiStop,
-  mdiPause,
-  mdiPlay,
-  mdiRefresh,
 } from "@mdi/js";
 
 export default {
   name: "timer",
-  props: {
-    large_win: Boolean,
-  },
   data() {
     return {
       // time: '00:00:00',
@@ -322,10 +226,7 @@ export default {
       dragging: false,
       is_mouse_down: false,
       time_input: "",
-      stored_time_input: "",
       remaining_micro_sec: 0,
-      total_micro_sec_up: 0,
-      total_micro_sec_down: 0,
       // rules: [
       //   value => !!value || 'Required.',
       //   value => (value || '').length <= 6 || 'Max 6 characters',
@@ -336,11 +237,6 @@ export default {
       // ],
       start_micro_sec: 0,
       running_micro_sec: 0,
-      up_icon: mdiChevronTripleUp,
-      down_icon: mdiChevronTripleDown,
-      // start_stop_icon: mdiPlay,
-      pause_icon: mdiPause,
-      refresh_icon: mdiRefresh,
     };
   },
   computed: {
@@ -371,9 +267,6 @@ export default {
       // if (n == 0) {
       //   return 0
       // }
-      if (this.remaining_micro_sec) {
-        return this.remaining_micro_sec;
-      }
       var sec = this.time_input.slice(-2);
       var min = this.time_input.slice(-4, -2);
       var hr = this.time_input.slice(-6, -4);
@@ -384,40 +277,25 @@ export default {
       );
     },
     time: function () {
-      // function pad(n, z) {
-      //   z = z || 2
-      //   return ('00' + n).slice(-z)
-      // }
-      // console.log(this.timer_started);
+      function pad(n, z) {
+        z = z || 2;
+        return ("00" + n).slice(-z);
+      }
+
       var curr_micro_sec =
         this.timer_started || this.count_up
           ? this.running_micro_sec
           : this.micro_sec;
-      curr_micro_sec += this.count_up
-        ? this.total_micro_sec_up
-        : -this.total_micro_sec_down;
 
-      return this.msToTime(curr_micro_sec);
-      // var ms = curr_micro_sec % 1000
-      // var s = (curr_micro_sec - ms) / 1000
-      // var secs = s % 60
-      // s = (s - secs) / 60
-      // var mins = s % 60
-      // var hrs = (s - mins) / 60
-      //
-      // return pad(hrs) + ':' + pad(mins) + ':' + pad(secs)
-    },
+      var ms = curr_micro_sec % 1000;
+      var s = (curr_micro_sec - ms) / 1000;
+      var secs = s % 60;
+      s = (s - secs) / 60;
+      var mins = s % 60;
+      var hrs = (s - mins) / 60;
 
-    start_stop_icon: function () {
-      if (this.timer_started) {
-        return mdiStop;
-      }
-      return mdiPlay;
+      return pad(hrs) + ":" + pad(mins) + ":" + pad(secs);
     },
-    // time_curr_session: function() {
-    //   var curr_micro_sec = this.timer_started || this.count_up ? this.running_micro_sec : this.micro_sec
-    //   return this.msToTime(curr_micro_sec)
-    // }
   },
   watch: {
     color_main: function () {
@@ -440,8 +318,7 @@ export default {
         this.start();
       }
     },
-    start: function (is_stop = false) {
-      is_stop;
+    start: function () {
       // console.log('starting_timer')
       if (this.dragging) {
         return;
@@ -450,8 +327,8 @@ export default {
         this.timer_started = true;
         this.start_time = new Date();
         if (!this.count_up) {
-          this.start_micro_sec = this.micro_sec - this.total_micro_sec_down;
-          this.running_micro_sec = this.start_micro_sec;
+          this.start_micro_sec = this.micro_sec;
+          this.running_micro_sec = this.micro_sec;
         }
         this.job = setInterval(() => {
           if (this.count_up) {
@@ -470,7 +347,7 @@ export default {
       } else {
         this.timer_started = false;
         var record_time = this.count_up
-          ? this.msToTime(this.running_micro_sec)
+          ? this.time
           : this.msToTime(this.start_micro_sec - this.running_micro_sec);
         this.button_text = "Start";
         clearInterval(this.job);
@@ -481,12 +358,7 @@ export default {
         this.job = "";
         this.stop_time = new Date();
         this.button_active = false;
-        if (this.count_up) {
-          this.total_micro_sec_up += this.running_micro_sec;
-        } else {
-          this.remaining_micro_sec = this.running_micro_sec;
-        }
-        // this.remaining_micro_sec = this.running_micro_sec
+        this.remaining_micro_sec = this.running_micro_sec;
         this.running_micro_sec = 0;
         this.$db.insert(
           {
@@ -501,7 +373,7 @@ export default {
             // Callback is optional
             // newrec is the newly inserted document, including its _id
             // newrec has no key called notToBeSaved since its value was undefined
-            console.log(err);
+            // console.log(newrec)
             EventBus.$emit("send_newrec", newrec);
             if (!this.count_up && this.remaining_micro_sec == 0) {
               this.show_alert();
@@ -558,19 +430,16 @@ export default {
       // Electron v9 doesn't have 3rd parameter, instead returns a Promise
       // object, which is like an async object which will produce resutls
       // when ready. Should fix when upgrading to v9.
-      remote.dialog
-        .showMessageBox(remote.getCurrentWindow(), {
+      remote.dialog.showMessageBox(
+        remote.getCurrentWindow(),
+        {
           message: "Time's Up!",
           buttons: ["Close"],
-        })
-        .then((result) => {
-          result;
+        },
+        (response) => {
           // console.log(response)
-        })
-        .catch((err) => {
-          err;
-          // console.log(err)
-        });
+        }
+      );
       // console.log('hi')
     },
     clear_history: function () {
@@ -632,13 +501,9 @@ export default {
       this.is_mouse_down = false;
     },
     validate_input: function (evt) {
-      if (this.remaining_micro_sec) {
-        evt.preventDefault();
-        return false;
-      }
       evt = evt || window.event;
       var charCode = evt.which ? evt.which : evt.keycode;
-      // console.log(charCode);
+      // console.log(charCode)
       if (
         charCode > 31 &&
         (charCode < 48 || charCode > 57 || this.time_input.length >= 6)
@@ -647,24 +512,6 @@ export default {
         evt.preventDefault();
       } else {
         return true;
-      }
-    },
-    toggle_up_down: function () {
-      if (this.timer_started) {
-        return;
-      }
-      this.count_up = !this.count_up;
-    },
-    clear_timer: function () {
-      if (this.timer_started) {
-        return;
-      }
-      if (this.count_up) {
-        this.total_micro_sec_up = 0;
-      } else if (this.remaining_micro_sec) {
-        this.remaining_micro_sec = 0;
-      } else {
-        this.time_input = "";
       }
     },
   },
@@ -803,10 +650,6 @@ button.timer-button {
     /* all 1s; */ border-radius 0.2s ease-in-out 0s,
     transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
     border 0.3s ease-in-out 0s;
-  transition:
-    /* all 1s; */ border-radius 0.2s ease-in-out 0s,
-    transform 0.2s ease-in-out 0s, box-shadow 0.3s ease-in-out 0s,
-    border 0.3s ease-in-out 0s;
 }
 
 button.timer-button:hover {
@@ -834,7 +677,6 @@ button.timer-button.active {
   box-shadow: var(--neon-box-shadow);
   border: 1px solid var(--neon-box-shadow-highlight);
   -webkit-transform: scale(0.5);
-  transform: scale(0.5);
   /* -webkit-transition: all 0.3s linear 0s; */
 }
 
@@ -848,7 +690,6 @@ button.timer-button.active:hover {
   /* color: var(--row-background); */
   /* color: var(--neon-text-color); */
   -webkit-transform: scale(1);
-  transform: scale(1);
 }
 
 button.glow-button {
@@ -872,14 +713,6 @@ button.glow-button.inactive {
   text-shadow: none;
 }
 
-button.glow-button.noborder {
-  border: 1px solid transparent;
-}
-
-.noborder {
-  border: 1px solid transparent;
-}
-
 div#timer-cell {
   padding: 1.5em;
   /* padding-top: 2em; */
@@ -895,19 +728,19 @@ div#timer-cell {
   /* border: 1px solid var(--neon-box-shadow-highlight-reverse); */
 }
 
-/* div#timer-cell:hover,
-div#timer-cell.active { */
-/* background: #ccf6ff; */
-/* background: var(--row-background); */
-/* color: var(--neon-text-color); */
-/* border: 1px solid transparent; */
-/* } */
+div#timer-cell:hover,
+div#timer-cell.active {
+  /* background: #ccf6ff; */
+  /* background: var(--row-background); */
+  /* color: var(--neon-text-color); */
+  /* border: 1px solid transparent; */
+}
 
-/* div#timer-cell:hover { */
-/* box-shadow: var(--neon-box-shadow-reverse);
+div#timer-cell:hover {
+  /* box-shadow: var(--neon-box-shadow-reverse);
   border: 1px solid var(--neon-box-shadow-highlight-reverse); */
-/* -webkit-transition: border 0.1s linear 0s, box-shadow 0.1s linear 0s; */
-/* } */
+  /* -webkit-transition: border 0.1s linear 0s, box-shadow 0.1s linear 0s; */
+}
 
 #triangle-right {
   display: inline-block;
@@ -923,7 +756,6 @@ div#timer-text-container {
   -webkit-transition:
     /* transform 0s ease-in-out 0s; */ all 0.3s ease-in-out
     0s;
-  transition: all 0.3s ease-in-out 0s;
   border-radius: 5px;
 }
 
@@ -934,10 +766,10 @@ div#timer-text-container {
 
 span.timer-text {
   display: block;
-  font-family: "iceland", cursive;
+  font-family: "Iceland", cursive;
   /* font-weight: bold; */
   color: var(--neon-text-highlight);
-  font-size: 10em;
+  font-size: 8em;
   /* min-height: 1.5em;
   line-height: 1.5em; */
   min-height: 0.7em;
@@ -948,7 +780,7 @@ span.timer-text {
   margin-right: 2em; */
   /* padding-top: 0.3em;
   padding-bottom: 0.3em; */
-  /* vertical-align: middle; */
+  vertical-align: middle;
   border: 1px solid transparent;
   box-shadow: none;
   text-shadow: none;
@@ -959,7 +791,6 @@ span.timer-text {
   box-shadow 1s; */ all
     0.3s ease-in-out 0s;
   /* transform 0s ease-in-out 0s; */
-  transition: all 0.3s ease-in-out 0s;
 }
 
 span.small-text {
@@ -990,9 +821,9 @@ span.small-text {
 
 .timer-side-text.active {
   /* text-shadow: var(--neon-text-shadow); */
-  color: var(--neon-box-shadow-highlight-flipped) !important;
-  font-family: "iceland", cursive;
-  font-size: 2em;
+  color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 1em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
@@ -1001,9 +832,9 @@ span.small-text {
 
 .timer-side-text.active.opposite {
   /* text-shadow: var(--neon-text-shadow); */
-  color: var(--neon-text-highlight) !important;
-  font-family: "iceland", cursive;
-  font-size: 2em;
+  color: var(--neon-text-highlight);
+  font-family: "Iceland", cursive;
+  font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
   /* border-radius: 0; */
@@ -1013,7 +844,7 @@ span.small-text {
 .timer-side-text.active.glow {
   text-shadow: var(--neon-text-shadow);
   color: var(--neon-text-highlight);
-  font-family: "iceland", cursive;
+  font-family: "Iceland", cursive;
   font-size: 1.5em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -1024,7 +855,7 @@ span.small-text {
 .timer-side-text.active.glow.opposite {
   text-shadow: var(--neon-text-shadow-reverse);
   color: var(--neon-text-highlight-reverse);
-  font-family: "iceland", cursive;
+  font-family: "Iceland", cursive;
   font-size: 2em;
   /* box-shadow: var(--neon-box-shadow);
    border: 1px solid var(--neon-box-shadow-highlight); */
@@ -1082,7 +913,7 @@ button.timer-button.active:hover:after {
 .v-textarea.v-text-field--enclosed .v-text-field__slot textarea,
 .v-input .v-label {
   color: var(--neon-text-highlight);
-  font-family: "iceland", cursive;
+  font-family: "Iceland", cursive;
   font-size: 1.5em;
   /* border: var(--neon-text-shadow-highlight); */
 }
@@ -1140,17 +971,12 @@ button.timer-button.active:hover:after {
   /* box-shadow: var(--neon-box-shadow); */
 }
 
-.border_right {
-  border-right: 2px solid var(--neon-box-shadow-highlight) !important;
-  /* box-shadow: var(--neon-box-shadow); */
-}
-
 input {
   width: 100%;
   outline: 0;
   caret-color: var(--neon-text-highlight);
   color: var(--neon-text-highlight);
-  font-family: "iceland", cursive;
+  font-family: "Iceland", cursive;
   font-size: 2em;
   margin-bottom: -1em;
   margin-top: -1em;
