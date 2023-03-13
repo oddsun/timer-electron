@@ -10,7 +10,7 @@ module.exports = {
       customFileProtocol: './',
       nodeIntegration: true,
       builderOptions: {
-        artifactName: '${name}-${os}-${version}.${ext}',
+        artifactName: '${name}-${os}-v${version}.${ext}',
         linux: {
           target: 'deb'
         }
